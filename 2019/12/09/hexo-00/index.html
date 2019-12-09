@@ -253,22 +253,14 @@
 <div class="card">
     <div class="card-content">
         <h3 class="title is-5 has-text-weight-normal">Comments</h3>
-        
-<div id="comment-container"></div>
-<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
-<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
-<script>
-	var gitment = new Gitment({
-		id: '58b6b03a2da376b618c3a8df8baa74e0',
-		owner: 'AugustusHsu',
-		repo: 'augustushsu.github.io',
-		oauth: {
-			client_id: '35f8adf2553a86678cce',
-			client_secret: 'afeffb2652617f0d77d7a18c9f95ee4447baf5e2',
-		},
-	})
-	gitment.render('comment-container')
-</script>
+        <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en/sdk.js#xfbml=1&version=v2.8";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<div class="fb-comments" data-width="100%" data-href="https://augustushsu.github.io/2019/12/09/hexo-00/" data-num-posts="5"></div>
 
     </div>
 </div>
@@ -349,7 +341,7 @@
         </nav>
         
         <div class="level">
-            <a class="level-item button is-link is-rounded" href="https://github.com/ppoffice" target="_blank">
+            <a class="level-item button is-link is-rounded" href="https://github.com/AugustusHsu" target="_blank">
                 Follow</a>
         </div>
         
