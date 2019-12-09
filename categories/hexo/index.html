@@ -75,7 +75,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.svg" alt="Hexo" height="28">
+                <img src="/uploads/logo.png" alt="Hexo" height="28">
             
             </a>
         </div>
@@ -153,7 +153,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    a few seconds read (About 21 words)
+                    a few seconds read (About 22 words)
                 </span>
                 
                 
@@ -169,7 +169,7 @@
             <figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">"Updated: `date +'%Y-%m-%d %H:%M:%S'`"</span></span></pre></td></tr></table></figure>
 
 <p>/upload</p>
-<p>hexo d -m “Updated: <code>date +&#39;%Y-%m-%d %H:%M:%S&#39;</code>“ </p>
+<p>hexo d -m “Site updated: <code>date +&#39;%Y-%m-%d %H:%M:%S&#39;</code>“ </p>
 
         </div>
         
@@ -202,7 +202,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    5 minutes read (About 764 words)
+                    5 minutes read (About 765 words)
                 </span>
                 
                 
@@ -222,24 +222,16 @@
 <p>身為一個懶惰又想要讓自己的網站<del>很炫</del>能看的資訊工程學生，在一看到hexo這個工具，就立刻架設了一個範本，也就是現在你所看到的這個網站，經過研究一段時間後發現，架設這個網站只需要簡單的幾個指令就可以完成，基本上不需要資訊工程或是有編程經驗的背景就可以使用了。</p>
 <p>不過要注意的是hexo是一個基於Node.js的靜態blog工具，可以很方便的將生成的網頁直接放在Github上面，不過要注意的是他跟基於PHP的WordPress不一樣，如果你想搭建功能比較複雜的網頁或是WebAPP的話，還是採用動態網站比較好。</p>
 <p>之後會慢慢的完善這個網頁，接下來就直接開始介紹怎麼使用hexo這個工具吧～</p>
-<h3 id="環境安裝、配置"><a href="#環境安裝、配置" class="headerlink" title="環境安裝、配置"></a>環境安裝、配置</h3><h4 id="NodeJS-NPM"><a href="#NodeJS-NPM" class="headerlink" title="NodeJS/NPM"></a>NodeJS/NPM</h4><p>NodeJS是能夠在電腦運行JavaScript的開放原始碼，幾本上所有在寫前端的程序猿都會需要使用，安裝方法很簡單，去<a href="https://nodejs.org/en/" target="_blank" rel="noopener">NodeJS官方網站</a>下載一個LTS的版本就可以了，如果你電腦安裝過了就可以直接跳過。</p>
-<p><img src="/uploads/NodeJS.jpg" alt="NodeJS"></p>
-<p>有許多人在JavaScript上發佈、使用許多模塊，要調用也十分容易，其中NPM是最有名的社群，也是國際上最為流行的Node模塊管理工具，現在的NodeJS已經集成了NPM，所以不需要再去安裝。</p>
-<h4 id="Git-Github"><a href="#Git-Github" class="headerlink" title="Git/Github"></a>Git/Github</h4><p>去<a href="https://github.com" target="_blank" rel="noopener">Github</a>下載和自己作業系統相對應的安裝包，另外如果沒有Github帳戶的人也需要去申請一個。</p>
-<p>另外要記得設定全局變量還有ssh-key</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="hljs-string">"Your Github username"</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">git config --global user.email <span class="hljs-string">"Your Github mail address"</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="hljs-string">"Your Github mail address"</span></span></pre></td></tr></table></figure>
-
-<p>然後可以在家目錄~/裡面看到.ssh文件夾，在裡面會有id_rsa.pub這個檔案，可以使用<em>pbcopy</em>這個指令來複製key。</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">pbcopy &lt; ~/.ssh/id_rsa.pub</span></pre></td></tr></table></figure>
-
-<p>然後到Github <a href="https://github.com/settings/keys" target="_blank" rel="noopener">SSH and GPG keys</a>新增你的key，標題隨意打一個就行，新增完後以後要發文就不需要再輸入Github的密碼了。</p>
-<h4 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h4><p>hexo可以直接使用npm來進行安裝：</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">npm install hexo-cli -g</span></pre></td></tr></table></figure>
-
-<p>到這邊基本的環境就算安裝完成。</p>
-
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/12/09/hexo-00/#more">Read More</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -671,7 +663,7 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/logo.svg" alt="Hexo" height="28">
+                    <img src="/uploads/logo.png" alt="Hexo" height="28">
                 
                 </a>
                 <p class="is-size-7">
