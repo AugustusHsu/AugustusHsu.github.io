@@ -19,7 +19,7 @@
 <meta property="og:description" content="A fast, simple &amp;amp; powerful blog framework  前言一直以來就有想要架設個人網站的想法，之前在學寫HTML的時候，有試過用github.io的功能，他可以直接把你寫的網頁直接呈現在外部ip。(在大學的時候有想過用這個功能把專題直接讓每個人玩，不過後來發現，他只能用靜態網頁所以後來就不了了之。) 身為一個懶惰又想要讓自己的網站很炫能看的資訊工程學生，在一">
 <meta property="og:locale" content="zh-TW">
 <meta property="og:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;hexo-cover.png">
-<meta property="og:updated_time" content="2019-12-10T11:22:30.524Z">
+<meta property="og:updated_time" content="2019-12-10T11:26:51.780Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;hexo-cover.png">
 
@@ -155,7 +155,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    12 分鐘 閱讀文 (大約 1792 個字)
+                    12 分鐘 閱讀文 (大約 1831 個字)
                 </span>
                 
                 
@@ -228,12 +228,12 @@
 <figure class="highlight markdown hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">---</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">title: title</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">date: 2019-12-10 15:05:40</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">tags: [A,B]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">categories: C</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">thumbnail: /uploads/YourImage.JPG</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">toc: true</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">---</span></pre></td></tr></table></figure>
 
 <p>這邊要注意的是圖片的位置，這邊個人建議是在<code>XXX.github.io/public/</code>裡面新增一個資料夾叫做<code>uploads</code>，之後你文章中所使用的任何圖片都可以上傳到這裡在用<code>/uploads/YourImage.JPG</code>的方式指定到目標位置。</p>
-<p>當然如果你要建立子資料夾來管理圖片也是可以的。</p>
+<p>當然如果你要建立子資料夾來管理圖片也是可以的，之後文章會介紹<code>post_asset_folder</code>讓圖片可以放在<code>_posts</code>裡面，用文章的名稱來管理用到的圖片。</p>
 <h4 id="上傳到Github"><a href="#上傳到Github" class="headerlink" title="上傳到Github"></a>上傳到Github</h4><p>前面有申請過Github的帳戶，現在我們要將網站發佈在Github Page上面，首先要做的是打開<code>XXX.github.io</code>下的<code>_config.yml</code>檔案，找到<code>Deployment</code>將其改成像下面這段：</p>
 <figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Deployment</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">## Docs: https://hexo.io/docs/deployment.html</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">deploy:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">  <span class="hljs-attr">type:</span> <span class="hljs-string">'git'</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">  <span class="hljs-attr">repo:</span> <span class="hljs-string">https://github.com/YourAccount/XXX.github.io.git</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">  <span class="hljs-attr">branch:</span> <span class="hljs-string">master</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">  <span class="hljs-attr">message:</span></span></pre></td></tr></table></figure>
 
-<p>變更成你的配置，不過不建議在<code>message</code>加上內容，我們可以在後面加上message的訊息，接著就可以直機上傳到你的Github帳戶：</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">hexo depoly -m <span class="hljs-string">"github message"</span></span></pre></td></tr></table></figure>
+<p>變更成你的配置，不過不建議在<code>message</code>加上內容，我們可以在後面加上message的訊息，記得要先generate才可以上傳到你的Github帳戶：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">hexo generate</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">hexo depoly -m <span class="hljs-string">"github message"</span></span></pre></td></tr></table></figure>
 
 <p>建議在這裡加上附註，因為可以使用一些git的技巧，直接在<code>-m</code>後面加上要傳上去的附註，當然也可以將上傳的時間點加在附註上面，像是這樣的形式：</p>
 <figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">hexo d -m <span class="hljs-string">"Site updated: `date +'%Y-%m-%d %H:%M:%S'`"</span></span></pre></td></tr></table></figure>
