@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.0.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>hexo系列-01 hexo簡單配置 - Hexo</title>
+
+
+    <meta name="description" content="theme下的_config.yml前面有介紹過hexo在生成主題之後會有兩個_config.yml，這邊著重介紹在theme中的設定(絕對不是hexo原生的_config.yml沒什麼好介紹的)">
+<meta name="keywords" content="hexo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo系列-01 hexo簡單配置">
+<meta property="og:url" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;2019&#x2F;12&#x2F;09&#x2F;hexo-01&#x2F;index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="theme下的_config.yml前面有介紹過hexo在生成主題之後會有兩個_config.yml，這邊著重介紹在theme中的設定(絕對不是hexo原生的_config.yml沒什麼好介紹的)">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;hexo-cover.png">
+<meta property="og:updated_time" content="2019-12-10T15:24:56.754Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;hexo-cover.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/zenburn.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.png" alt="hexo系列-01 hexo簡單配置" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/categories">Categories</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+                <a class="navbar-item"
+                href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;" target="_blank" rel="noopener">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜尋" href="javascript:;" target="_blank" rel="noopener">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-8-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-image">
+        <span  class="image is-7by1">
+            <img class="thumbnail" src="/uploads/hexo-cover.png" alt="hexo系列-01 hexo簡單配置">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-12-09T11:55:26.000Z">2019-12-09</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/hexo/">hexo</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    13 分鐘 閱讀文 (大約 1887 個字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                hexo系列-01 hexo簡單配置
+            
+        </h1>
+        <div class="content">
+            <h2 id="theme下的-config-yml"><a href="#theme下的-config-yml" class="headerlink" title="theme下的_config.yml"></a>theme下的_config.yml</h2><p>前面有介紹過hexo在生成主題之後會有兩個<code>_config.yml</code>，這邊著重介紹在theme中的設定<del>(絕對不是hexo原生的<code>_config.yml</code>沒什麼好介紹的)</del> </p>
+<a id="more"></a>
+
+<h3 id="favicon-amp-logo"><a href="#favicon-amp-logo" class="headerlink" title="favicon&amp;logo"></a>favicon&amp;logo</h3><p>首先就是favorites icon和logo~</p>
+<p>你可以在<code>_config.yml</code>裡面找到：</p>
+<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Path or URL to the website's icon</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">favicon:</span> <span class="hljs-string">/images/favicon.png</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Path or URL to the website's logo to be shown on the left of the navigation bar or footer</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">logo:</span> <span class="hljs-string">/images/logo.png</span></span></pre></td></tr></table></figure>
+
+<p>然後打開你的目錄<code>XXX.github.io/public/images/</code>裡面找到相對應的圖檔，間單的替換+更改檔名就可以放上你想要的圖片囉～</p>
+<h3 id="share"><a href="#share" class="headerlink" title="share"></a>share</h3><p>分享的方式<code>Icarus</code>提供了許多方式，預設是：</p>
+<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Share</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">share:</span> <span class="hljs-string">default</span> <span class="hljs-comment"># options: jiathis, bdshare, addtoany, default</span></span></pre></td></tr></table></figure>
+
+<p>這邊我使用的是<a href="https://www.addthis.com/login?next=/dashboard" target="_blank" rel="noopener">AddThis</a>在連結中註冊帳戶，他可以透過google, Facebook或是Twitter註冊帳戶，這個網站不只有分享按鈕的JavaScript，詳細功能可以自行去探索，設定好後會得到像是這樣的code</p>
+<figure class="highlight html hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">//s7.addthis.com/js/300/addthis_widget.js#pubid=xxxxxxxx</span></pre></td></tr></table></figure>
+
+<p>將share那段替換成：</p>
+<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Share</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">share:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-attr">type:</span> <span class="hljs-string">addthis</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-attr">install_url:</span> <span class="hljs-string">//s7.addthis.com/js/300/addthis_widget.js#pubid=xxxxxxxx</span>  <span class="hljs-comment"># (required)</span></span></pre></td></tr></table></figure>
+
+<p>如此就可以直接在你的post上面看到我頁面上的分享按鈕了～</p>
+<h3 id="Donate"><a href="#Donate" class="headerlink" title="Donate"></a>Donate</h3><p>當你建置好你的網站後你可能會發現下面這樣的狀況：</p>
+<p><img src="donate-problem.png" alt="Donate-Problem"></p>
+<p>這是因為你在Donate的選項中沒有設置完全，直接把它註解掉就可以解決這個問題了。</p>
+<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># donate:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># -</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment">#     # Donation entry name</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment">#     type: alipay</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment">#     # Qrcode image URL</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment">#     qrcode: ''</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># -</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment">#     # Donation entry name</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment">#     type: wechat</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment">#     # Qrcode image URL</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment">#     qrcode: ''</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># -</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment">#     # Donation entry name</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment">#     type: paypal</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment">#     # Paypal business ID or email address</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment">#     business: 'V6DFAWSEDJJHE'</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment">#     # Currency code</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment">#     currency_code: U</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># -</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment">#     # Donation entry name</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment">#     type: patreon</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment">#     # URL to the Patreon page</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment">#     url: ''</span></span></pre></td></tr></table></figure>
+
+<p>當然如果你要設置Donate的帳戶也完全沒問題😜</p>
+<h3 id="highlight"><a href="#highlight" class="headerlink" title="highlight"></a>highlight</h3><p>接著是<code>highlight</code>選項，這個是程式碼區塊的顯示格式，可以透過<a href="https://highlightjs.org" target="_blank" rel="noopener">這裡</a>去預覽、<a href="https://github.com/highlightjs/highlight.js/tree/master/src/styles" target="_blank" rel="noopener">這裡</a>去下載。</p>
+<p>簡單的將<code>highlight</code>名稱替換成你想要的樣板名稱就可以裡：</p>
+<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Code highlight settings</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">highlight:</span> </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># Code highlight themes</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># https://github.com/highlightjs/highlight.js/tree/master/src/styles</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-attr">theme:</span> <span class="hljs-string">zenburn</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># Show code copying button</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-attr">clipboard:</span> <span class="hljs-literal">true</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># Default folding status of the code blocks. Can be "", "folded", "unfolded"</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-attr">fold:</span> <span class="hljs-string">unfolded</span></span></pre></td></tr></table></figure>
+
+<p>這裏我選擇的是<code>zenburn</code>，理由就是<del>我覺得好看</del>這個暗色主題黑的剛剛好，不會想其他主題一樣太黑，或者是不夠黑。</p>
+<h3 id="widgets"><a href="#widgets" class="headerlink" title="widgets"></a>widgets</h3><p>這個選項就是調整你在頁面上所看到所有一塊塊區域的內容跟功能，第一個區塊就是網頁簡單名片：</p>
+<p><img src="web-card.png" alt="Web-Card"></p>
+<p>在<code>_config.yml</code>的widgets第一個區塊就是相關的設定，包含像是位置、作者、還有圖片等等。<br>在預設中沒有的是<code>Envelope</code>選項，也就是上面那張圖的右下角，可以通過更改<code>social_links</code>來將你的信箱新增上去：</p>
+<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">social_links:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">           <span class="hljs-attr">Github:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">               <span class="hljs-attr">icon:</span> <span class="hljs-string">fab</span> <span class="hljs-string">fa-github</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">               <span class="hljs-attr">url:</span> <span class="hljs-string">'https://github.com/AugustusHsu'</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">           <span class="hljs-attr">Facebook:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">               <span class="hljs-attr">icon:</span> <span class="hljs-string">fab</span> <span class="hljs-string">fa-facebook</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">               <span class="hljs-attr">url:</span> <span class="hljs-string">'https://www.facebook.com/HsuAugustus'</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">           <span class="hljs-attr">Envelope:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">               <span class="hljs-attr">icon:</span> <span class="hljs-string">fas</span> <span class="hljs-string">fa-envelope</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">               <span class="hljs-attr">url:</span> <span class="hljs-string">mailto:jimhsu11@gmail.com</span></span></pre></td></tr></table></figure>
+
+<p>這樣設置後，只要點擊你的信箱那個圖示，電腦會自動跳到寫信的應用程式<del>(不過這年代還有誰會用Email來寫信😆)</del></p>
+<p>其他功能我都是使用預設選項，當然其中會有像是：</p>
+<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">position:</span> <span class="hljs-string">left</span></span></pre></td></tr></table></figure>
+
+<p>這樣的選項，你可以自行調整要放在左右那一邊，當然你也可以直接註解掉整塊來取消這個功能。</p>
+<h2 id="Image管理"><a href="#Image管理" class="headerlink" title="Image管理"></a>Image管理</h2><p>在Hexo你的發文可以透過MarkDown語法來編寫，所以在引用圖片的時候是可以透過第三方的網站來上傳圖片，再利用：</p>
+<figure class="highlight markdown hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">！[<span class="hljs-string">title</span>](<span class="hljs-link">image link</span>)</span></pre></td></tr></table></figure>
+
+<p>來展示你的圖片，那如果想要將圖片放在你的網頁資料夾中的話，要怎麼引用呢？</p>
+<h3 id="hexo-asset-image"><a href="#hexo-asset-image" class="headerlink" title="hexo-asset-image"></a>hexo-asset-image</h3><p>這邊可以直接安裝這個插件，在新增貼文的時候會同時產生一個同名的資料夾，把圖片丟進資料夾再飲用就可以了。</p>
+<p>在<code>XXX.github.io</code>資料夾輸入以下命令：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">npm install hexo-asset-image --save</span></pre></td></tr></table></figure>
+
+<p>另外在<code>XXX.github.io</code>中的<code>_config.yml</code>：</p>
+<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">post_asset_folder:</span> <span class="hljs-literal">true</span></span></pre></td></tr></table></figure>
+
+<p>將它改成true，這樣在新增貼文的時候就會自動產生同名的資料夾了。</p>
+<h3 id="實際運用"><a href="#實際運用" class="headerlink" title="實際運用"></a>實際運用</h3><p>如果你的圖片放在同名資料夾的話，在文章中要引用圖片的話，要像下面這個例子一樣：</p>
+<figure class="highlight markdown hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">！[<span class="hljs-string">title</span>](<span class="hljs-link">image_name.jpg</span>)</span></pre></td></tr></table></figure>
+
+<p>無需加上資料夾的名稱，直接打你的圖片檔名就可以引用了。</p>
+<p>不過這邊要注意的是如果你這樣打，在MarkDown編輯器中，你圖片會看不到，還有如果你是一邊啟動hexo server在編輯的話，你在網頁上圖片也是會顯示不出來，要執行過一次：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">hexo g</span></pre></td></tr></table></figure>
+
+<p>才能正常的在<code>localhost:4000</code>中看到圖片。</p>
+<h2 id="留言設置"><a href="#留言設置" class="headerlink" title="留言設置"></a>留言設置</h2><p>文章當然免不了討論問題，那在文章底部新增一個互動機制也就是留言功能，就在所難免。</p>
+<p>在這個留言設置中，我只舉出兩種我有實際操作過的方法，其他像是<code>gitment</code>在<a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>列出的方法就請有興趣的朋友自行研究了。</p>
+<h3 id="gitalk"><a href="#gitalk" class="headerlink" title="gitalk"></a>gitalk</h3><p><a href="https://github.com/gitalk/gitalk" target="_blank" rel="noopener">gitalk</a>是使用github上面的issue功能實現的留言討論功能，所以要跟github做連結。</p>
+<p>OAuth</p>
+<blockquote>
+<p>OAuth是一個開放標準，允許用戶讓第三方應用存取該用戶在某一網站上儲存的私密的資源，而無需將用戶名稱和密碼提供給第三方應用。 </p>
+<p>–Wiki</p>
+</blockquote>
+<p>也就是要授權github來儲存對話紀錄，<a href="https://github.com/settings/applications/new" target="_blank" rel="noopener">點擊這裡</a>來申請一個OAuth</p>
+<p>其中<code>Homepage URL</code>跟<code>Authorization callback URL</code>請填你github.io的網址，name就簡單填個就行。</p>
+<p>申請完會得到Client ID跟Client Secret將這兩項填入：</p>
+<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">comment:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-attr">type:</span> <span class="hljs-string">gitalk</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-attr">owner:</span> <span class="hljs-string">xxxxxxxx</span>         <span class="hljs-comment"># (required) GitHub user name</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-attr">repo:</span> <span class="hljs-string">xxxxxxxx</span>          <span class="hljs-comment"># (required) GitHub repository name</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-attr">client_id:</span> <span class="hljs-string">xxxxxxxx</span>     <span class="hljs-comment"># (required) OAuth application client id</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-attr">client_secret:</span> <span class="hljs-string">xxxxxxxx</span> <span class="hljs-comment"># (required) OAuth application client secret</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-attr">admin:</span> <span class="hljs-string">xxxxxxxx</span>         <span class="hljs-comment"># (required) GitHub repo owner and collaborators who can initialize github issues</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">                            <span class="hljs-comment">#            Can either be a string or an array.</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">                            <span class="hljs-comment">#            admin:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">                            <span class="hljs-comment">#                - xxxxxx1</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">                            <span class="hljs-comment">#                - xxxxxx2</span></span></pre></td></tr></table></figure>
+
+<p>owner跟admin就直接填你github帳戶名稱就行。</p>
+<p>一開始你可能會遇到像是這樣：</p>
+<p><img src="gitalk-init.png" alt="gitalk-init"></p>
+<p>這時候直接按下去就會要你去登入並授權這個應用功能：</p>
+<p><img src="gitalk-authorize.png" alt="gitalk-authorize"></p>
+<p>結束後你就可以在文章下方看到跟我一樣的留言區塊了。</p>
+<h3 id="facebook"><a href="#facebook" class="headerlink" title="facebook"></a>facebook</h3><p>facebook的話比較簡單，不過我之前有遇到過他的寬度不太合的狀況，所以比較推薦使用gitalk的方式來增加留言功能。</p>
+<p>facebook的方式一樣要先授權，所以<a href="https://developers.facebook.com/docs/plugins/comments/" target="_blank" rel="noopener">點這裡</a>將你github.io的網址填入，接著按下取得程式碼就可以了。</p>
+<p>再來要在<code>_config.yml</code>裡面把comment的設定更改成facebook:</p>
+<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">comment:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-attr">type:</span> <span class="hljs-string">facebook</span></span></pre></td></tr></table></figure>
+
+<p>這樣就設定完成了。</p>
+<h2 id="補充"><a href="#補充" class="headerlink" title="補充"></a>補充</h2><p>你在首頁看到我的文章會看到<code>Read More</code>這個框框，這個是MarkDown的語法，直接在你想隱藏的段落前加上：</p>
+<figure class="highlight markdown hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-xml"><span class="hljs-comment">&lt;!--more--&gt;</span></span></span></pre></td></tr></table></figure>
+
+<p>就可以摺疊你的貼文了。</p>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/hexo/" rel="tag">hexo</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+<div class="addthis_inline_share_toolbox"></div>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5def9374e9552f2f"></script>
+
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">喜歡這篇文章嗎? 贊助一下作者吧!</h3>
+        <div class="buttons is-centered">
+            
+                <!-- Visit https://www.paypal.com/donate/buttons/ to get your donate button -->
+
+<a class="button is-warning donate" onclick="document.getElementById(&#39;paypal-donate-form&#39;).submit()">
+    <span class="icon is-small">
+        <i class="fab fa-paypal"></i>
+    </span>
+    <span>PayPal</span>
+</a>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" id="paypal-donate-form">
+    <input type="hidden" name="cmd" value="_donations" />
+    <input type="hidden" name="business" value="V6DFAWSEDJJHE" />
+    <input type="hidden" name="currency_code" value="USD" />
+</form>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/12/09/hexo-00/">
+                <span class="level-item">hexo系列-00 hexo簡介＆環境安裝</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">評論</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: '35f8adf2553a86678cce',
+        clientSecret: 'afeffb2652617f0d77d7a18c9f95ee4447baf5e2',
+        id: '4677030acb65410525fd656873042904',
+        repo: 'augustushsu.github.io',
+        owner: 'AugustusHsu',
+        admin: "AugustusHsu",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-4-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/uploads/MyPhoto.jpg" alt="Augustus">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        Augustus
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        Strike the iron while it is hot.
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>Chiayi, Taiwan</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            2
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分類
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            1
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        標籤
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            1
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/AugustusHsu" target="_blank">
+                追蹤</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="Github" href="https://github.com/AugustusHsu">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="Facebook" href="https://www.facebook.com/HsuAugustus">
+                
+                <i class="fab fa-facebook"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="Envelope" href="mailto:jimhsu11@gmail.com">
+                
+                <i class="fas fa-envelope"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    文章目錄
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#theme下的-config-yml">
+        <span class="has-mr-6">1</span>
+        <span>theme下的_config.yml</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#favicon-amp-logo">
+        <span class="has-mr-6">1.1</span>
+        <span>favicon&amp;logo</span>
+        </a></li><li>
+        <a class="is-flex" href="#share">
+        <span class="has-mr-6">1.2</span>
+        <span>share</span>
+        </a></li><li>
+        <a class="is-flex" href="#Donate">
+        <span class="has-mr-6">1.3</span>
+        <span>Donate</span>
+        </a></li><li>
+        <a class="is-flex" href="#highlight">
+        <span class="has-mr-6">1.4</span>
+        <span>highlight</span>
+        </a></li><li>
+        <a class="is-flex" href="#widgets">
+        <span class="has-mr-6">1.5</span>
+        <span>widgets</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#Image管理">
+        <span class="has-mr-6">2</span>
+        <span>Image管理</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#hexo-asset-image">
+        <span class="has-mr-6">2.1</span>
+        <span>hexo-asset-image</span>
+        </a></li><li>
+        <a class="is-flex" href="#實際運用">
+        <span class="has-mr-6">2.2</span>
+        <span>實際運用</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#留言設置">
+        <span class="has-mr-6">3</span>
+        <span>留言設置</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#gitalk">
+        <span class="has-mr-6">3.1</span>
+        <span>gitalk</span>
+        </a></li><li>
+        <a class="is-flex" href="#facebook">
+        <span class="has-mr-6">3.2</span>
+        <span>facebook</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#補充">
+        <span class="has-mr-6">4</span>
+        <span>補充</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            連結
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://hexo.io" target="_blank">
+                    <span class="level-left">
+                        <span class="level-item">Hexo</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">hexo.io</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://github.com/ppoffice" target="_blank">
+                    <span class="level-left">
+                        <span class="level-item">PPOffice</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">github.com</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分類
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/hexo/">
+            <span class="level-start">
+                <span class="level-item">hexo</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            標籤雲
+        </h3>
+        <a href="/tags/hexo/" style="font-size: 10px;">hexo</a>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2019/12/09/hexo-01/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/uploads/hexo-cover.png" alt="hexo系列-01 hexo簡單配置">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-12-09T11:55:26.000Z">2019-12-09</time></div>
+                    <a href="/2019/12/09/hexo-01/" class="title has-link-black-ter is-size-6 has-text-weight-normal">hexo系列-01 hexo簡單配置</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/hexo/">hexo</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/12/09/hexo-00/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/uploads/hexo-cover.png" alt="hexo系列-00 hexo簡介＆環境安裝">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-12-09T10:28:21.000Z">2019-12-09</time></div>
+                    <a href="/2019/12/09/hexo-00/" class="title has-link-black-ter is-size-6 has-text-weight-normal">hexo系列-00 hexo簡介＆環境安裝</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/hexo/">hexo</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            彙整
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/12/">
+                <span class="level-start">
+                    <span class="level-item">十二月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                標籤
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/hexo/">
+                        <span class="tag">hexo</span>
+                        <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.png" alt="hexo系列-01 hexo簡單配置" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2019 Augustus&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-TW");</script>
+
+<script>
+var IcarusThemeSettings = {
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+    
+    
+<script src="/js/animation.js"></script>
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+    
+    
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+    
+    
+<a id="back-to-top" title="回到頁首" href="javascript:;" target="_blank" rel="noopener">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '頁面',
+                CATEGORIES: '分類',
+                TAGS: '標籤',
+                UNTITLED: '(無標題)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
