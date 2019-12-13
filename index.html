@@ -148,7 +148,9 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-12-14T03:55:26.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-12-14</time>
+                <time class="level-item has-text-grey" datetime="2019-12-13T17:55:26.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-12-14</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-12-13T19:20:39.522Z"><i class="far fa-calendar-check">&nbsp;</i>2019-12-14</time>
                 
                 
                 <div class="level-item">
@@ -161,7 +163,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    5 分鐘 閱讀文 (大約 731 個字)
+                    5 分鐘 閱讀文 (大約 732 個字)
                 </span>
                 
                 
@@ -175,49 +177,26 @@
         </h1>
         <div class="content">
             <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>原本以為要讓自己的網站在網路上可以被搜尋到，只要能用網址打開網站，之後Google搜尋引擎就可以搜尋到相對應的內容，沒有想到事情不是那麼簡單的<del>我還是太年輕了</del>。</p>
-<p>要讓搜尋引擎能搜到自己的網站，首先要去<a href="ttps://www.google.com/webmasters/" target="_blank" rel="noopener">Google網站管理員</a>的<a href="https://search.google.com/search-console/" target="_blank" rel="noopener">Google Search Console</a>提交網站的一些設定，詳細的會在下面一一列出。</p>
-<h2 id="安裝sitemap套件"><a href="#安裝sitemap套件" class="headerlink" title="安裝sitemap套件"></a>安裝sitemap套件</h2><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-sitemap --save</span></pre></td></tr></table></figure>
-
-<p>安裝這個套件會直接幫你生成需要的檔案，接著在<code>theme/_config.yml</code>加上下面這段：</p>
-<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">#Sitemap</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">sitemap:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-attr">path:</span> <span class="hljs-string">sitemap.xml</span></span></pre></td></tr></table></figure>
-
-<p>接下來用：</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">hexo g</span></pre></td></tr></table></figure>
-
-<p>生成<code>sitemap.xml</code>的檔案，位於<code>XXX.github.io/public/</code>中。</p>
-<h2 id="創建robots-txt"><a href="#創建robots-txt" class="headerlink" title="創建robots.txt"></a>創建<code>robots.txt</code></h2><p>在<code>XXX.github.io/source</code>中創建<code>robots.txt</code>文件：</p>
-<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># hexo robots.txt</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">User-agent:</span> <span class="hljs-string">*</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/archives/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/categories/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/tags/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/about/</span> </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Disallow:</span> <span class="hljs-string">/js/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Disallow:</span> <span class="hljs-string">/css/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Disallow:</span> <span class="hljs-string">/fancybox/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Sitemap:</span> <span class="hljs-string">https://augustushsu.github.io/sitemap.xml</span></span></pre></td></tr></table></figure>
-
-<p><code>robots.txt</code>是用來告訴網路搜尋引擎的漫遊器(又稱網路蜘蛛)，此網站中的哪些內容是不應被搜尋引擎的漫遊器取得的，哪些是可以被漫遊器取得的。</p>
-<p>其中<code>Allow</code>後面加的就是你的menu，也就是允許漫遊器搜尋的到網頁，而<code>Disallow</code>則相反。</p>
-<p>詳細的說明可以參考<a href="https://support.google.com/webmasters/answer/6062596?hl=zh-Hant" target="_blank" rel="noopener">Googel文件</a>。</p>
-<h2 id="Google-Search-Console"><a href="#Google-Search-Console" class="headerlink" title="Google Search Console"></a>Google Search Console</h2><p>前面有說要讓Google搜尋的到你需要在<a href="https://search.google.com/search-console/" target="_blank" rel="noopener">Google Search Console</a>中填寫關於你訊息，登入Google帳戶後，你應該會看到這樣的畫面：</p>
-<p><img src="GSC-01.jpg" alt="Google Search Console"></p>
-<p>輸入你<code>Github</code>上的網址，之後會要你去驗證：</p>
-<p><img src="GSC-02.jpg" alt="Google Search Console Verification"></p>
-<p>這邊選擇的是用<code>HTML標記</code>，將google提供的html程式碼複製到<code>XXX.github.io/themes/icarus/layout/common/head.ejs</code>，直接加在最上面就可以：</p>
-<p><img src="GSC-03.jpg" alt="Google Search Console Finish"></p>
-<p>接著上傳到GitHub：</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">hexo -g d</span></pre></td></tr></table></figure>
-
-<p>按下驗證，如果設置的正確，就會跳出以下畫面：</p>
-<p><img src="GSC-finish.png" alt="Google Search Console HTML"></p>
-<p>接下來要將剛剛建的<code>sitemap.xml</code>提交到<code>Google Search Console</code>：</p>
-<p><img src="GSC-sitemap.jpg" alt="Google Search Console Sitemap"></p>
-<p>驗證之後，Google會花一些時間將你的網站建檔，等過了一天你就可以用<code>Google Search Console</code>來分析自己的網頁囉～</p>
-<p><img src="GSC-overview.png" alt="Google Search Console Overview"></p>
-<h2 id="robots-txt"><a href="#robots-txt" class="headerlink" title="robots.txt"></a>robots.txt</h2><p>暫空，等GSC通過。</p>
-<h2 id="Google-Analytics"><a href="#Google-Analytics" class="headerlink" title="Google Analytics"></a>Google Analytics</h2><p>打開<a href="https://analytics.google.com" target="_blank" rel="noopener">Google Analytics</a>網站，註冊一個帳號，然後點選追蹤程式碼，複製你的<code>追蹤ID</code>，形式大概是<code>UA-XXXXXXXX-X</code>。</p>
-<p>將上面的ID輸入到<code>Icarus</code>下<code>_config.yml</code>檔案中的：</p>
-<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">google-analytics:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">  <span class="hljs-comment"># Google Analytics tracking id</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">  <span class="hljs-attr">tracking_id:</span> <span class="hljs-string">UA-XXXXXXXX-X</span></span></pre></td></tr></table></figure>
-
-<p>最後再將你的成品上傳到Github就完成囉～</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">hexo -g d</span></pre></td></tr></table></figure>
-
-
         </div>
         
         
+        
+        <hr style="height:1px;margin:1rem 0"/>
+        <div class="level is-mobile is-flex">
+            <div class="level-start">
+                
+                <div class="level-item is-size-7 is-uppercase">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/hexo/" rel="tag">hexo</a>
+                </div>
+                
+            </div>
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/12/14/hexo-03/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;繼續閱讀</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -654,7 +633,7 @@
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-12-14T03:55:26.000Z">2019-12-14</time></div>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-12-13T17:55:26.000Z">2019-12-14</time></div>
                     <a href="/2019/12/14/hexo-03/" class="title has-link-black-ter is-size-6 has-text-weight-normal">hexo系列-03 讓google可以搜尋到你的網站</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/hexo/">hexo</a>
@@ -794,7 +773,7 @@
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-12-14T03:55:26.000Z">2019-12-14</time></div>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-12-13T17:55:26.000Z">2019-12-14</time></div>
                     <a href="/2019/12/14/hexo-03/" class="title has-link-black-ter is-size-6 has-text-weight-normal">hexo系列-03 讓google可以搜尋到你的網站</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/hexo/">hexo</a>
