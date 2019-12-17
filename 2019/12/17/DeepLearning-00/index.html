@@ -8,21 +8,21 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>hexo系列-03 讓google可以搜尋到你的網站 - Augustus</title>
+<title>DL Machine系列-00 環境建置 - Augustus</title>
 
 
-    <meta name="description" content="前言原本以為要讓自己的網站在網路上可以被搜尋到，只要能用網址打開網站，之後Google搜尋引擎就可以搜尋到相對應的內容，沒有想到事情不是那麼簡單的我還是太年輕了。">
-<meta name="keywords" content="hexo,Google Search Console,Google Analytics,sitemap">
+    <meta name="description" content="前言有鑒於每次實驗架設環境都花很多時間，也常常遇到版本更新後某些套件不相容的問題，所以才打算使用Docker來架設深度學習的虛擬環境(絕對不是因為覺得用Docker很帥才用的)，說到深度學習就不得不使用GPU，使用GPU就不得不用nvidia-docker來架設環境，剛剛好本人的實驗室目前有一台電腦正空閒下來，也剛剛好多出一張RTX 2070S，想說利用Docker來一勞永逸這個問題，也順便試試看">
+<meta name="keywords" content="ubuntu,ubuntu-18.04,xrdp,static ip,nvidia-gpu">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hexo系列-03 讓google可以搜尋到你的網站">
-<meta property="og:url" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;2019&#x2F;12&#x2F;14&#x2F;hexo-03&#x2F;index.html">
+<meta property="og:title" content="DL Machine系列-00 環境建置">
+<meta property="og:url" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;2019&#x2F;12&#x2F;17&#x2F;DeepLearning-00&#x2F;index.html">
 <meta property="og:site_name" content="Augustus">
-<meta property="og:description" content="前言原本以為要讓自己的網站在網路上可以被搜尋到，只要能用網址打開網站，之後Google搜尋引擎就可以搜尋到相對應的內容，沒有想到事情不是那麼簡單的我還是太年輕了。">
+<meta property="og:description" content="前言有鑒於每次實驗架設環境都花很多時間，也常常遇到版本更新後某些套件不相容的問題，所以才打算使用Docker來架設深度學習的虛擬環境(絕對不是因為覺得用Docker很帥才用的)，說到深度學習就不得不使用GPU，使用GPU就不得不用nvidia-docker來架設環境，剛剛好本人的實驗室目前有一台電腦正空閒下來，也剛剛好多出一張RTX 2070S，想說利用Docker來一勞永逸這個問題，也順便試試看">
 <meta property="og:locale" content="zh-TW">
-<meta property="og:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;hexo-cover.png">
-<meta property="og:updated_time" content="2019-12-17T07:50:18.020Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;nvidia_docker-cover.png">
+<meta property="og:updated_time" content="2019-12-17T07:46:14.971Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;hexo-cover.png">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;nvidia_docker-cover.png">
 
 
 
@@ -89,7 +89,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.png" alt="hexo系列-03 讓google可以搜尋到你的網站" height="28">
+                <img src="/images/logo.png" alt="DL Machine系列-00 環境建置" height="28">
             
             </a>
         </div>
@@ -147,7 +147,7 @@
     
     <div class="card-image">
         <span  class="image is-7by1">
-            <img class="thumbnail" src="/uploads/hexo-cover.png" alt="hexo系列-03 讓google可以搜尋到你的網站">
+            <img class="thumbnail" src="/uploads/nvidia_docker-cover.png" alt="DL Machine系列-00 環境建置">
         </span>
     </div>
     
@@ -155,14 +155,12 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-12-13T17:55:26.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-12-14</time>
-                
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-12-17T07:50:18.020Z"><i class="far fa-calendar-check">&nbsp;</i>2019-12-17</time>
+                <time class="level-item has-text-grey" datetime="2019-12-17T11:55:26.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-12-17</time>
                 
                 
                 <div class="level-item">
                 <i class="far fa-folder-open has-text-grey"></i>&nbsp;
-                <a class="has-link-grey -link" href="/categories/hexo/">hexo</a>
+                <a class="has-link-grey -link" href="/categories/DL-Machine/">DL Machine</a>
                 </div>
                 
                 
@@ -170,7 +168,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    6 分鐘 閱讀文 (大約 855 個字)
+                    5 分鐘 閱讀文 (大約 743 個字)
                 </span>
                 
                 
@@ -179,61 +177,57 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                hexo系列-03 讓google可以搜尋到你的網站
+                DL Machine系列-00 環境建置
             
         </h1>
         <div class="content">
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>原本以為要讓自己的網站在網路上可以被搜尋到，只要能用網址打開網站，之後Google搜尋引擎就可以搜尋到相對應的內容，沒有想到事情不是那麼簡單的<del>我還是太年輕了</del>。</p>
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>有鑒於每次實驗架設環境都花很多時間，也常常遇到版本更新後某些套件不相容的問題，所以才打算使用Docker來架設深度學習的虛擬環境<del>(絕對不是因為覺得用Docker很帥才用的)</del>，說到深度學習就不得不使用GPU，使用GPU就不得不用<code>nvidia-docker</code>來架設環境，剛剛好本人的實驗室目前有一台電腦正空閒下來，也剛剛好多出一張RTX 2070S，想說利用Docker來一勞永逸這個問題，也順便試試看多GPU的環境是什麼樣的感覺。</p>
 <a id="more"></a>
 
-<p>要讓搜尋引擎能搜到自己的網站，首先要去<a href="ttps://www.google.com/webmasters/" target="_blank" rel="noopener">Google網站管理員</a>的<a href="https://search.google.com/search-console/" target="_blank" rel="noopener">Google Search Console</a>提交網站的一些設定，詳細的會在下面一一列出。</p>
-<h2 id="安裝sitemap套件"><a href="#安裝sitemap套件" class="headerlink" title="安裝sitemap套件"></a>安裝sitemap套件</h2><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-sitemap --save</span></pre></td></tr></table></figure>
+<h2 id="電腦配置"><a href="#電腦配置" class="headerlink" title="電腦配置"></a>電腦配置</h2><p>CPU： AMD Ryen Threadripper 1900X 8-core<br>MotherBoard：ROG Strix X399-E Gamming<br>GPU：RTX 2070 super, GTX 1050<br>RAM：Kingston 16Gx8 2933MHz<br>Storage：2TB SSD<em>2, 1\</em>1TB m.2 SSD<br>Power：750w金牌電源</p>
+<h2 id="Ubuntu-18-04安裝"><a href="#Ubuntu-18-04安裝" class="headerlink" title="Ubuntu 18.04安裝"></a>Ubuntu 18.04安裝</h2><p>在安裝Ubuntu的時候，會顯示出</p>
+<p><code>install ubuntu/ try ubuntu without installation</code><br><code>install ubuntu</code></p>
+<p>等等的選項，但是選擇後螢幕變黑屏沒反應。</p>
+<p>經過查找，應該是因為Ubuntu對於RTX顯示卡沒有對應的Driver，所以導致這個問題。</p>
+<p><strong>我這邊使用另一張顯卡安裝，再去更新Nvidia-driver來避免這個問題。</strong></p>
+<p>安裝的時候選擇：</p>
+<p><code>在新安裝的Ubuntu上使用LVM</code></p>
+<p>這是因為之後新增硬碟用LVM來管理。</p>
+<h2 id="確認GPU狀態"><a href="#確認GPU狀態" class="headerlink" title="確認GPU狀態"></a>確認GPU狀態</h2><p>執行<code>ubuntu-drivers devices</code>去確認</p>
+<p>如果你只有看到這一項：<code>nvidia-driver-390 - distro non-free</code>，那你必須去將NVIDIA repository加入到你的apt庫。</p>
+<p>可以用<code>dpkg -l &#39;nvidia*&#39;</code>去看電腦上安裝的Nvidia Driver</p>
+<p>執行<code>sudo ubuntu-drivers autoinstall</code>安裝driver，完成之後執行<code>nvidia-smi</code>就可以看到：</p>
+<p><img src="nvidia-smi.png" alt="Nvidia SMI"></p>
+<h2 id="安裝基本工具"><a href="#安裝基本工具" class="headerlink" title="安裝基本工具"></a>安裝基本工具</h2><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">sudo apt-get upgrade</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">sudo apt-get install vim <span class="hljs-comment">#好用的編輯器</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">sudo apt-get install net-tools curl <span class="hljs-comment">#用來看網路介面卡</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">sudo apt-get install gparted <span class="hljs-comment">#硬碟管理工具</span></span></pre></td></tr></table></figure>
+<h2 id="設定ip-區域網路"><a href="#設定ip-區域網路" class="headerlink" title="設定ip(區域網路)"></a>設定ip(區域網路)</h2><p>打開<code>/etc/netplan/01-network-manager-all.yaml</code><br>更改成這樣：</p>
+<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Let NetworkManager manage all devices on this system</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">network:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-attr">version:</span> <span class="hljs-number">2</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># renderer: NetworkManager</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-attr">eno1:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">        <span class="hljs-attr">addresses:</span> <span class="hljs-string">[192.168.123.111/24]</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">        <span class="hljs-attr">gateway4:</span> <span class="hljs-number">192.168</span><span class="hljs-number">.111</span><span class="hljs-number">.1</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">        <span class="hljs-attr">nameservers:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">            <span class="hljs-attr">addresses:</span> <span class="hljs-string">[8.8.8.8,8.8.4.4]</span></span></pre></td></tr></table></figure>
+<blockquote>
+<p>參數說明：<br>eno1： 網卡名稱(可以透過<code>ifconfig</code>查看)<br>addresses： 要指定的ip<br>gateway4： 閘道 ip4(gateway6 閘道 ip6)<br>nameservers： dns 以逗號階隔<br>註：<br>/32 指的是 network mask of 255.255.255.255<br>/24 指的是 network mask of 255.255.255.0</p>
+</blockquote>
+<p>依照個人網路調整即可，用<code>sudo netplan apply</code>就可以套用剛剛的設定了。</p>
+<h2 id="安裝vnc遠端操控"><a href="#安裝vnc遠端操控" class="headerlink" title="安裝vnc遠端操控"></a>安裝vnc遠端操控</h2><p>安裝 xfce4 與 xrdp</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo apt-get install xfce4</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">sudo apt-get install xrdp</span></pre></td></tr></table></figure>
+<p>配置登入環境</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">echo</span> xfce4-session &gt; ~/.xsession</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">sudo vim /etc/xrdp/startwm.sh</span></pre></td></tr></table></figure>
 
-<p>安裝這個套件會直接幫你生成需要的檔案，接著在<code>theme/_config.yml</code>加上下面這段：</p>
-<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">#Sitemap</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">sitemap:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-attr">path:</span> <span class="hljs-string">sitemap.xml</span></span></pre></td></tr></table></figure>
+<p>將<code>stratum.sh</code>更改：</p>
+<figure class="highlight diff hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">if test -r /etc/profile; then</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">        . /etc/profile</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">fi</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">test -x /etc/X11/Xsession &amp;&amp; exec /etc/X11/Xsession</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-deletion">-exec /bin/sh /etc/X11/Xsession</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-addition">+startxfce4</span></span></pre></td></tr></table></figure>
+<p>啟動 xrdp 服務：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo service xrdp restart</span></pre></td></tr></table></figure>
 
-<p>接下來用：</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">hexo g</span></pre></td></tr></table></figure>
+<p>確認服務正常運行：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">netstat -na | grep 3389</span></pre></td></tr></table></figure>
 
-<p>生成<code>sitemap.xml</code>的檔案，位於<code>XXX.github.io/public/</code>中。</p>
-<h2 id="創建robots-txt"><a href="#創建robots-txt" class="headerlink" title="創建robots.txt"></a>創建<code>robots.txt</code></h2><p>在<code>XXX.github.io/source</code>中創建<code>robots.txt</code>文件：</p>
-<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># hexo robots.txt</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">User-agent:</span> <span class="hljs-string">*</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/archives/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/categories/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/tags/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/about/</span> </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Disallow: /js/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Disallow: /css/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Disallow: /fancybox/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Sitemap:</span> <span class="hljs-string">https://augustushsu.github.io/sitemap.xml</span></span></pre></td></tr></table></figure>
-
-<p><code>robots.txt</code>是用來告訴網路搜尋引擎的漫遊器(又稱網路蜘蛛)，此網站中的哪些內容是不應被搜尋引擎的漫遊器取得的，哪些是可以被漫遊器取得的。</p>
-<p>其中<code>Allow</code>後面加的就是你的menu，也就是允許漫遊器搜尋的到網頁，而<code>Disallow</code>則相反。</p>
-<p>你可以將在測試的網頁資料夾寫在<code>Disallow</code>上，這樣一些漫遊器就不會去搜到你不想公開的網頁囉，詳細的說明可以參考<a href="https://support.google.com/webmasters/answer/6062596?hl=zh-Hant" target="_blank" rel="noopener">Googel文件</a>，還有<a href="https://www.awoo.com.tw/blog/robotstxt-crawl/" target="_blank" rel="noopener">這篇文章</a>。</p>
-<h2 id="Google-Search-Console"><a href="#Google-Search-Console" class="headerlink" title="Google Search Console"></a>Google Search Console</h2><p>前面有說要讓Google搜尋的到你需要在<a href="https://search.google.com/search-console/" target="_blank" rel="noopener">Google Search Console</a>中填寫關於你訊息，登入Google帳戶後，你應該會看到這樣的畫面：</p>
-<p><img src="GSC-01.jpg" alt="Google Search Console"></p>
-<p>輸入你<code>Github</code>上的網址，之後會要你去驗證：</p>
-<p><img src="GSC-02.jpg" alt="Google Search Console Verification"></p>
-<p>這邊選擇的是用<code>HTML標記</code>，將google提供的html程式碼複製到<code>XXX.github.io/themes/icarus/layout/common/head.ejs</code>，直接加在最上面就可以：</p>
-<p><img src="GSC-03.jpg" alt="Google Search Console Finish"></p>
-<p>接著上傳到GitHub：</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">hexo -g d</span></pre></td></tr></table></figure>
-
-<p>按下驗證，如果設置的正確，就會跳出以下畫面：</p>
-<p><img src="GSC-finish.png" alt="Google Search Console HTML"></p>
-<p>接下來要將剛剛建的<code>sitemap.xml</code>提交到<code>Google Search Console</code>：</p>
-<p><img src="GSC-sitemap.jpg" alt="Google Search Console Sitemap"></p>
-<p>驗證之後，Google會花一些時間將你的網站建檔，等過了一天你就可以用<code>Google Search Console</code>來分析自己的網頁囉～</p>
-<p><img src="GSC-overview.png" alt="Google Search Console Overview"></p>
-<h2 id="robots-txt"><a href="#robots-txt" class="headerlink" title="robots.txt"></a>robots.txt</h2><p>點選<code>網址審查</code>把你的網頁貼上，會顯示<code>正在從 Google 索引擷取資料</code>完成後，點選<code>查看以檢索的網頁</code>再點<code>更多資訊</code>就可以看到前面<code>Disallow</code>不想讓其他人看到的部分了：</p>
-<p><img src="GSC-robots.jpg" alt="Google Search Console Robots"></p>
-<h2 id="Google-Analytics"><a href="#Google-Analytics" class="headerlink" title="Google Analytics"></a>Google Analytics</h2><p>打開<a href="https://analytics.google.com" target="_blank" rel="noopener">Google Analytics</a>網站，註冊一個帳號，然後點選追蹤程式碼，複製你的<code>追蹤ID</code>，形式大概是<code>UA-XXXXXXXX-X</code>。</p>
-<p>將上面的ID輸入到<code>Icarus</code>下<code>_config.yml</code>檔案中的：</p>
-<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">google-analytics:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">  <span class="hljs-comment"># Google Analytics tracking id</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">  <span class="hljs-attr">tracking_id:</span> <span class="hljs-string">UA-XXXXXXXX-X</span></span></pre></td></tr></table></figure>
-
-<p>最後再將你的成品上傳到Github就完成囉～</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">hexo -g d</span></pre></td></tr></table></figure>
-
+<p>這時就可以透過Windows的遠端桌面連線到你的Linux主機了：</p>
+<p><img src="xrdp-remote.png" alt="xrdp-Remote"></p>
 
         </div>
         
             <ul class="post-copyright">
-            <li><strong>文章標題：</strong><a href="https://augustushsu.github.io/2019/12/14/hexo-03/">hexo系列-03 讓google可以搜尋到你的網站</a></li>
+            <li><strong>文章標題：</strong><a href="https://augustushsu.github.io/2019/12/17/DeepLearning-00/">DL Machine系列-00 環境建置</a></li>
             <li><strong>文章作者：</strong><a href="https://augustushsu.github.io">Augustus</a></li>
-            <li><strong>文章連結：</strong><a href="https://augustushsu.github.io/2019/12/14/hexo-03/">https://augustushsu.github.io/2019/12/14/hexo-03/</a></li>
-            <li><strong>發佈時間：</strong>2019-12-14</li>
+            <li><strong>文章連結：</strong><a href="https://augustushsu.github.io/2019/12/17/DeepLearning-00/">https://augustushsu.github.io/2019/12/17/DeepLearning-00/</a></li>
+            <li><strong>發佈時間：</strong>2019-12-17</li>
             <li><strong>版權聲明：</strong>本博客所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 許可協議。引用請註明出處！
             </li>
             </ul>
@@ -244,7 +238,7 @@
             <div class="level-start">
                 <div class="level-item">
                     <i class="fas fa-tags has-text-grey"></i>&nbsp;
-                    <a class="has-link-grey -link" href="/tags/Google-Analytics/" rel="tag">Google Analytics</a>,&nbsp;<a class="has-link-grey -link" href="/tags/Google-Search-Console/" rel="tag">Google Search Console</a>,&nbsp;<a class="has-link-grey -link" href="/tags/hexo/" rel="tag">hexo</a>,&nbsp;<a class="has-link-grey -link" href="/tags/sitemap/" rel="tag">sitemap</a>
+                    <a class="has-link-grey -link" href="/tags/nvidia-gpu/" rel="tag">nvidia-gpu</a>,&nbsp;<a class="has-link-grey -link" href="/tags/static-ip/" rel="tag">static ip</a>,&nbsp;<a class="has-link-grey -link" href="/tags/ubuntu/" rel="tag">ubuntu</a>,&nbsp;<a class="has-link-grey -link" href="/tags/ubuntu-18-04/" rel="tag">ubuntu-18.04</a>,&nbsp;<a class="has-link-grey -link" href="/tags/xrdp/" rel="tag">xrdp</a>
                 </div>
             </div>
         </div>
@@ -290,17 +284,10 @@
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
         
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/12/17/DeepLearning-00/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">DL Machine系列-00 環境建置</span>
-            </a>
-        </div>
-        
         
         <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2019/12/11/hexo-02/">
-                <span class="level-item">hexo系列-02 hexo個人化設置</span>
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/12/14/hexo-03/">
+                <span class="level-item">hexo系列-03 讓google可以搜尋到你的網站</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -321,7 +308,7 @@
     var gitalk = new Gitalk({
         clientID: '35f8adf2553a86678cce',
         clientSecret: 'afeffb2652617f0d77d7a18c9f95ee4447baf5e2',
-        id: '891385152d4423128aa820f385102ec2',
+        id: 'ff83b552f1bef8f72c571f08cbdf4469',
         repo: 'augustushsu.github.io',
         owner: 'AugustusHsu',
         admin: "AugustusHsu",
@@ -457,25 +444,29 @@
         <span class="has-mr-6">1</span>
         <span>前言</span>
         </a></li><li>
-        <a class="is-flex" href="#安裝sitemap套件">
+        <a class="is-flex" href="#電腦配置">
         <span class="has-mr-6">2</span>
-        <span>安裝sitemap套件</span>
+        <span>電腦配置</span>
         </a></li><li>
-        <a class="is-flex" href="#創建robots-txt">
+        <a class="is-flex" href="#Ubuntu-18-04安裝">
         <span class="has-mr-6">3</span>
-        <span>創建robots.txt</span>
+        <span>Ubuntu 18.04安裝</span>
         </a></li><li>
-        <a class="is-flex" href="#Google-Search-Console">
+        <a class="is-flex" href="#確認GPU狀態">
         <span class="has-mr-6">4</span>
-        <span>Google Search Console</span>
+        <span>確認GPU狀態</span>
         </a></li><li>
-        <a class="is-flex" href="#robots-txt">
+        <a class="is-flex" href="#安裝基本工具">
         <span class="has-mr-6">5</span>
-        <span>robots.txt</span>
+        <span>安裝基本工具</span>
         </a></li><li>
-        <a class="is-flex" href="#Google-Analytics">
+        <a class="is-flex" href="#設定ip-區域網路">
         <span class="has-mr-6">6</span>
-        <span>Google Analytics</span>
+        <span>設定ip(區域網路)</span>
+        </a></li><li>
+        <a class="is-flex" href="#安裝vnc遠端操控">
+        <span class="has-mr-6">7</span>
+        <span>安裝vnc遠端操控</span>
         </a></li></ul>
             </div>
         </div>
@@ -499,7 +490,7 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/logo.png" alt="hexo系列-03 讓google可以搜尋到你的網站" height="28">
+                    <img src="/images/logo.png" alt="DL Machine系列-00 環境建置" height="28">
                 
                 </a>
                 <p class="is-size-7">
