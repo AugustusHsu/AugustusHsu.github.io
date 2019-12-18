@@ -8,21 +8,21 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>hexo系列-03 讓google可以搜尋到你的網站 - Augustus</title>
+<title>DL Machine系列-02 建立LVM管理儲存空間 - Augustus</title>
 
 
-    <meta name="description" content="前言原本以為要讓自己的網站在網路上可以被搜尋到，只要能用網址打開網站，之後Google搜尋引擎就可以搜尋到相對應的內容，沒有想到事情不是那麼簡單的我還是太年輕了。">
-<meta name="keywords" content="hexo,Google Search Console,Google Analytics,sitemap">
+    <meta name="description" content="前言這台硬碟上裝了5顆硬碟(2顆2.5’ SSD、2顆3.5’ HDD、1顆m.2 SSD)，因為我們實驗室處理的資料量都頗大，動不動就500GB-1TB，如果單純地根據硬碟分開儲存的話，可能會浪費很多剩餘空間，而且在跑資料的時候可能會產生其他資料，這又導致不能預先切割硬碟來符合檔案大小(而且很麻煩)，為了方便合理的利用所有硬碟空間，我決定將硬碟整合起來一起管理。">
+<meta name="keywords" content="lvm,pv,vg,lv">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hexo系列-03 讓google可以搜尋到你的網站">
-<meta property="og:url" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;2019&#x2F;12&#x2F;14&#x2F;hexo-03&#x2F;index.html">
+<meta property="og:title" content="DL Machine系列-02 建立LVM管理儲存空間">
+<meta property="og:url" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;2019&#x2F;12&#x2F;19&#x2F;DeepLearning-02&#x2F;index.html">
 <meta property="og:site_name" content="Augustus">
-<meta property="og:description" content="前言原本以為要讓自己的網站在網路上可以被搜尋到，只要能用網址打開網站，之後Google搜尋引擎就可以搜尋到相對應的內容，沒有想到事情不是那麼簡單的我還是太年輕了。">
+<meta property="og:description" content="前言這台硬碟上裝了5顆硬碟(2顆2.5’ SSD、2顆3.5’ HDD、1顆m.2 SSD)，因為我們實驗室處理的資料量都頗大，動不動就500GB-1TB，如果單純地根據硬碟分開儲存的話，可能會浪費很多剩餘空間，而且在跑資料的時候可能會產生其他資料，這又導致不能預先切割硬碟來符合檔案大小(而且很麻煩)，為了方便合理的利用所有硬碟空間，我決定將硬碟整合起來一起管理。">
 <meta property="og:locale" content="zh-TW">
-<meta property="og:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;hexo-cover.png">
-<meta property="og:updated_time" content="2019-12-17T07:50:18.020Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;nvidia_docker-cover.png">
+<meta property="og:updated_time" content="2019-12-18T08:06:17.386Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;hexo-cover.png">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;nvidia_docker-cover.png">
 
 
 
@@ -89,7 +89,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.png" alt="hexo系列-03 讓google可以搜尋到你的網站" height="28">
+                <img src="/images/logo.png" alt="DL Machine系列-02 建立LVM管理儲存空間" height="28">
             
             </a>
         </div>
@@ -147,7 +147,7 @@
     
     <div class="card-image">
         <span  class="image is-7by1">
-            <img class="thumbnail" src="/uploads/hexo-cover.png" alt="hexo系列-03 讓google可以搜尋到你的網站">
+            <img class="thumbnail" src="/uploads/nvidia_docker-cover.png" alt="DL Machine系列-02 建立LVM管理儲存空間">
         </span>
     </div>
     
@@ -155,14 +155,12 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-12-13T17:55:26.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-12-14</time>
-                
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-12-17T07:50:18.020Z"><i class="far fa-calendar-check">&nbsp;</i>2019-12-17</time>
+                <time class="level-item has-text-grey" datetime="2019-12-19T04:55:26.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-12-19</time>
                 
                 
                 <div class="level-item">
                 <i class="far fa-folder-open has-text-grey"></i>&nbsp;
-                <a class="has-link-grey -link" href="/categories/hexo/">hexo</a>
+                <a class="has-link-grey -link" href="/categories/DL-Machine/">DL Machine</a>
                 </div>
                 
                 
@@ -170,7 +168,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    6 分鐘 閱讀文 (大約 855 個字)
+                    9 分鐘 閱讀文 (大約 1400 個字)
                 </span>
                 
                 
@@ -179,61 +177,70 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                hexo系列-03 讓google可以搜尋到你的網站
+                DL Machine系列-02 建立LVM管理儲存空間
             
         </h1>
         <div class="content">
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>原本以為要讓自己的網站在網路上可以被搜尋到，只要能用網址打開網站，之後Google搜尋引擎就可以搜尋到相對應的內容，沒有想到事情不是那麼簡單的<del>我還是太年輕了</del>。</p>
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>這台硬碟上裝了5顆硬碟(2顆2.5’ SSD、2顆3.5’ HDD、1顆m.2 SSD)，因為我們實驗室處理的資料量都頗大，動不動就500GB-1TB，如果單純地根據硬碟分開儲存的話，可能會浪費很多剩餘空間，而且在跑資料的時候可能會產生其他資料，這又導致不能預先切割硬碟來符合檔案大小<del>(而且很麻煩)</del>，為了<del>方便</del>合理的利用所有硬碟空間，我決定將硬碟整合起來一起管理。</p>
 <a id="more"></a>
 
-<p>要讓搜尋引擎能搜到自己的網站，首先要去<a href="ttps://www.google.com/webmasters/" target="_blank" rel="noopener">Google網站管理員</a>的<a href="https://search.google.com/search-console/" target="_blank" rel="noopener">Google Search Console</a>提交網站的一些設定，詳細的會在下面一一列出。</p>
-<h2 id="安裝sitemap套件"><a href="#安裝sitemap套件" class="headerlink" title="安裝sitemap套件"></a>安裝sitemap套件</h2><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-sitemap --save</span></pre></td></tr></table></figure>
+<p>在找合適的硬碟管理方法的時候，有想過組一個RAID 0的磁碟陣列，不過考慮到之後的擴充需求加上實驗室已經有一台NAS來儲存資料，不需要太擔心資料的完整性，所以查到了LVM的方法來管理資料儲存。</p>
+<h2 id="LVM介紹"><a href="#LVM介紹" class="headerlink" title="LVM介紹"></a>LVM介紹</h2><p>LVM是 Logical Volume Manager(邏輯卷管理)的簡寫，LVM會將一個或多個硬碟的分區在邏輯上集合，可以直接把它當作一顆大硬碟來用，當硬碟空間不足的時候，可以從剩餘空間上劃分一些空間給其他空間不夠的分區使用。</p>
+<p>簡單地以一張圖來表示：</p>
+<p><img src="LVM-architecture.png" alt="LVM Architecture"></p>
+<p>不過我這邊只是打算單純地以SSD和HDD兩種不同的硬碟來組成LVM，分別管理讀寫速率不一樣的兩種硬碟。</p>
+<h3 id="名詞介紹"><a href="#名詞介紹" class="headerlink" title="名詞介紹"></a>名詞介紹</h3><p>PV：Physical Volume，物理的磁碟分區，也就是硬碟上的分區，分區要變成PV後，LVM才能利用那個分區。</p>
+<p>VG：Volume Group，將所有PV加入VG整合起來，可以理解成一個倉庫或是幾個大的硬碟。</p>
+<p>LV：Logical Volume，從VG中劃分空間分配給LV，會建立一個裝置代號放在系統中，即最後被掛載道系統的分區。</p>
+<p>經過PV、VG規劃後，可以理解成，把分區整合成一個大的硬碟，再利用這顆硬碟來分割分區或是格式化，不過這顆大硬碟可以<strong>增加或是減少分區的容量</strong>，而且原本的資料不會受到影響。</p>
+<h3 id="LVM建立流程"><a href="#LVM建立流程" class="headerlink" title="LVM建立流程"></a>LVM建立流程</h3><ol>
+<li>建立硬碟分區，這裏因為只是想要單純的分成SSD和HDD，所以就直接把整顆硬碟當作一顆分區來建立，格式化的時候記得使用<code>lvm2</code>的格式(在<code>fdisk</code>中編號為<code>8e</code>)。</li>
+<li>創建VG，將前面所創立的PV加入到VG中，VG命名建議以<code>vg</code>開頭，這樣容易辨識出這是一個VG。</li>
+<li>創建LV，直接設定容量到你要創建的空間，再掛載到系統就行了。</li>
+</ol>
+<p>簡單的三個步驟就可以完成創建LVM了，下面以圖示來說明：</p>
+<p><img src="LVM-flowchart.png" alt="LVM Flowchart"></p>
+<h2 id="實作-LVM硬碟整合"><a href="#實作-LVM硬碟整合" class="headerlink" title="[實作]LVM硬碟整合"></a>[實作]LVM硬碟整合</h2><p>先用之前裝過的<code>Gparted</code>把要加入的硬碟全部格式化為<code>lvm2 pv</code>，如果是新硬碟記得要先新增分割表。</p>
+<p><img src="gparted.png" alt="Gparted"></p>
+<p>另外記得選擇完後<code>Gparted</code>還不會幫你格式化，要記得點選上面的綠色勾勾，才會應用你的配置。</p>
+<p>接下來建立VG，這裡我們直接把HDD跟SSD兩個VG創建出來：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo vgcreate vgHDD /dev/sda1 /dev/sdb1</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">sudo vgcreate vgSSD /dev/sda1 /dev/sdb1</span></pre></td></tr></table></figure>
 
-<p>安裝這個套件會直接幫你生成需要的檔案，接著在<code>theme/_config.yml</code>加上下面這段：</p>
-<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">#Sitemap</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">sitemap:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-attr">path:</span> <span class="hljs-string">sitemap.xml</span></span></pre></td></tr></table></figure>
+<p>這樣我們就創立好兩個VG了，如果要添加新的PV可以使用：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo vgextend YourVG /dev/NewPVDisk</span></pre></td></tr></table></figure>
 
-<p>接下來用：</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">hexo g</span></pre></td></tr></table></figure>
+<p>對VG來切割LV出來，這邊使用所有空間，然後用<code>lvdisplay</code>來查看資訊：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo lvcreate -l 100%FREE -n HDD vgHDD</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">sudo lvcreate -l 100%FREE -n SSD vgSSD</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">sudo lvdisplay</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># output1</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">LV Path                /dev/vgHDD/HDD</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">LV Name                HDD</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">VG Name                vgHDD</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># output2</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">LV Path                /dev/vgSSD/SSD</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">LV Name                SSD</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">VG Name                vgSSD</span></pre></td></tr></table></figure>
 
-<p>生成<code>sitemap.xml</code>的檔案，位於<code>XXX.github.io/public/</code>中。</p>
-<h2 id="創建robots-txt"><a href="#創建robots-txt" class="headerlink" title="創建robots.txt"></a>創建<code>robots.txt</code></h2><p>在<code>XXX.github.io/source</code>中創建<code>robots.txt</code>文件：</p>
-<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># hexo robots.txt</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">User-agent:</span> <span class="hljs-string">*</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/archives/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/categories/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/tags/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/about/</span> </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Disallow: /js/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Disallow: /css/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Disallow: /fancybox/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Sitemap:</span> <span class="hljs-string">https://augustushsu.github.io/sitemap.xml</span></span></pre></td></tr></table></figure>
+<p>格式化HDD這個LV，再掛載到需要的位置，這邊用<code>mkfs</code>用<code>xfs</code>的格式來格式化硬碟，要使用<code>mkfs.xfs</code>要記得先安裝<code>xfsprogs</code>：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo apt-get install xfsprogs</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">sudo mkfs.xfs /dev/vgHDD/HDD</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">sudo mkfs.xfs /dev/vgSSD/SSD</span></pre></td></tr></table></figure>
 
-<p><code>robots.txt</code>是用來告訴網路搜尋引擎的漫遊器(又稱網路蜘蛛)，此網站中的哪些內容是不應被搜尋引擎的漫遊器取得的，哪些是可以被漫遊器取得的。</p>
-<p>其中<code>Allow</code>後面加的就是你的menu，也就是允許漫遊器搜尋的到網頁，而<code>Disallow</code>則相反。</p>
-<p>你可以將在測試的網頁資料夾寫在<code>Disallow</code>上，這樣一些漫遊器就不會去搜到你不想公開的網頁囉，詳細的說明可以參考<a href="https://support.google.com/webmasters/answer/6062596?hl=zh-Hant" target="_blank" rel="noopener">Googel文件</a>，還有<a href="https://www.awoo.com.tw/blog/robotstxt-crawl/" target="_blank" rel="noopener">這篇文章</a>。</p>
-<h2 id="Google-Search-Console"><a href="#Google-Search-Console" class="headerlink" title="Google Search Console"></a>Google Search Console</h2><p>前面有說要讓Google搜尋的到你需要在<a href="https://search.google.com/search-console/" target="_blank" rel="noopener">Google Search Console</a>中填寫關於你訊息，登入Google帳戶後，你應該會看到這樣的畫面：</p>
-<p><img src="GSC-01.jpg" alt="Google Search Console"></p>
-<p>輸入你<code>Github</code>上的網址，之後會要你去驗證：</p>
-<p><img src="GSC-02.jpg" alt="Google Search Console Verification"></p>
-<p>這邊選擇的是用<code>HTML標記</code>，將google提供的html程式碼複製到<code>XXX.github.io/themes/icarus/layout/common/head.ejs</code>，直接加在最上面就可以：</p>
-<p><img src="GSC-03.jpg" alt="Google Search Console Finish"></p>
-<p>接著上傳到GitHub：</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">hexo -g d</span></pre></td></tr></table></figure>
+<p>接下來掛載到<code>/mnt</code>，這邊放在<code>/mnt</code>裡面統一管理：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo mkdir /mnt/HDD /mnt/SSD</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">sudo mount /dev/vgHDD/HDD /mnt/HDD</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">sudo mount /dev/vgSSD/SSD /mnt/SSD</span></pre></td></tr></table></figure>
 
-<p>按下驗證，如果設置的正確，就會跳出以下畫面：</p>
-<p><img src="GSC-finish.png" alt="Google Search Console HTML"></p>
-<p>接下來要將剛剛建的<code>sitemap.xml</code>提交到<code>Google Search Console</code>：</p>
-<p><img src="GSC-sitemap.jpg" alt="Google Search Console Sitemap"></p>
-<p>驗證之後，Google會花一些時間將你的網站建檔，等過了一天你就可以用<code>Google Search Console</code>來分析自己的網頁囉～</p>
-<p><img src="GSC-overview.png" alt="Google Search Console Overview"></p>
-<h2 id="robots-txt"><a href="#robots-txt" class="headerlink" title="robots.txt"></a>robots.txt</h2><p>點選<code>網址審查</code>把你的網頁貼上，會顯示<code>正在從 Google 索引擷取資料</code>完成後，點選<code>查看以檢索的網頁</code>再點<code>更多資訊</code>就可以看到前面<code>Disallow</code>不想讓其他人看到的部分了：</p>
-<p><img src="GSC-robots.jpg" alt="Google Search Console Robots"></p>
-<h2 id="Google-Analytics"><a href="#Google-Analytics" class="headerlink" title="Google Analytics"></a>Google Analytics</h2><p>打開<a href="https://analytics.google.com" target="_blank" rel="noopener">Google Analytics</a>網站，註冊一個帳號，然後點選追蹤程式碼，複製你的<code>追蹤ID</code>，形式大概是<code>UA-XXXXXXXX-X</code>。</p>
-<p>將上面的ID輸入到<code>Icarus</code>下<code>_config.yml</code>檔案中的：</p>
-<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">google-analytics:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">  <span class="hljs-comment"># Google Analytics tracking id</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">  <span class="hljs-attr">tracking_id:</span> <span class="hljs-string">UA-XXXXXXXX-X</span></span></pre></td></tr></table></figure>
+<h2 id="管理LVM"><a href="#管理LVM" class="headerlink" title="管理LVM"></a>管理LVM</h2><p>在<a href="https://www.howtogeek.com/howto/40702/how-to-manage-and-use-lvm-logical-volume-management-in-ubuntu/" target="_blank" rel="noopener">網路上</a>找到這張圖：</p>
+<p><img src="lvm-command.jpg" alt="LVM Command"></p>
+<p>使用方法就是(PV, VG, LV) + 左邊的指令：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 查看所有LVM的PV</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">sudo pvs</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 查看更詳細的資訊</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">sudo pvdisplay</span></pre></td></tr></table></figure>
 
-<p>最後再將你的成品上傳到Github就完成囉～</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">hexo -g d</span></pre></td></tr></table></figure>
+<p>另外如果以後新增了更多硬碟，也可以透過<code>lvcreate</code>來組成<code>RAID1, RAID5, RAID6</code>。</p>
+<h2 id="補充"><a href="#補充" class="headerlink" title="補充"></a>補充</h2><p>因為之前硬碟放在其他系統上運作，所以上面有一些預設的磁區，我發現上面有些詞曲沒刪乾淨，所以遇到了下面這個狀況，硬碟是HDD的硬碟：</p>
+<p><img src="lvm-problem.png" alt="LVM Problem"></p>
+<p>看了很討厭，所以就進行了更改：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 卸載之前掛載的PV</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">sudo umount /dev/vgHDD/HDD</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 刪除LV</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">sudo lvremove vgHDD/HDD</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 轉移資料，將/dev/sda1裡的資料轉移出去</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">sudo pvmove /dev/sda1</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 從VG中移除PV</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">sudo vgreduce vgHDD /dev/sda1</span></pre></td></tr></table></figure>
 
+<p>這時候你可以透過<code>Gparted</code>或是用lvm的指令來建立新的lvm分區，再來將新的分區添加到<code>vgHDD</code>中：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo vgextend vgHDD /dev/sda1</span></pre></td></tr></table></figure>
+
+<p>接下來重複上面的格式化跟掛載步驟就行。</p>
 
         </div>
         
             <ul class="post-copyright">
-            <li><strong>文章標題：</strong><a href="https://augustushsu.github.io/2019/12/14/hexo-03/">hexo系列-03 讓google可以搜尋到你的網站</a></li>
+            <li><strong>文章標題：</strong><a href="https://augustushsu.github.io/2019/12/19/DeepLearning-02/">DL Machine系列-02 建立LVM管理儲存空間</a></li>
             <li><strong>文章作者：</strong><a href="https://augustushsu.github.io">Augustus</a></li>
-            <li><strong>文章連結：</strong><a href="https://augustushsu.github.io/2019/12/14/hexo-03/">https://augustushsu.github.io/2019/12/14/hexo-03/</a></li>
-            <li><strong>發佈時間：</strong>2019-12-14</li>
+            <li><strong>文章連結：</strong><a href="https://augustushsu.github.io/2019/12/19/DeepLearning-02/">https://augustushsu.github.io/2019/12/19/DeepLearning-02/</a></li>
+            <li><strong>發佈時間：</strong>2019-12-19</li>
             <li><strong>版權聲明：</strong>本博客所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 許可協議。引用請註明出處！
             </li>
             </ul>
@@ -244,7 +251,7 @@
             <div class="level-start">
                 <div class="level-item">
                     <i class="fas fa-tags has-text-grey"></i>&nbsp;
-                    <a class="has-link-grey -link" href="/tags/Google-Analytics/" rel="tag">Google Analytics</a>,&nbsp;<a class="has-link-grey -link" href="/tags/Google-Search-Console/" rel="tag">Google Search Console</a>,&nbsp;<a class="has-link-grey -link" href="/tags/hexo/" rel="tag">hexo</a>,&nbsp;<a class="has-link-grey -link" href="/tags/sitemap/" rel="tag">sitemap</a>
+                    <a class="has-link-grey -link" href="/tags/lv/" rel="tag">lv</a>,&nbsp;<a class="has-link-grey -link" href="/tags/lvm/" rel="tag">lvm</a>,&nbsp;<a class="has-link-grey -link" href="/tags/pv/" rel="tag">pv</a>,&nbsp;<a class="has-link-grey -link" href="/tags/vg/" rel="tag">vg</a>
                 </div>
             </div>
         </div>
@@ -290,17 +297,10 @@
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
         
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/12/17/DeepLearning-00/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">DL Machine系列-00 環境建置</span>
-            </a>
-        </div>
-        
         
         <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2019/12/11/hexo-02/">
-                <span class="level-item">hexo系列-02 hexo個人化設置</span>
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/12/18/DeepLearning-01/">
+                <span class="level-item">DL Machine系列-01 安裝Docker-19.03+Nvidia-docker</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -321,7 +321,7 @@
     var gitalk = new Gitalk({
         clientID: '35f8adf2553a86678cce',
         clientSecret: 'afeffb2652617f0d77d7a18c9f95ee4447baf5e2',
-        id: '891385152d4423128aa820f385102ec2',
+        id: '2c703f5bb1ab619d5b189c2410cb4aa6',
         repo: 'augustushsu.github.io',
         owner: 'AugustusHsu',
         admin: "AugustusHsu",
@@ -457,25 +457,29 @@
         <span class="has-mr-6">1</span>
         <span>前言</span>
         </a></li><li>
-        <a class="is-flex" href="#安裝sitemap套件">
+        <a class="is-flex" href="#LVM介紹">
         <span class="has-mr-6">2</span>
-        <span>安裝sitemap套件</span>
+        <span>LVM介紹</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#名詞介紹">
+        <span class="has-mr-6">2.1</span>
+        <span>名詞介紹</span>
         </a></li><li>
-        <a class="is-flex" href="#創建robots-txt">
+        <a class="is-flex" href="#LVM建立流程">
+        <span class="has-mr-6">2.2</span>
+        <span>LVM建立流程</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#實作-LVM硬碟整合">
         <span class="has-mr-6">3</span>
-        <span>創建robots.txt</span>
+        <span>[實作]LVM硬碟整合</span>
         </a></li><li>
-        <a class="is-flex" href="#Google-Search-Console">
+        <a class="is-flex" href="#管理LVM">
         <span class="has-mr-6">4</span>
-        <span>Google Search Console</span>
+        <span>管理LVM</span>
         </a></li><li>
-        <a class="is-flex" href="#robots-txt">
+        <a class="is-flex" href="#補充">
         <span class="has-mr-6">5</span>
-        <span>robots.txt</span>
-        </a></li><li>
-        <a class="is-flex" href="#Google-Analytics">
-        <span class="has-mr-6">6</span>
-        <span>Google Analytics</span>
+        <span>補充</span>
         </a></li></ul>
             </div>
         </div>
@@ -499,7 +503,7 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/logo.png" alt="hexo系列-03 讓google可以搜尋到你的網站" height="28">
+                    <img src="/images/logo.png" alt="DL Machine系列-02 建立LVM管理儲存空間" height="28">
                 
                 </a>
                 <p class="is-size-7">
