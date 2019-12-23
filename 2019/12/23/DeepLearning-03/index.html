@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta name="google-site-verification" content="ejXsm591ahGuBYrDs3_IxpUvKBuHFqTtMiBbhUGDAVw" />
+<meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.0.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>DL Machine系列-03 Docker - Augustus</title>
+
+
+    <meta name="description" content="前言網路上關於Docker的資訊已經有很多了，這邊就不多作介紹了，只針對幾個常用和在我的實作上有用到的指令和套件去做介紹。 用一張圖來簡單的說明Docker的架構：">
+<meta name="keywords" content="xrdp,docker,Dockerfile,portainer,anaconda,cuda,cudnn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DL Machine系列-03 Docker">
+<meta property="og:url" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;2019&#x2F;12&#x2F;23&#x2F;DeepLearning-03&#x2F;index.html">
+<meta property="og:site_name" content="Augustus">
+<meta property="og:description" content="前言網路上關於Docker的資訊已經有很多了，這邊就不多作介紹了，只針對幾個常用和在我的實作上有用到的指令和套件去做介紹。 用一張圖來簡單的說明Docker的架構：">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;docker.jpg">
+<meta property="og:updated_time" content="2019-12-23T09:28:45.691Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;docker.jpg">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/zenburn.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-154556648-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-154556648-1');
+</script>
+
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<!-- <body class="is-2-column"> -->
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.png" alt="DL Machine系列-03 Docker" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/categories">Categories</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+                <a class="navbar-item"
+                href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="/https:/augustushsu.github.io/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;" target="_blank" rel="noopener">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜尋" href="javascript:;" target="_blank" rel="noopener">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-image">
+        <span  class="image is-7by1">
+            <img class="thumbnail" src="/uploads/docker.jpg" alt="DL Machine系列-03 Docker">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-12-23T04:03:26.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-12-23</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-12-23T09:28:45.691Z"><i class="far fa-calendar-check">&nbsp;</i>2019-12-23</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/DL-Machine/">DL Machine</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    14 分鐘 閱讀文 (大約 2061 個字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                DL Machine系列-03 Docker
+            
+        </h1>
+        <div class="content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>網路上關於Docker的資訊已經有很多了，這邊就不多作介紹了，只針對幾個常用和在我的實作上有用到的指令和套件去做介紹。</p>
+<p>用一張圖來簡單的說明Docker的架構：</p>
+<a id="more"></a>
+
+<p><img src="docker-containerized&vm.png" alt="Architecture"></p>
+<h2 id="Portainer"><a href="#Portainer" class="headerlink" title="Portainer"></a>Portainer</h2><p>Portainer是一個用來管理Docker的工具，他可以透過網頁來查看或管理目前執行的container等等，也可以很快速地進入一個正在執行的container，簡而言之就是一種用來管理Docker的圖形化介面。</p>
+<h3 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h3><p>可以用<code>docker search portainer</code>來查看目前有哪些可以用的資源：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo docker search portainer</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># output</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">NAME                             DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">portainer/portainer              Making Docker management easy. https://porta…   1439</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">portainer/agent                  An agent used to manage all the resources <span class="hljs-keyword">in</span>…   50</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">portainer/templates              App Templates <span class="hljs-keyword">for</span> Portainer http://portainer…   18</span></pre></td></tr></table></figure>
+
+<p>下載：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">docker pull portainer/portainer</span></pre></td></tr></table></figure>
+
+<p>依據官方的文件啟動container，當然你可以自訂你想要的port (第一個是host port，第二個是container port)：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">docker volume create portainer_data</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">docker run -d -p 9000:9000 \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">--name portainer \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">--restart always \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">-v /var/run/docker.sock:/var/run/docker.sock \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">-v portainer_data:/data \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">portainer/portainer</span></pre></td></tr></table></figure>
+
+<p>打開瀏覽器就能看到：</p>
+<p><img src="portainer.png" alt="Portainer"></p>
+<p>這樣就可以管理docker的<code>image</code>、<code>container</code>跟<code>volume</code>，還可以看到其他的資源。</p>
+<h3 id="常用Docker指令"><a href="#常用Docker指令" class="headerlink" title="常用Docker指令"></a>常用Docker指令</h3><p>記錄一些常用的Docker指令，以備不時之需，不過我想<code>protainer</code>應該可以取代大部分功能：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 查看目前的image</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">docker images</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 刪除image</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">docker rmi [OPTIONS] IMAGE [IMAGE...]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 查看目前運行的 container</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">docker ps</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 查看目前全部的 container（ 包含停止狀態的 container ）</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">docker ps -a</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 停止 Container</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">docker stop [OPTIONS] CONTAINER [CONTAINER...]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 删除 Container</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">docker rm [OPTIONS] CONTAINER [CONTAINER...]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 查看 Container 詳細資料</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">docker inspect [OPTIONS] NAME|ID [NAME|ID...]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 查看 log</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">docker logs [OPTIONS] CONTAINER</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 顯示容器資源 ( CPU , I/O ...... )</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">docker stats [OPTIONS] [CONTAINER...]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 停止指定的 CONTAINER 中全部的 processes</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">docker pause CONTAINER [CONTAINER...]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 恢復指定暫停的 CONTAINER 中全部的 processes</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">docker unpause CONTAINER [CONTAINER...]</span></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>docker stop</code> : process 級別。</p>
+<p><code>docker pause</code>: container 級別。</p>
+</blockquote>
+<h2 id="實作Deep-Learning環境"><a href="#實作Deep-Learning環境" class="headerlink" title="實作Deep Learning環境"></a>實作Deep Learning環境</h2><p>我這裡選擇的image是<code>ubuntu18.04</code>，然後透過<code>ARG</code>來新增使用者：</p>
+<figure class="highlight dockerfile hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">FROM</span> ubuntu:<span class="hljs-number">18.04</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">MAINTAINER</span> jim jimhsu11@gmail.com</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">ARG</span> USERNAME</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">ARG</span> USERPWD</span></pre></td></tr></table></figure>
+
+<h3 id="DEBIAN-FRONTEND-noninteractive"><a href="#DEBIAN-FRONTEND-noninteractive" class="headerlink" title="DEBIAN_FRONTEND noninteractive"></a>DEBIAN_FRONTEND noninteractive</h3><p>接下來這個步驟很重要：</p>
+<figure class="highlight dockerfile hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># debconf to be non-interactive</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">ENV</span> DEBIAN_FRONTEND noninteractive</span></pre></td></tr></table></figure>
+
+<p>因為<code>ubuntu</code>在安裝的時候，某些套件會需要輸入指令，這邊將它設定成<strong>沒有交互介面</strong>的模式來安裝。</p>
+<h3 id="Add-User"><a href="#Add-User" class="headerlink" title="Add User"></a>Add User</h3><p>接著就是新增使用者，這邊新增使用者主要是為了之後的<code>xrdp</code>套件，在run docker的時候可以不用再去建立使用者，不過在build的時候要記得加上<code>ARG</code>參數:</p>
+<figure class="highlight dockerfile hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Update and Add User</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">RUN</span><span class="hljs-bash"> apt-get update \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; apt-get install -y vim sudo wget \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; useradd -ms /bin/bash <span class="hljs-variable">$&#123;USERNAME&#125;</span>\</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; sudo adduser <span class="hljs-variable">$&#123;USERNAME&#125;</span> sudo\</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; <span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;USERNAME&#125;</span>:<span class="hljs-variable">$&#123;USERPWD&#125;</span> | chpasswd</span></span></pre></td></tr></table></figure>
+
+<h3 id="xrdp"><a href="#xrdp" class="headerlink" title="xrdp"></a>xrdp</h3><p>這邊安裝<code>xrdp</code>套件，讓Windows系統可以透過<code>遠端桌面連線</code>連線到Container：</p>
+<figure class="highlight dockerfile hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># xrdp</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">RUN</span><span class="hljs-bash"> apt-get update \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; apt-get install -y xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils xrdp \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; <span class="hljs-built_in">echo</span> xfce4-session &gt; /home/<span class="hljs-variable">$&#123;USERNAME&#125;</span>/.xsession \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; sed -i <span class="hljs-string">"s/^exec.*Xsession$/startxfce4/g"</span> <span class="hljs-string">"/etc/xrdp/startwm.sh"</span> \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; service xrdp restart</span></span></pre></td></tr></table></figure>
+
+<p>這邊跟一般安裝<code>xrdp</code>的過程一樣，其中<code>sed</code>是將<code>/etc/xrdp/startwm.sh</code>最後一行替換成<code>startxfce4</code>。</p>
+<h3 id="Anaconda"><a href="#Anaconda" class="headerlink" title="Anaconda"></a>Anaconda</h3><p>這邊使用<a href="https://www.anaconda.com/" target="_blank" rel="noopener">Anaconda</a>來管理<code>python</code>的套件，雖然已經使用Docker來隔離系統了，不過還是習慣用Anaconda來建立python環境：</p>
+<figure class="highlight dockerfile hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Install Anaconda</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">RUN</span><span class="hljs-bash"> wget --quiet https://repo.continuum.io/archive/Anaconda3-5.0.1-Linux-x86_64.sh -O ~/anaconda.sh \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; /bin/bash ~/anaconda.sh -b -p /opt/conda \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; rm ~/anaconda.sh \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; <span class="hljs-built_in">echo</span> <span class="hljs-string">"export PATH=/opt/conda/bin:<span class="hljs-variable">$PATH</span>"</span> &gt;&gt; /home/<span class="hljs-variable">$&#123;USERNAME&#125;</span>/.bashrc \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; sudo chown -R <span class="hljs-variable">$&#123;USERNAME&#125;</span>:<span class="hljs-variable">$&#123;USERNAME&#125;</span> /opt/conda</span></span></pre></td></tr></table></figure>
+
+<p>這邊<code>wget</code>後面的網址可以自己去更改，找符合自己<a href="https://repo.continuum.io/archive/" target="_blank" rel="noopener">需求的版本</a>來安裝。</p>
+<p>然後安裝Anaconda的時候會需要輸入一些指令，所以用<code>-b</code>使用預設值安裝。</p>
+<p><code>-p</code>後面接的是安裝位置，這邊也可以自己去調整。</p>
+<h3 id="cuda-amp-cudnn"><a href="#cuda-amp-cudnn" class="headerlink" title="cuda &amp; cudnn"></a>cuda &amp; cudnn</h3><p>我這邊cuda使用的版本是10.0，雖然在系統上是安裝的版本是10.1，不過經過測試，是不影響使用的。</p>
+<p>我是使用Nvidia/cuda的Dockerfile指令來安裝<code>cuda</code>和<code>cudnn</code>，分別將<a href="https://gitlab.com/nvidia/container-images/cuda/blob/ubuntu18.04/10.0/base/Dockerfile" target="_blank" rel="noopener">nvidia/cuda:10.0-base-ubuntu18.04</a>、<a href="https://gitlab.com/nvidia/container-images/cuda/blob/ubuntu18.04/10.0/runtime/Dockerfile" target="_blank" rel="noopener">nvidia/cuda:10.0-runtime-ubuntu18.04</a>和<a href="https://gitlab.com/nvidia/container-images/cuda/blob/ubuntu18.04/10.0/runtime/cudnn7/Dockerfile" target="_blank" rel="noopener">nvidia/cuda:10.0-cudnn7-runtime-ubuntu18.04</a>上需要的Dockerfile指令，加到自己的Dockerfile：</p>
+<figure class="highlight dockerfile hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">#-------------------From Nvidia-------------------</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Nvidia install list</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">RUN</span><span class="hljs-bash"> apt-get update \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; apt-get install -y --no-install-recommends gnupg2 curl ca-certificates \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; curl -fsSL https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub | apt-key add - \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; <span class="hljs-built_in">echo</span> <span class="hljs-string">"deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64 /"</span> &gt; /etc/apt/sources.list.d/cuda.list \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; <span class="hljs-built_in">echo</span> <span class="hljs-string">"deb https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64 /"</span> &gt; /etc/apt/sources.list.d/nvidia-ml.list \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; apt-get purge --autoremove -y curl \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; rm -rf /var/lib/apt/lists/*</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">ENV</span> CUDA_VERSION <span class="hljs-number">10.0</span>.<span class="hljs-number">130</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">ENV</span> CUDA_PKG_VERSION <span class="hljs-number">10</span>-<span class="hljs-number">0</span>=$CUDA_VERSION-<span class="hljs-number">1</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># For libraries in the cuda-compat-* package: https://docs.nvidia.com/cuda/eula/index.html#attachment-a</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">RUN</span><span class="hljs-bash"> apt-get update \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; apt-get install -y --no-install-recommends \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">        cuda-cudart-<span class="hljs-variable">$CUDA_PKG_VERSION</span> \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">        cuda-compat-10-0 \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; ln -s cuda-10.0 /usr/<span class="hljs-built_in">local</span>/cuda \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; rm -rf /var/lib/apt/lists/*</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">ENV</span> PATH /usr/local/nvidia/bin:/usr/local/cuda/bin:$&#123;PATH&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">ENV</span> LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">ENV</span> NCCL_VERSION <span class="hljs-number">2.4</span>.<span class="hljs-number">2</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">RUN</span><span class="hljs-bash"> apt-get update \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; apt-get install -y --no-install-recommends \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">        cuda-libraries-<span class="hljs-variable">$CUDA_PKG_VERSION</span> \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">        cuda-nvtx-<span class="hljs-variable">$CUDA_PKG_VERSION</span> \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">        libnccl2=<span class="hljs-variable">$NCCL_VERSION</span>-1+cuda10.0 \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; apt-mark hold libnccl2 \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; rm -rf /var/lib/apt/lists/*</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">33</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">34</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">ENV</span> CUDNN_VERSION <span class="hljs-number">7.6</span>.<span class="hljs-number">0.64</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">35</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">36</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">LABEL</span><span class="hljs-bash"> com.nvidia.cudnn.version=<span class="hljs-string">"<span class="hljs-variable">$&#123;CUDNN_VERSION&#125;</span>"</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">37</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">38</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">RUN</span><span class="hljs-bash"> apt-get update \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">39</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; apt-get install -y --no-install-recommends \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">40</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">            libcudnn7=<span class="hljs-variable">$CUDNN_VERSION</span>-1+cuda10.0 \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">41</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; apt-mark hold libcudnn7 \</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">42</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-bash">    &amp;&amp; rm -rf /var/lib/apt/lists/*</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">43</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">#-------------------Nvidia End-------------------</span></span></pre></td></tr></table></figure>
+
+<p>這邊有試過用nvidia本身的image來建立，不過失敗了，後來將nvidia上Dockerfile複製自己需要的部分卻成功了，原因沒有深究，如果有人知道的話，歡迎留言告訴我。</p>
+<p>以上就是我的Dockerfile所有的內容。</p>
+<h2 id="Build-amp-Run-amp-Upload"><a href="#Build-amp-Run-amp-Upload" class="headerlink" title="Build &amp; Run &amp; Upload"></a>Build &amp; Run &amp; Upload</h2><p>上面可以看到我的功能是一層一層添加的，實際上實作完一層，我就會build和run一次那個Dockerfile，以確保我的Dockerfile沒有寫錯，所以接下來就是將剛剛寫完的Dockerfile建立起來。</p>
+<h3 id="Build-Dockerfile"><a href="#Build-Dockerfile" class="headerlink" title="Build Dockerfile"></a>Build Dockerfile</h3><p>進入<code>Dockerfile</code>所在的資料夾，執行以下指令：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo docker build -t image_name:tag \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">--build-arg USERNAME=username \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">--build-arg USERPWD=yourpassword .</span></pre></td></tr></table></figure>
+
+<p><code>-t</code>後面接的是image的名字跟<code>tag</code>，<code>USERNAME</code>跟<code>USERPWD</code>就是登入系統時要輸入的帳密，這樣image就建立好了。</p>
+<h3 id="Run-Image"><a href="#Run-Image" class="headerlink" title="Run Image"></a>Run Image</h3><p>執行下列命令就可以進入到創立的<code>container</code>了：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo docker run --gpus device=1 -it \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">-p 33890:3389 \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">-v /mnt/SSD:/data/SSD \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">-v /mnt/HDD:/data/HDD \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">-v /docker_config/config:/config \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">image_name:tag</span></pre></td></tr></table></figure>
+
+<p><code>--gpus</code>:可以指令你要用的gpu，當然是要你電腦上有安裝複數的gpu才能指令，不然可以直接用<code>--gpus all</code>來使用全部的gpu。</p>
+<p><code>-p</code>:因為有使用<code>xrdp</code>套件，而這個套件使用的port是3389，所以要將container的port映射到主機上的port，這邊選擇加上一個0。</p>
+<p><code>-v</code>:可以將主機上的資料夾位置映射到container上面，也可以是docker的volume映射到container上。這邊要注意的是冒號，冒號前是主機上的位置；後面是container上的位置。</p>
+<p><code>-it</code>：建立好後會直接進入container。</p>
+<p>接下來要啟動<code>xrdp</code>套件才可以連線進去，執行：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">service xrdp restart</span></pre></td></tr></table></figure>
+
+<p>啟動<strong>遠端桌面連線</strong>程式，輸入你主機的ip：</p>
+<p><img src="remote-desktop.png" alt="Remote Desktop"></p>
+<p>再輸入前面設定的帳號密碼：</p>
+<p><img src="login.png" alt="Login"></p>
+<p>進入到你的環境後，要記得進入<code>Setting Manager</code>：</p>
+<p><img src="settings-manager.png" alt="Settings Manager"></p>
+<p>打開<code>Preferred Applications</code>：</p>
+<p><img src="preferred-app.png" alt="Preferred App"></p>
+<p>選擇<code>Utilities</code>，將預設的Terminal Emulator改成Xfce Terminal：</p>
+<p><img src="xfce-terminal.png" alt="Xfce Terminal"></p>
+<p>這樣就可以用Terminal了。</p>
+<h3 id="Docker-Hub"><a href="#Docker-Hub" class="headerlink" title="Docker Hub"></a>Docker Hub</h3><p>實作完自己的Dockerfile之後，用<a href="https://hub.docker.com/" target="_blank" rel="noopener">Docker Hub</a>備份或是分享到網上。</p>
+<p>第一步要當然是註冊一個帳號，再利用docker login來登入：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">docker login</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># output</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">Login with your Docker ID to push and pull images from Docker Hub. If you don<span class="hljs-string">'t have a Docker ID, head over to https://hub.docker.com to create one.</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">Username: username</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">Password: yourpassword</span></span></pre></td></tr></table></figure>
+
+<p>登入完，直接用docker push來上傳就行了:</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">docker push yourusername/image_name:tag</span></pre></td></tr></table></figure>
+
+<h2 id="連結"><a href="#連結" class="headerlink" title="連結"></a>連結</h2><p>Docker Hub：<a href="https://hub.docker.com/repository/docker/augustushsu/ubuntu18.04-xrdp" target="_blank" rel="noopener">https://hub.docker.com/repository/docker/augustushsu/ubuntu18.04-xrdp</a></p>
+<p>Github：<a href="https://github.com/AugustusHsu/Docker-DL" target="_blank" rel="noopener">https://github.com/AugustusHsu/Docker-DL</a></p>
+
+        </div>
+        
+            <ul class="post-copyright">
+            <li><strong>文章標題：</strong><a href="https://augustushsu.github.io/2019/12/23/DeepLearning-03/">DL Machine系列-03 Docker</a></li>
+            <li><strong>文章作者：</strong><a href="https://augustushsu.github.io">Augustus</a></li>
+            <li><strong>文章連結：</strong><a href="https://augustushsu.github.io/2019/12/23/DeepLearning-03/">https://augustushsu.github.io/2019/12/23/DeepLearning-03/</a></li>
+            <li><strong>發佈時間：</strong>2019-12-23</li>
+            <li><strong>版權聲明：</strong>本博客所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 許可協議。引用請註明出處！
+            </li>
+            </ul>
+       
+        
+        <hr style="height:1px;margin:1rem 0"/>
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/Dockerfile/" rel="tag">Dockerfile</a>,&nbsp;<a class="has-link-grey -link" href="/tags/anaconda/" rel="tag">anaconda</a>,&nbsp;<a class="has-link-grey -link" href="/tags/cuda/" rel="tag">cuda</a>,&nbsp;<a class="has-link-grey -link" href="/tags/cudnn/" rel="tag">cudnn</a>,&nbsp;<a class="has-link-grey -link" href="/tags/docker/" rel="tag">docker</a>,&nbsp;<a class="has-link-grey -link" href="/tags/portainer/" rel="tag">portainer</a>,&nbsp;<a class="has-link-grey -link" href="/tags/xrdp/" rel="tag">xrdp</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+<div class="addthis_inline_share_toolbox"></div>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5def9374e9552f2f"></script>
+
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">喜歡這篇文章嗎? 贊助一下作者吧!</h3>
+        <div class="buttons is-centered">
+            
+                <!-- Visit https://www.paypal.com/donate/buttons/ to get your donate button -->
+
+<a class="button is-warning donate" onclick="document.getElementById(&#39;paypal-donate-form&#39;).submit()">
+    <span class="icon is-small">
+        <i class="fab fa-paypal"></i>
+    </span>
+    <span>PayPal</span>
+</a>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" id="paypal-donate-form">
+    <input type="hidden" name="cmd" value="_donations" />
+    <input type="hidden" name="business" value="V6DFAWSEDJJHE" />
+    <input type="hidden" name="currency_code" value="USD" />
+</form>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/12/19/DeepLearning-02/">
+                <span class="level-item">DL Machine系列-02 建立LVM管理儲存空間</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">評論</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: '35f8adf2553a86678cce',
+        clientSecret: 'afeffb2652617f0d77d7a18c9f95ee4447baf5e2',
+        id: '7a2feb815ad037a6dc7a81268a4bbcb1',
+        repo: 'augustushsu.github.io',
+        owner: 'AugustusHsu',
+        admin: "AugustusHsu",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/uploads/MyPhoto.jpg" alt="Augustus">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        Augustus
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        Strike the iron while it is hot.
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>Chiayi, Taiwan</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            8
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分類
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            2
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        標籤
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            23
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/AugustusHsu" target="_blank">
+                追蹤</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="Github" href="https://github.com/AugustusHsu">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="Facebook" href="https://www.facebook.com/HsuAugustus">
+                
+                <i class="fab fa-facebook"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="Envelope" href="mailto:jimhsu11@gmail.com">
+                
+                <i class="fas fa-envelope"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget column-left is-sticky" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    文章目錄
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#前言">
+        <span class="has-mr-6">1</span>
+        <span>前言</span>
+        </a></li><li>
+        <a class="is-flex" href="#Portainer">
+        <span class="has-mr-6">2</span>
+        <span>Portainer</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#安裝">
+        <span class="has-mr-6">2.1</span>
+        <span>安裝</span>
+        </a></li><li>
+        <a class="is-flex" href="#常用Docker指令">
+        <span class="has-mr-6">2.2</span>
+        <span>常用Docker指令</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#實作Deep-Learning環境">
+        <span class="has-mr-6">3</span>
+        <span>實作Deep Learning環境</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#DEBIAN-FRONTEND-noninteractive">
+        <span class="has-mr-6">3.1</span>
+        <span>DEBIAN_FRONTEND noninteractive</span>
+        </a></li><li>
+        <a class="is-flex" href="#Add-User">
+        <span class="has-mr-6">3.2</span>
+        <span>Add User</span>
+        </a></li><li>
+        <a class="is-flex" href="#xrdp">
+        <span class="has-mr-6">3.3</span>
+        <span>xrdp</span>
+        </a></li><li>
+        <a class="is-flex" href="#Anaconda">
+        <span class="has-mr-6">3.4</span>
+        <span>Anaconda</span>
+        </a></li><li>
+        <a class="is-flex" href="#cuda-amp-cudnn">
+        <span class="has-mr-6">3.5</span>
+        <span>cuda &amp; cudnn</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#Build-amp-Run-amp-Upload">
+        <span class="has-mr-6">4</span>
+        <span>Build &amp; Run &amp; Upload</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#Build-Dockerfile">
+        <span class="has-mr-6">4.1</span>
+        <span>Build Dockerfile</span>
+        </a></li><li>
+        <a class="is-flex" href="#Run-Image">
+        <span class="has-mr-6">4.2</span>
+        <span>Run Image</span>
+        </a></li><li>
+        <a class="is-flex" href="#Docker-Hub">
+        <span class="has-mr-6">4.3</span>
+        <span>Docker Hub</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#連結">
+        <span class="has-mr-6">5</span>
+        <span>連結</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.png" alt="DL Machine系列-03 Docker" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2019 Augustus&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                        
+                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-TW");</script>
+
+<script>
+var IcarusThemeSettings = {
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+    
+    
+<script src="/js/animation.js"></script>
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+    
+    
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+    
+    
+<a id="back-to-top" title="回到頁首" href="javascript:;" target="_blank" rel="noopener">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '頁面',
+                CATEGORIES: '分類',
+                TAGS: '標籤',
+                UNTITLED: '(無標題)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

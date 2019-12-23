@@ -8,12 +8,12 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>標籤: docker-19.03 - Augustus</title>
+<title>標籤: portainer - Augustus</title>
 
 
     <meta property="og:type" content="website">
 <meta property="og:title" content="Augustus">
-<meta property="og:url" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;tags&#x2F;docker-19-03&#x2F;index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;tags&#x2F;portainer&#x2F;index.html">
 <meta property="og:site_name" content="Augustus">
 <meta property="og:locale" content="zh-TW">
 <meta property="og:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;images&#x2F;og_image.png">
@@ -139,7 +139,7 @@
         <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
             <li><a href="/tags">標籤</a></li>
-            <li class="is-active"><a href="#" aria-current="page">docker-19.03</a></li>
+            <li class="is-active"><a href="#" aria-current="page">portainer</a></li>
         </ul>
         </nav>
     </div>
@@ -149,8 +149,8 @@
 <div class="card">
     
     <div class="card-image">
-        <a href="/2019/12/18/DeepLearning-01/" class="image is-7by1">
-            <img class="thumbnail" src="/uploads/nvidia_docker-cover.png" alt="DL Machine系列-01 安裝Docker-19.03+Nvidia-docker">
+        <a href="/2019/12/23/DeepLearning-03/" class="image is-7by1">
+            <img class="thumbnail" src="/uploads/docker.jpg" alt="DL Machine系列-03 Docker">
         </a>
     </div>
     
@@ -158,7 +158,9 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-12-18T09:32:56.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-12-18</time>
+                <time class="level-item has-text-grey" datetime="2019-12-23T04:03:26.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-12-23</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-12-23T09:28:45.691Z"><i class="far fa-calendar-check">&nbsp;</i>2019-12-23</time>
                 
                 
                 <div class="level-item">
@@ -171,7 +173,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    8 分鐘 閱讀文 (大約 1146 個字)
+                    14 分鐘 閱讀文 (大約 2061 個字)
                 </span>
                 
                 
@@ -180,11 +182,12 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2019/12/18/DeepLearning-01/">DL Machine系列-01 安裝Docker-19.03+Nvidia-docker</a>
+                <a class="has-link-black-ter" href="/2019/12/23/DeepLearning-03/">DL Machine系列-03 Docker</a>
             
         </h1>
         <div class="content">
-            <h2 id="docker安裝"><a href="#docker安裝" class="headerlink" title="docker安裝"></a>docker安裝</h2><p><code>sudo apt-get remove docker docker-engine docker.io</code><br>用來確保你的環境中沒有docker免得版本衝突，可以點<a href="https://download.docker.com" target="_blank" rel="noopener">這個網站</a>下載和你作業系統相符的docker安裝檔案。<br>我這邊下載的是<a href="https://download.docker.com/linux/static/stable/x86_84/" target="_blank" rel="noopener">19.03.5版本</a>。</p>
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>網路上關於Docker的資訊已經有很多了，這邊就不多作介紹了，只針對幾個常用和在我的實作上有用到的指令和套件去做介紹。</p>
+<p>用一張圖來簡單的說明Docker的架構：</p>
         </div>
         
         
@@ -195,13 +198,13 @@
                 
                 <div class="level-item is-size-7 is-uppercase">
                     <i class="fas fa-tags has-text-grey"></i>&nbsp;
-                    <a class="has-link-grey -link" href="/tags/docker-19-03/" rel="tag">docker-19.03</a>,&nbsp;<a class="has-link-grey -link" href="/tags/native-gpu/" rel="tag">native gpu</a>,&nbsp;<a class="has-link-grey -link" href="/tags/nvidia-container-toolkit/" rel="tag">nvidia-container-toolkit</a>,&nbsp;<a class="has-link-grey -link" href="/tags/nvidia-docker/" rel="tag">nvidia-docker</a>
+                    <a class="has-link-grey -link" href="/tags/Dockerfile/" rel="tag">Dockerfile</a>,&nbsp;<a class="has-link-grey -link" href="/tags/anaconda/" rel="tag">anaconda</a>,&nbsp;<a class="has-link-grey -link" href="/tags/cuda/" rel="tag">cuda</a>,&nbsp;<a class="has-link-grey -link" href="/tags/cudnn/" rel="tag">cudnn</a>,&nbsp;<a class="has-link-grey -link" href="/tags/docker/" rel="tag">docker</a>,&nbsp;<a class="has-link-grey -link" href="/tags/portainer/" rel="tag">portainer</a>,&nbsp;<a class="has-link-grey -link" href="/tags/xrdp/" rel="tag">xrdp</a>
                 </div>
                 
             </div>
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/12/18/DeepLearning-01/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;繼續閱讀</a>
+                <a class="button is-size-7 is-light" href="/2019/12/23/DeepLearning-03/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;繼續閱讀</a>
                 </div>
             </div>
         </div>
