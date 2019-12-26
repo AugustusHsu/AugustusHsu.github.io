@@ -8,21 +8,21 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>DL Machine系列-00 環境建置 - Augustus</title>
+<title>DL Machine系列-04 Docker Hub Automated Build - Augustus</title>
 
 
-    <meta name="description" content="前言有鑒於每次實驗架設環境都花很多時間，也常常遇到版本更新後某些套件不相容的問題，所以才打算使用Docker來架設深度學習的虛擬環境(絕對不是因為覺得用Docker很帥才用的)，說到深度學習就不得不使用GPU，使用GPU就不得不用nvidia-docker來架設環境，剛剛好本人的實驗室目前有一台電腦正空閒下來，也剛剛好多出一張RTX 2070S，想說利用Docker來一勞永逸這個問題，也順便試試看">
-<meta name="keywords" content="ubuntu,ubuntu-18.04,xrdp,static ip,nvidia-gpu,docker">
+    <meta name="description" content="Docker Hub Automated BuildsAutomated Builds是Docker Hub上提供的功能，它可以在你Github上有更新的時候，自動地幫你Build你的Dockerfile，產生一個新的Image。">
+<meta name="keywords" content="docker,Dockerfile,Docker Hub,non-zero code 2">
 <meta property="og:type" content="article">
-<meta property="og:title" content="DL Machine系列-00 環境建置">
-<meta property="og:url" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;2019&#x2F;12&#x2F;17&#x2F;DeepLearning-00&#x2F;index.html">
+<meta property="og:title" content="DL Machine系列-04 Docker Hub Automated Build">
+<meta property="og:url" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;2019&#x2F;12&#x2F;27&#x2F;DeepLearning-04&#x2F;index.html">
 <meta property="og:site_name" content="Augustus">
-<meta property="og:description" content="前言有鑒於每次實驗架設環境都花很多時間，也常常遇到版本更新後某些套件不相容的問題，所以才打算使用Docker來架設深度學習的虛擬環境(絕對不是因為覺得用Docker很帥才用的)，說到深度學習就不得不使用GPU，使用GPU就不得不用nvidia-docker來架設環境，剛剛好本人的實驗室目前有一台電腦正空閒下來，也剛剛好多出一張RTX 2070S，想說利用Docker來一勞永逸這個問題，也順便試試看">
+<meta property="og:description" content="Docker Hub Automated BuildsAutomated Builds是Docker Hub上提供的功能，它可以在你Github上有更新的時候，自動地幫你Build你的Dockerfile，產生一個新的Image。">
 <meta property="og:locale" content="zh-TW">
-<meta property="og:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;nvidia_docker-cover.png">
-<meta property="og:updated_time" content="2019-12-18T08:10:51.091Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;docker.jpg">
+<meta property="og:updated_time" content="2019-12-26T16:10:49.123Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;nvidia_docker-cover.png">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;docker.jpg">
 
 
 
@@ -89,7 +89,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.png" alt="DL Machine系列-00 環境建置" height="28">
+                <img src="/images/logo.png" alt="DL Machine系列-04 Docker Hub Automated Build" height="28">
             
             </a>
         </div>
@@ -147,7 +147,7 @@
     
     <div class="card-image">
         <span  class="image is-7by1">
-            <img class="thumbnail" src="/uploads/nvidia_docker-cover.png" alt="DL Machine系列-00 環境建置">
+            <img class="thumbnail" src="/uploads/docker.jpg" alt="DL Machine系列-04 Docker Hub Automated Build">
         </span>
     </div>
     
@@ -155,9 +155,7 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-12-17T07:30:26.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-12-17</time>
-                
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-12-18T08:10:51.091Z"><i class="far fa-calendar-check">&nbsp;</i>2019-12-18</time>
+                <time class="level-item has-text-grey" datetime="2019-12-27T07:43:26.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-12-27</time>
                 
                 
                 <div class="level-item">
@@ -170,7 +168,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    5 分鐘 閱讀文 (大約 777 個字)
+                    2 分鐘 閱讀文 (大約 369 個字)
                 </span>
                 
                 
@@ -179,61 +177,41 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                DL Machine系列-00 環境建置
+                DL Machine系列-04 Docker Hub Automated Build
             
         </h1>
         <div class="content">
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>有鑒於每次實驗架設環境都花很多時間，也常常遇到版本更新後某些套件不相容的問題，所以才打算使用Docker來架設深度學習的虛擬環境<del>(絕對不是因為覺得用Docker很帥才用的)</del>，說到深度學習就不得不使用GPU，使用GPU就不得不用<code>nvidia-docker</code>來架設環境，剛剛好本人的實驗室目前有一台電腦正空閒下來，也剛剛好多出一張RTX 2070S，想說利用Docker來一勞永逸這個問題，也順便試試看多GPU的環境是什麼樣的感覺。</p>
+            <h2 id="Docker-Hub-Automated-Builds"><a href="#Docker-Hub-Automated-Builds" class="headerlink" title="Docker Hub Automated Builds"></a>Docker Hub Automated Builds</h2><p>Automated Builds是Docker Hub上提供的功能，它可以在你Github上有更新的時候，自動地幫你Build你的Dockerfile，產生一個新的Image。</p>
 <a id="more"></a>
 
-<h2 id="電腦配置"><a href="#電腦配置" class="headerlink" title="電腦配置"></a>電腦配置</h2><p>CPU： AMD Ryen Threadripper 1900X 8-core<br>MotherBoard：ROG Strix X399-E Gamming<br>GPU：RTX 2070 super, GTX 1050<br>RAM：Kingston 16Gx8 2933MHz<br>Storage：2TB SSD<em>2, 1\</em>1TB m.2 SSD<br>Power：750w金牌電源</p>
-<h2 id="Ubuntu-18-04安裝"><a href="#Ubuntu-18-04安裝" class="headerlink" title="Ubuntu 18.04安裝"></a>Ubuntu 18.04安裝</h2><p>在安裝Ubuntu的時候，會顯示出</p>
-<p><code>install ubuntu/ try ubuntu without installation</code><br><code>install ubuntu</code></p>
-<p>等等的選項，但是選擇後螢幕變黑屏沒反應。</p>
-<p>經過查找，應該是因為Ubuntu對於RTX顯示卡沒有對應的Driver，所以導致這個問題。</p>
-<p><strong>我這邊使用另一張顯卡安裝，再去更新Nvidia-driver來避免這個問題。</strong></p>
-<p>安裝的時候選擇：</p>
-<p><code>在新安裝的Ubuntu上使用LVM</code></p>
-<p>這是因為之後新增硬碟用LVM來管理。</p>
-<h2 id="確認GPU狀態"><a href="#確認GPU狀態" class="headerlink" title="確認GPU狀態"></a>確認GPU狀態</h2><p>執行<code>ubuntu-drivers devices</code>去確認</p>
-<p>如果你只有看到這一項：<code>nvidia-driver-390 - distro non-free</code>，那你必須去將NVIDIA repository加入到你的apt庫。</p>
-<p>可以用<code>dpkg -l &#39;nvidia*&#39;</code>去看電腦上安裝的Nvidia Driver</p>
-<p>執行<code>sudo ubuntu-drivers autoinstall</code>安裝driver，完成之後執行<code>nvidia-smi</code>就可以看到：</p>
-<p><img src="nvidia-smi.png" alt="Nvidia SMI"></p>
-<h2 id="安裝基本工具"><a href="#安裝基本工具" class="headerlink" title="安裝基本工具"></a>安裝基本工具</h2><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">sudo apt-get upgrade</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">sudo apt-get install vim <span class="hljs-comment">#好用的編輯器</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">sudo apt-get install net-tools curl <span class="hljs-comment">#用來看網路介面卡</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">sudo apt-get install gparted <span class="hljs-comment">#硬碟管理工具</span></span></pre></td></tr></table></figure>
-<h2 id="設定ip-區域網路"><a href="#設定ip-區域網路" class="headerlink" title="設定ip(區域網路)"></a>設定ip(區域網路)</h2><p>打開<code>/etc/netplan/01-network-manager-all.yaml</code><br>更改成這樣：</p>
-<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Let NetworkManager manage all devices on this system</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">network:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-attr">version:</span> <span class="hljs-number">2</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># renderer: NetworkManager</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-attr">eno1:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">        <span class="hljs-attr">addresses:</span> <span class="hljs-string">[192.168.123.111/24]</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">        <span class="hljs-attr">gateway4:</span> <span class="hljs-number">192.168</span><span class="hljs-number">.111</span><span class="hljs-number">.1</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">        <span class="hljs-attr">nameservers:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">            <span class="hljs-attr">addresses:</span> <span class="hljs-string">[8.8.8.8,8.8.4.4]</span></span></pre></td></tr></table></figure>
+<h2 id="連結Github"><a href="#連結Github" class="headerlink" title="連結Github"></a>連結Github</h2><p>點選頭像可以看到<code>Account Setting</code>：<br><img src="Account_Setting.png" alt="Avatar"><br>再點選<code>Linked Accounts</code>，跟你的Github做連結：<br><img src="Linked_Accounts1.png" alt="Account Setting"><br>連結完會像這樣：<br><img src="Linked_Accounts2.png" alt="Github"></p>
+<p>點選你要連結的Docker Repository，接著點選Build：<br><img src="Build.png" alt></p>
+<p>再來點選<code>Configure Automated Builds</code>：<br><img src="Configure_Automated_Builds.png" alt></p>
+<p>可以看到你帳號的右邊可以選擇你要連結的Github Repository：<br><img src="Github_Repository.png" alt></p>
+<p>在<code>Configure Automated Builds</code>下面有一些設定可以調整，可以設定不同branch有不同的tag可以設定，它有舉一些例子、還有命名規則可以去查看。</p>
+<h2 id="Docker-Hub-Build-Error"><a href="#Docker-Hub-Build-Error" class="headerlink" title="Docker Hub Build Error"></a>Docker Hub Build Error</h2><p>在Docker Hub的時候，會看到下面這個狀況：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">...returned a non-zero code: 2</span></pre></td></tr></table></figure>
+
+<p>後來經過測試發現，這是因為我有使用<code>ARG</code>這個參數導致的，因為在Build你的Docker Image的時候會需要加上這些參數：</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo docker build -t image_name:tag \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">--build-arg USERNAME=username \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">--build-arg USERPWD=yourpassword .</span></pre></td></tr></table></figure>
+
+<p>雖然說在Docker Hub上面有：</p>
 <blockquote>
-<p>參數說明：<br>eno1： 網卡名稱(可以透過<code>ifconfig</code>查看)<br>addresses： 要指定的ip<br>gateway4： 閘道 ip4(gateway6 閘道 ip6)<br>nameservers： dns 以逗號階隔<br>註：<br>/32 指的是 network mask of 255.255.255.255<br>/24 指的是 network mask of 255.255.255.0</p>
+<p>BUILD ENVIRONMENT VARIABLES</p>
 </blockquote>
-<p>依照個人網路調整即可，用<code>sudo netplan apply</code>就可以套用剛剛的設定了。</p>
-<h2 id="安裝vnc遠端操控"><a href="#安裝vnc遠端操控" class="headerlink" title="安裝vnc遠端操控"></a>安裝vnc遠端操控</h2><p>安裝 xfce4 與 xrdp</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo apt-get install xfce4</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">sudo apt-get install xrdp</span></pre></td></tr></table></figure>
-<p>配置登入環境</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">echo</span> xfce4-session &gt; ~/.xsession</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">sudo vim /etc/xrdp/startwm.sh</span></pre></td></tr></table></figure>
+<p>可以調整，不過我當時怎麼調整都會有問題。</p>
+<p>所以後來我直接將Dockerfile加上預設值：</p>
+<figure class="highlight diff hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-deletion">-ARG USERNAME</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-deletion">-ARG USERPWD</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-addition">+ARG USERNAME=username</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-addition">+ARG USERPWD=yourpassword</span></span></pre></td></tr></table></figure>
 
-<p>將<code>stratum.sh</code>更改：</p>
-<figure class="highlight diff hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">if test -r /etc/profile; then</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">        . /etc/profile</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">fi</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">test -x /etc/X11/Xsession &amp;&amp; exec /etc/X11/Xsession</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-deletion">-exec /bin/sh /etc/X11/Xsession</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-addition">+startxfce4</span></span></pre></td></tr></table></figure>
-<p>啟動 xrdp 服務：</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo service xrdp restart</span></pre></td></tr></table></figure>
-
-<p>確認服務正常運行：</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">netstat -na | grep 3389</span></pre></td></tr></table></figure>
-
-<p>這時就可以透過Windows的遠端桌面連線到你的Linux主機了：</p>
-<p><img src="xrdp-remote.png" alt="xrdp-Remote"></p>
-<h2 id="補充"><a href="#補充" class="headerlink" title="補充"></a>補充</h2><p>可以透過：</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo lshw -html &gt; ~/hardware.html</span></pre></td></tr></table></figure>
-
-<p>來看這台電腦的硬體配備，用瀏覽器打開即可。</p>
+<p>這樣就可以成功Automated Build你的Dockerfile了。</p>
 
         </div>
         
             <ul class="post-copyright">
-            <li><strong>文章標題：</strong><a href="https://augustushsu.github.io/2019/12/17/DeepLearning-00/">DL Machine系列-00 環境建置</a></li>
+            <li><strong>文章標題：</strong><a href="https://augustushsu.github.io/2019/12/27/DeepLearning-04/">DL Machine系列-04 Docker Hub Automated Build</a></li>
             <li><strong>文章作者：</strong><a href="https://augustushsu.github.io">Augustus</a></li>
-            <li><strong>文章連結：</strong><a href="https://augustushsu.github.io/2019/12/17/DeepLearning-00/">https://augustushsu.github.io/2019/12/17/DeepLearning-00/</a></li>
-            <li><strong>發佈時間：</strong>2019-12-17</li>
+            <li><strong>文章連結：</strong><a href="https://augustushsu.github.io/2019/12/27/DeepLearning-04/">https://augustushsu.github.io/2019/12/27/DeepLearning-04/</a></li>
+            <li><strong>發佈時間：</strong>2019-12-27</li>
             <li><strong>版權聲明：</strong>本博客所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 許可協議。引用請註明出處！
             </li>
             </ul>
@@ -244,7 +222,7 @@
             <div class="level-start">
                 <div class="level-item">
                     <i class="fas fa-tags has-text-grey"></i>&nbsp;
-                    <a class="has-link-grey -link" href="/tags/docker/" rel="tag">docker</a>,&nbsp;<a class="has-link-grey -link" href="/tags/nvidia-gpu/" rel="tag">nvidia-gpu</a>,&nbsp;<a class="has-link-grey -link" href="/tags/static-ip/" rel="tag">static ip</a>,&nbsp;<a class="has-link-grey -link" href="/tags/ubuntu/" rel="tag">ubuntu</a>,&nbsp;<a class="has-link-grey -link" href="/tags/ubuntu-18-04/" rel="tag">ubuntu-18.04</a>,&nbsp;<a class="has-link-grey -link" href="/tags/xrdp/" rel="tag">xrdp</a>
+                    <a class="has-link-grey -link" href="/tags/Docker-Hub/" rel="tag">Docker Hub</a>,&nbsp;<a class="has-link-grey -link" href="/tags/Dockerfile/" rel="tag">Dockerfile</a>,&nbsp;<a class="has-link-grey -link" href="/tags/docker/" rel="tag">docker</a>,&nbsp;<a class="has-link-grey -link" href="/tags/non-zero-code-2/" rel="tag">non-zero code 2</a>
                 </div>
             </div>
         </div>
@@ -290,17 +268,10 @@
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
         
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/12/18/DeepLearning-01/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">DL Machine系列-01 安裝Docker-19.03+Nvidia-docker</span>
-            </a>
-        </div>
-        
         
         <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2019/12/14/hexo-03/">
-                <span class="level-item">hexo系列-03 讓google可以搜尋到你的網站</span>
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/12/23/DeepLearning-03/">
+                <span class="level-item">DL Machine系列-03 Docker</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -321,7 +292,7 @@
     var gitalk = new Gitalk({
         clientID: '35f8adf2553a86678cce',
         clientSecret: 'afeffb2652617f0d77d7a18c9f95ee4447baf5e2',
-        id: 'ff83b552f1bef8f72c571f08cbdf4469',
+        id: '54de01be9fce95bbf51e4785db6af85a',
         repo: 'augustushsu.github.io',
         owner: 'AugustusHsu',
         admin: "AugustusHsu",
@@ -453,37 +424,17 @@
                     文章目錄
                 </h3>
                 <ul class="menu-list"><li>
-        <a class="is-flex" href="#前言">
+        <a class="is-flex" href="#Docker-Hub-Automated-Builds">
         <span class="has-mr-6">1</span>
-        <span>前言</span>
+        <span>Docker Hub Automated Builds</span>
         </a></li><li>
-        <a class="is-flex" href="#電腦配置">
+        <a class="is-flex" href="#連結Github">
         <span class="has-mr-6">2</span>
-        <span>電腦配置</span>
+        <span>連結Github</span>
         </a></li><li>
-        <a class="is-flex" href="#Ubuntu-18-04安裝">
+        <a class="is-flex" href="#Docker-Hub-Build-Error">
         <span class="has-mr-6">3</span>
-        <span>Ubuntu 18.04安裝</span>
-        </a></li><li>
-        <a class="is-flex" href="#確認GPU狀態">
-        <span class="has-mr-6">4</span>
-        <span>確認GPU狀態</span>
-        </a></li><li>
-        <a class="is-flex" href="#安裝基本工具">
-        <span class="has-mr-6">5</span>
-        <span>安裝基本工具</span>
-        </a></li><li>
-        <a class="is-flex" href="#設定ip-區域網路">
-        <span class="has-mr-6">6</span>
-        <span>設定ip(區域網路)</span>
-        </a></li><li>
-        <a class="is-flex" href="#安裝vnc遠端操控">
-        <span class="has-mr-6">7</span>
-        <span>安裝vnc遠端操控</span>
-        </a></li><li>
-        <a class="is-flex" href="#補充">
-        <span class="has-mr-6">8</span>
-        <span>補充</span>
+        <span>Docker Hub Build Error</span>
         </a></li></ul>
             </div>
         </div>
@@ -507,7 +458,7 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/logo.png" alt="DL Machine系列-00 環境建置" height="28">
+                    <img src="/images/logo.png" alt="DL Machine系列-04 Docker Hub Automated Build" height="28">
                 
                 </a>
                 <p class="is-size-7">
