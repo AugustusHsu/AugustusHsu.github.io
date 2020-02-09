@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta name="google-site-verification" content="ejXsm591ahGuBYrDs3_IxpUvKBuHFqTtMiBbhUGDAVw" />
+<meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.0.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>Machine Learning-01 Triplet Loss with Different Embedding - Augustus</title>
+
+
+    <meta name="description" content="Triplet LossTriplet Loss的介紹，相信在網路上已經有許多例子了，用途跟作用這邊就不多作介紹，直接進入正題。Triplet一開始是用來處理相同模態的資料，這邊測試用兩種模態的資料來算Triplet Loss，使用numpy來實現，後面會附上Tensorflow 2.x的代碼。">
+<meta name="keywords" content="triplet loss,different embedding,tensorflow,numpy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Machine Learning-01 Triplet Loss with Different Embedding">
+<meta property="og:url" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;2020&#x2F;02&#x2F;04&#x2F;MachineLearning-01&#x2F;index.html">
+<meta property="og:site_name" content="Augustus">
+<meta property="og:description" content="Triplet LossTriplet Loss的介紹，相信在網路上已經有許多例子了，用途跟作用這邊就不多作介紹，直接進入正題。Triplet一開始是用來處理相同模態的資料，這邊測試用兩種模態的資料來算Triplet Loss，使用numpy來實現，後面會附上Tensorflow 2.x的代碼。">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;Triplet-Loss.png">
+<meta property="og:updated_time" content="2020-02-09T03:21:05.592Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;Triplet-Loss.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/zenburn.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-154556648-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-154556648-1');
+</script>
+
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<!-- <body class="is-2-column"> -->
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.png" alt="Machine Learning-01 Triplet Loss with Different Embedding" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/categories">Categories</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+                <a class="navbar-item"
+                href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="/https:/augustushsu.github.io/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;" target="_blank" rel="noopener">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜尋" href="javascript:;" target="_blank" rel="noopener">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-image">
+        <span  class="image is-7by1">
+            <img class="thumbnail" src="/uploads/Triplet-Loss.png" alt="Machine Learning-01 Triplet Loss with Different Embedding">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-02-04T11:18:26.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-02-04</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-02-09T03:21:05.592Z"><i class="far fa-calendar-check">&nbsp;</i>2020-02-09</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/Machin-Learning/">Machin Learning</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    8 分鐘 閱讀文 (大約 1246 個字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Machine Learning-01 Triplet Loss with Different Embedding
+            
+        </h1>
+        <div class="content">
+            <h2 id="Triplet-Loss"><a href="#Triplet-Loss" class="headerlink" title="Triplet Loss"></a>Triplet Loss</h2><p>Triplet Loss的介紹，相信在網路上已經有許多例子了，用途跟作用這邊就不多作介紹，直接進入正題。<br>Triplet一開始是用來處理相同模態的資料，這邊測試用兩種模態的資料來算Triplet Loss，使用<code>numpy</code>來實現，後面會附上<code>Tensorflow 2.x</code>的代碼。</p>
+<a id="more"></a>
+
+<h2 id="Sample-Data"><a href="#Sample-Data" class="headerlink" title="Sample Data"></a>Sample Data</h2><p>首先要先Sample出兩個不同的Embedding資料，直接使用<code>numpy</code>的<code>random</code>來產生兩個隨機的Embedding。<br>這邊設定Batch Size是64、每筆資料的維度為1024、Margin設定為0.3、另外Label這邊設定是每筆都是獨立的資料，所以每一筆資料對應一個label：</p>
+<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">batch = <span class="hljs-number">64</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">emb_dim = <span class="hljs-number">1024</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">np.random.seed(<span class="hljs-number">1234</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">emb1 = np.random.rand(batch,emb_dim).astype(np.float32)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">np.random.seed(<span class="hljs-number">2345</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">emb2 = np.random.rand(batch,emb_dim).astype(np.float32)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">margin = <span class="hljs-number">0.3</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">labels = np.arange(batch)</span></pre></td></tr></table></figure>
+
+<h2 id="Batch-All"><a href="#Batch-All" class="headerlink" title="Batch All"></a>Batch All</h2><p>針對一個batch所有的資料計算，anchor到positive跟anchor到negative之間的距離。</p>
+<h3 id="Distance-Metric"><a href="#Distance-Metric" class="headerlink" title="Distance Metric"></a>Distance Metric</h3><p>這裡計算每一筆x對應到每一筆y的距離，回傳的是一個shape=(batch, batch)的metric：</p>
+<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_distance_metric</span><span class="hljs-params">(x, y)</span>:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-string">"""</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    Args:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        x: tensor, with shape [m, d], (batch_size, d)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        y: tensor, with shape [n, d], (batch_size, d)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    Returns:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        dist: tensor, with shape [m, n], (batch_size, batch_size)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    """</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># |x-y|^2 = x^2 - 2xy + y^2</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># xy</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">    xy = np.matmul(x, np.transpose(y))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># x^2</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">    xx = np.matmul(x, np.transpose(x))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">    xx = np.diag(xx)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># y^2</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">    yy = np.matmul(y, np.transpose(y))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">    yy = np.diag(yy)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-string">'''</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    (batch_size,1)-(batch_size,batch_size):</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        Equivalent to each column operation</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    (batch_size,batch_size)+(1,batch_size):</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        Equivalent to each row operation</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    '''</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">    distances = np.expand_dims(xx, <span class="hljs-number">1</span>) - <span class="hljs-number">2.0</span>*xy + np.expand_dims(yy, <span class="hljs-number">0</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-keyword">return</span> distances</span></pre></td></tr></table></figure>
+
+<h3 id="Mask"><a href="#Mask" class="headerlink" title="Mask"></a>Mask</h3><p>這邊要注意Label需要使用shape=(batch_size,)的格式：</p>
+<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_label_mask</span><span class="hljs-params">(labels)</span>:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-string">'''</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    if label is same, label_mask will return True</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    ------------------------------------</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    Args:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        labels:     Label Data, shape = (batch_size,1)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    Returns:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        label_mask: tensor, with shape [m, n], (batch_size, batch_size)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        ex.</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">            labels = [1,0,1]</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">            label_mask = [[1, 0, 1],</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">                          [0, 1, 0],</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">                          [1, 0, 1]]</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    '''</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">    label_mask = np.equal(np.expand_dims(labels, <span class="hljs-number">0</span>), np.expand_dims(labels, <span class="hljs-number">1</span>))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-keyword">return</span> label_mask</span></pre></td></tr></table></figure>
+
+<h3 id="Triplet-Loss-batch-all"><a href="#Triplet-Loss-batch-all" class="headerlink" title="Triplet Loss (batch_all)"></a>Triplet Loss (batch_all)</h3><p>這邊就是全部的流程，首先先算出兩個Embedding的<code>dist_mat</code>，再分別計算屬於<code>anchor到positive的距離</code>的mask和屬於<code>anchor到negative的距離</code>就可以分別得到<code>dist_ap</code>和<code>dist_an</code>，最後再計算<code>dist_ap-dist_an+margin</code>就得出<code>triplet loss</code>，具體計算過程如下：</p>
+<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">batch_all</span><span class="hljs-params">(labels, emb1, emb2, margin)</span>:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-string">'''</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    batch all triplet loss of a batch</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    ------------------------------------</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    Args:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        labels:     Label Data, shape = (batch_size,1)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        emb1, emb2: Embedding Feature, shape = (batch_size, vector_size)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        margin:     margin, scalar</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    Returns:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        triplet_loss: scalar, for one batch</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    '''</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">    dist_mat = _distance_metric(emb1, emb2)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># an and ap mask</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">    ap_mask = _label_mask(labels)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">    an_mask = np.logical_not(ap_mask).astype(np.float32)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">    ap_mask = ap_mask.astype(np.float32)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># distance between anchor and positive</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">    dist_ap = np.sum(dist_mat*ap_mask, axis=<span class="hljs-number">1</span>)/np.sum(ap_mask, axis=<span class="hljs-number">1</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># ap - dist_mat + margin</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">    mat = np.expand_dims(dist_ap, <span class="hljs-number">1</span>) - dist_mat + margin</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># only need ap-an</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">    mat = mat*an_mask</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># caluculate the number of valid triplet loss</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">    mask = np.greater(mat, <span class="hljs-number">0.0</span>).astype(np.float32)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">    num_valid_triplets = np.sum(mask)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">    triplet_loss = mat*mask</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># &lt;1 : 1</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">    num_valid_triplets = np.maximum(num_valid_triplets, <span class="hljs-number">1.0</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># divided triplet_loss by num_valid_triplets</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line">    triplet_loss = np.sum(triplet_loss)/(num_valid_triplets + <span class="hljs-number">1e-16</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-keyword">return</span> triplet_loss, num_valid_triplets</span></pre></td></tr></table></figure>
+
+<h2 id="Batch-Hard"><a href="#Batch-Hard" class="headerlink" title="Batch Hard"></a>Batch Hard</h2><p>Batch Hard跟Batch All只差在算<code>dist_ap</code>時取最大的那一個，算<code>dist_an</code>找最小的那一個，另外也跟上面一樣計算<code>num_valid_triplets</code>，用來確認收斂程度：</p>
+<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">batch_hard</span><span class="hljs-params">(labels, emb1, emb2, margin)</span>:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-string">'''</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    batch all triplet loss of a batch</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    ------------------------------------</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    Args:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        labels:     Label Data, shape = (batch_size,1)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        emb1, emb2: Embedding Feature, shape = (batch_size, vector_size)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        margin:     margin, scalar</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    Returns:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        triplet_loss: scalar, for one batch</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    '''</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">    dist_mat = _distance_metric(emb1, emb2)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># an and ap mask</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">    ap_mask = _label_mask(labels)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">    an_mask = np.logical_not(ap_mask).astype(np.float32)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">    ap_mask = ap_mask.astype(np.float32)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># distance between anchor and positive</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">    dist_ap = np.sum(dist_mat*ap_mask, axis=<span class="hljs-number">1</span>)/np.sum(ap_mask, axis=<span class="hljs-number">1</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># ap - dist_mat + margin</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">    mat = np.expand_dims(dist_ap, <span class="hljs-number">1</span>) - dist_mat + margin</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># only need ap-an</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">    mat = mat*an_mask</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># caluculate the number of valid triplet loss</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">    mask = np.greater(mat, <span class="hljs-number">0.0</span>).astype(np.float32)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">    num_valid_triplets = np.sum(mask)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># the max of distance between anchor and positive</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">    hardest_dist_ap = np.max(dist_mat*ap_mask, axis=<span class="hljs-number">1</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># the max of distance between anchor and negative</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line">    max_num = np.max(dist_mat, axis=<span class="hljs-number">1</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line">    hardest_dist_an = dist_mat*an_mask + ap_mask*max_num</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line">    hardest_dist_an = np.amin(hardest_dist_an, axis=<span class="hljs-number">1</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">33</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># ap - dist_mat + margin</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">34</span></pre></td><td class="code"><pre><span class="line">    mat = hardest_dist_ap - hardest_dist_an + margin</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">35</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># &lt;1 : 1</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">36</span></pre></td><td class="code"><pre><span class="line">    triplet_loss = np.maximum(mat, <span class="hljs-number">0.0</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">37</span></pre></td><td class="code"><pre><span class="line">    triplet_loss = np.mean(triplet_loss)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">38</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-keyword">return</span> triplet_loss, num_valid_triplets</span></pre></td></tr></table></figure>
+
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p>接下來針對<code>triplet_loss</code>還有<code>num_valid_triplet</code>在訓練過程中的變化，另外還會對<code>emb1</code>和<code>emb2</code>算各項的平方和再開根號。</p>
+<h3 id="triplet-loss"><a href="#triplet-loss" class="headerlink" title="triplet_loss"></a>triplet_loss</h3><p>在訓練過程中triplet loss不會下降，因為這邊是計算valid triplet總和再除以需要計算的數量：</p>
+<p><img src="triplet_loss.png" alt="triplet_loss"></p>
+<h3 id="num-valid-triplet"><a href="#num-valid-triplet" class="headerlink" title="num_valid_triplet"></a>num_valid_triplet</h3><p>這跟一般類神經網路的loss一樣，會越來越少：</p>
+<p><img src="num_valid.png" alt="num_valid"></p>
+<h3 id="mean-norm-embedding"><a href="#mean-norm-embedding" class="headerlink" title="mean_norm_embedding"></a>mean_norm_embedding</h3><p>因為類神經網路要區分開<code>positive</code>跟<code>negative</code>的例子，理論上會越來越大(如右圖)，不過我因為使用的image embedding是pretrain的，所以我先凍結image network 10個epoch，所以在圖表上他沒有太大的波幅：</p>
+<p><img src="mean_norm.png" alt="mean_norm"></p>
+<h2 id="Code-Link"><a href="#Code-Link" class="headerlink" title="Code Link"></a>Code Link</h2><p><code>Tensorflow</code>所有的code都是在<code>Google Colab</code>上面執行，版本為<code>2.1.0</code>。</p>
+<p>Github：<a href="https://github.com/AugustusHsu/Blogger-Code/tree/master/MachineLearning-01%20Triplet%20Loss%20with%20Different%20Embedding" target="_blank" rel="noopener"><strong>MachineLearning-01 Triplet Loss with Different Embedding</strong></a></p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p><a href="http://www.lawlite.me/2018/10/16/Triplet-Loss原理及其实现/" target="_blank" rel="noopener">Triplet-Loss原理及其实现 </a></p>
+
+        </div>
+        
+            <ul class="post-copyright">
+            <li><strong>文章標題：</strong><a href="https://augustushsu.github.io/2020/02/04/MachineLearning-01/">Machine Learning-01 Triplet Loss with Different Embedding</a></li>
+            <li><strong>文章作者：</strong><a href="https://augustushsu.github.io">Augustus</a></li>
+            <li><strong>文章連結：</strong><a href="https://augustushsu.github.io/2020/02/04/MachineLearning-01/">https://augustushsu.github.io/2020/02/04/MachineLearning-01/</a></li>
+            <li><strong>發佈時間：</strong>2020-02-04</li>
+            <li><strong>版權聲明：</strong>本博客所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 許可協議。引用請註明出處！
+            </li>
+            </ul>
+       
+        
+        <hr style="height:1px;margin:1rem 0"/>
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/different-embedding/" rel="tag">different embedding</a>,&nbsp;<a class="has-link-grey -link" href="/tags/numpy/" rel="tag">numpy</a>,&nbsp;<a class="has-link-grey -link" href="/tags/tensorflow/" rel="tag">tensorflow</a>,&nbsp;<a class="has-link-grey -link" href="/tags/triplet-loss/" rel="tag">triplet loss</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+<div class="addthis_inline_share_toolbox"></div>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5def9374e9552f2f"></script>
+
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">喜歡這篇文章嗎? 贊助一下作者吧!</h3>
+        <div class="buttons is-centered">
+            
+                <!-- Visit https://www.paypal.com/donate/buttons/ to get your donate button -->
+
+<a class="button is-warning donate" onclick="document.getElementById(&#39;paypal-donate-form&#39;).submit()">
+    <span class="icon is-small">
+        <i class="fab fa-paypal"></i>
+    </span>
+    <span>PayPal</span>
+</a>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" id="paypal-donate-form">
+    <input type="hidden" name="cmd" value="_donations" />
+    <input type="hidden" name="business" value="V6DFAWSEDJJHE" />
+    <input type="hidden" name="currency_code" value="USD" />
+</form>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/12/27/DeepLearning-04/">
+                <span class="level-item">DL Machine系列-04 Docker Hub Automated Build</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">評論</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: '35f8adf2553a86678cce',
+        clientSecret: 'afeffb2652617f0d77d7a18c9f95ee4447baf5e2',
+        id: '23373ef9da21c7a21e66aa9241245408',
+        repo: 'augustushsu.github.io',
+        owner: 'AugustusHsu',
+        admin: "AugustusHsu",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/uploads/MyPhoto.jpg" alt="Augustus">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        Augustus
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        Strike the iron while it is hot.
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>Chiayi, Taiwan</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            10
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分類
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            3
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        標籤
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            29
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/AugustusHsu" target="_blank">
+                追蹤</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="Github" href="https://github.com/AugustusHsu">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="Facebook" href="https://www.facebook.com/HsuAugustus">
+                
+                <i class="fab fa-facebook"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="Envelope" href="mailto:jimhsu11@gmail.com">
+                
+                <i class="fas fa-envelope"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget column-left is-sticky" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    文章目錄
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#Triplet-Loss">
+        <span class="has-mr-6">1</span>
+        <span>Triplet Loss</span>
+        </a></li><li>
+        <a class="is-flex" href="#Sample-Data">
+        <span class="has-mr-6">2</span>
+        <span>Sample Data</span>
+        </a></li><li>
+        <a class="is-flex" href="#Batch-All">
+        <span class="has-mr-6">3</span>
+        <span>Batch All</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#Distance-Metric">
+        <span class="has-mr-6">3.1</span>
+        <span>Distance Metric</span>
+        </a></li><li>
+        <a class="is-flex" href="#Mask">
+        <span class="has-mr-6">3.2</span>
+        <span>Mask</span>
+        </a></li><li>
+        <a class="is-flex" href="#Triplet-Loss-batch-all">
+        <span class="has-mr-6">3.3</span>
+        <span>Triplet Loss (batch_all)</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#Batch-Hard">
+        <span class="has-mr-6">4</span>
+        <span>Batch Hard</span>
+        </a></li><li>
+        <a class="is-flex" href="#Example">
+        <span class="has-mr-6">5</span>
+        <span>Example</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#triplet-loss">
+        <span class="has-mr-6">5.1</span>
+        <span>triplet_loss</span>
+        </a></li><li>
+        <a class="is-flex" href="#num-valid-triplet">
+        <span class="has-mr-6">5.2</span>
+        <span>num_valid_triplet</span>
+        </a></li><li>
+        <a class="is-flex" href="#mean-norm-embedding">
+        <span class="has-mr-6">5.3</span>
+        <span>mean_norm_embedding</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#Code-Link">
+        <span class="has-mr-6">6</span>
+        <span>Code Link</span>
+        </a></li><li>
+        <a class="is-flex" href="#參考資料">
+        <span class="has-mr-6">7</span>
+        <span>參考資料</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.png" alt="Machine Learning-01 Triplet Loss with Different Embedding" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 Augustus&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                        
+                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-TW");</script>
+
+<script>
+var IcarusThemeSettings = {
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+    
+    
+<script src="/js/animation.js"></script>
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+    
+    
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+    
+    
+<a id="back-to-top" title="回到頁首" href="javascript:;" target="_blank" rel="noopener">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '頁面',
+                CATEGORIES: '分類',
+                TAGS: '標籤',
+                UNTITLED: '(無標題)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
