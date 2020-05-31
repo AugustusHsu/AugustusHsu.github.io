@@ -4,7 +4,7 @@
     <meta name="google-site-verification" content="ejXsm591ahGuBYrDs3_IxpUvKBuHFqTtMiBbhUGDAVw" />
 <meta charset="utf-8" />
 
-<meta name="generator" content="Hexo 4.0.0" />
+<meta name="generator" content="Hexo 4.2.1" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
@@ -12,17 +12,22 @@
 
 
     <meta name="description" content="前言這台硬碟上裝了5顆硬碟(2顆2.5’ SSD、2顆3.5’ HDD、1顆m.2 SSD)，因為我們實驗室處理的資料量都頗大，動不動就500GB-1TB，如果單純地根據硬碟分開儲存的話，可能會浪費很多剩餘空間，而且在跑資料的時候可能會產生其他資料，這又導致不能預先切割硬碟來符合檔案大小(而且很麻煩)，為了方便合理的利用所有硬碟空間，我決定將硬碟整合起來一起管理。">
-<meta name="keywords" content="lvm,pv,vg,lv">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DL Machine系列-02 建立LVM管理儲存空間">
-<meta property="og:url" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;2019&#x2F;12&#x2F;19&#x2F;DeepLearning-02&#x2F;index.html">
+<meta property="og:url" content="https://augustushsu.github.io/2019/12/19/DeepLearning-02/index.html">
 <meta property="og:site_name" content="Augustus">
 <meta property="og:description" content="前言這台硬碟上裝了5顆硬碟(2顆2.5’ SSD、2顆3.5’ HDD、1顆m.2 SSD)，因為我們實驗室處理的資料量都頗大，動不動就500GB-1TB，如果單純地根據硬碟分開儲存的話，可能會浪費很多剩餘空間，而且在跑資料的時候可能會產生其他資料，這又導致不能預先切割硬碟來符合檔案大小(而且很麻煩)，為了方便合理的利用所有硬碟空間，我決定將硬碟整合起來一起管理。">
-<meta property="og:locale" content="zh-TW">
-<meta property="og:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;nvidia_docker-cover.png">
-<meta property="og:updated_time" content="2019-12-22T19:16:36.903Z">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://augustushsu.github.io/uploads/nvidia_docker-cover.png">
+<meta property="article:published_time" content="2019-12-19T04:55:23.000Z">
+<meta property="article:modified_time" content="2019-12-22T19:16:36.903Z">
+<meta property="article:author" content="Augustus">
+<meta property="article:tag" content="lvm">
+<meta property="article:tag" content="pv">
+<meta property="article:tag" content="vg">
+<meta property="article:tag" content="lv">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;nvidia_docker-cover.png">
+<meta name="twitter:image" content="https://augustushsu.github.io/uploads/nvidia_docker-cover.png">
 
 
 
@@ -36,7 +41,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/zenburn.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/railscasts.css">
 
 
     
@@ -117,7 +122,7 @@
             <div class="navbar-end">
                 
                     
-                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="/https:/augustushsu.github.io/">
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://augustushsu.github.io/">
                         
                         <i class="fab fa-github"></i>
                         
@@ -125,12 +130,12 @@
                     
                 
                 
-                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;" target="_blank" rel="noopener">
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;">
                     <i class="fas fa-list-ul"></i>
                 </a>
                 
                 
-                <a class="navbar-item search" title="搜尋" href="javascript:;" target="_blank" rel="noopener">
+                <a class="navbar-item search" title="搜尋" href="javascript:;">
                     <i class="fas fa-search"></i>
                 </a>
                 
@@ -387,7 +392,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            11
+                            12
                         </p>
                     </a>
                 </div>
@@ -399,7 +404,7 @@
                     </p>
                     <a href="/categories">
                         <p class="title has-text-weight-normal">
-                            4
+                            5
                         </p>
                     </a>
                 </div>
@@ -614,7 +619,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
     
     
-<a id="back-to-top" title="回到頁首" href="javascript:;" target="_blank" rel="noopener">
+<a id="back-to-top" title="回到頁首" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>

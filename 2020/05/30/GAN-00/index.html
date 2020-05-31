@@ -4,25 +4,28 @@
     <meta name="google-site-verification" content="ejXsm591ahGuBYrDs3_IxpUvKBuHFqTtMiBbhUGDAVw" />
 <meta charset="utf-8" />
 
-<meta name="generator" content="Hexo 4.0.0" />
+<meta name="generator" content="Hexo 4.2.1" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 <title>GAN系列-00 Generative Adversarial Network 生成對抗網路 - Augustus</title>
 
 
-    <meta name="description" content="Generative Adversarial NetworkGenerative Adversarial Network(生成對抗網路，簡稱GAN)，算是這十年來最紅的技術，許多在機器學習領域的大佬都說：「GAN是這10年、20年來最酷、最有趣的想法。」，在網路上GAN的介紹文已經算是很氾濫了，這邊就簡單的介紹一下。">
-<meta name="keywords" content="GAN,Generative Adversarial Network">
+    <meta name="description" content="GAN介紹Generative Adversarial Network(生成對抗網路，簡稱GAN)，算是這十年來最紅的技術，許多在機器學習領域的大佬都說：「GAN是這10年、20年來最酷、最有趣的想法。」，在網路上GAN的介紹文已經算是很氾濫了，這邊就簡單的介紹一下。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GAN系列-00 Generative Adversarial Network 生成對抗網路">
-<meta property="og:url" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;2020&#x2F;05&#x2F;30&#x2F;GAN-00&#x2F;index.html">
+<meta property="og:url" content="https://augustushsu.github.io/2020/05/30/GAN-00/index.html">
 <meta property="og:site_name" content="Augustus">
-<meta property="og:description" content="Generative Adversarial NetworkGenerative Adversarial Network(生成對抗網路，簡稱GAN)，算是這十年來最紅的技術，許多在機器學習領域的大佬都說：「GAN是這10年、20年來最酷、最有趣的想法。」，在網路上GAN的介紹文已經算是很氾濫了，這邊就簡單的介紹一下。">
-<meta property="og:locale" content="zh-TW">
-<meta property="og:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;GAN.png">
-<meta property="og:updated_time" content="2020-05-30T20:22:11.864Z">
+<meta property="og:description" content="GAN介紹Generative Adversarial Network(生成對抗網路，簡稱GAN)，算是這十年來最紅的技術，許多在機器學習領域的大佬都說：「GAN是這10年、20年來最酷、最有趣的想法。」，在網路上GAN的介紹文已經算是很氾濫了，這邊就簡單的介紹一下。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://augustushsu.github.io/uploads/GAN.png">
+<meta property="article:published_time" content="2020-05-30T11:55:26.000Z">
+<meta property="article:modified_time" content="2020-05-30T21:10:46.134Z">
+<meta property="article:author" content="Augustus">
+<meta property="article:tag" content="GAN">
+<meta property="article:tag" content="Generative Adversarial Network">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;GAN.png">
+<meta name="twitter:image" content="https://augustushsu.github.io/uploads/GAN.png">
 
 
 
@@ -36,7 +39,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/zenburn.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/railscasts.css">
 
 
     
@@ -117,7 +120,7 @@
             <div class="navbar-end">
                 
                     
-                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="/https:/augustushsu.github.io/">
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://augustushsu.github.io/">
                         
                         <i class="fab fa-github"></i>
                         
@@ -125,12 +128,12 @@
                     
                 
                 
-                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;" target="_blank" rel="noopener">
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;">
                     <i class="fas fa-list-ul"></i>
                 </a>
                 
                 
-                <a class="navbar-item search" title="搜尋" href="javascript:;" target="_blank" rel="noopener">
+                <a class="navbar-item search" title="搜尋" href="javascript:;">
                     <i class="fas fa-search"></i>
                 </a>
                 
@@ -157,7 +160,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2020-05-30T11:55:26.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-30</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-30T20:22:11.864Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-31</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-30T21:10:46.134Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-31</time>
                 
                 
                 <div class="level-item">
@@ -170,7 +173,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    5 分鐘 閱讀文 (大約 763 個字)
+                    5 分鐘 閱讀文 (大約 764 個字)
                 </span>
                 
                 
@@ -183,7 +186,7 @@
             
         </h1>
         <div class="content">
-            <h2 id="Generative-Adversarial-Network"><a href="#Generative-Adversarial-Network" class="headerlink" title="Generative Adversarial Network"></a>Generative Adversarial Network</h2><p>Generative Adversarial Network(生成對抗網路，簡稱GAN)，算是這十年來最紅的技術，許多在機器學習領域的大佬都說：「GAN是這10年、20年來最酷、最有趣的想法。」，在網路上GAN的介紹文已經算是很氾濫了，這邊就簡單的介紹一下。</p>
+            <h2 id="GAN介紹"><a href="#GAN介紹" class="headerlink" title="GAN介紹"></a>GAN介紹</h2><p>Generative Adversarial Network(生成對抗網路，簡稱GAN)，算是這十年來最紅的技術，許多在機器學習領域的大佬都說：「GAN是這10年、20年來最酷、最有趣的想法。」，在網路上GAN的介紹文已經算是很氾濫了，這邊就簡單的介紹一下。</p>
 <a id="more"></a>
 
 <p>GAN是由Ian Goodfellow所在2014年所提出的方法，原本是作為非監督式學習(Unsupervised learning)使用，不過在這幾年的不斷使用，它也被證明對監督式學習、半監督式學習、強化學習是有幫助的。GAN常被用於：</p>
@@ -195,7 +198,7 @@
 </ol>
 <p>說了那麼多的應用，那GAN到底是什麼用了什麼概念讓它有這麼強大的能力呢？其實這個概念不難，就像是他本身名字所敘述的：對抗，GAN利用了兩個網路，分別是Generator跟Discriminator，來對抗彼此、精進本身，來達到目的。可以想像成偽造者跟鑑定家之間的比拼，以鈔票來舉例就是製造偽鈔者跟警察兩者的比拼，前者不斷製造假鈔來讓後者辨識，直到假鈔真假難辨為止。</p>
 <p>GAN具體的架構如同標題上方的圖片，Generator生成虛假的例子交給Discriminator辨識，Discriminator再將辨識結果回饋給Generator，透過不斷的訓練，讓兩個網路越來越強大，Generator生成的圖片就會越來越像真的了。</p>
-<h2 id="各種GAN實作"><a href="#各種GAN實作" class="headerlink" title="各種GAN實作"></a>各種GAN實作</h2><p>GAN經過這些年的發展有了許多的變體，來適應各種挑戰，這邊列舉了一些常見的GAN模型，將透過Tensorflow 2來實作：</p>
+<h2 id="各種GAN實作"><a href="#各種GAN實作" class="headerlink" title="各種GAN實作"></a>各種GAN實作</h2><p>GAN經過這些年的發展有了許多的變體，來適應各種挑戰，這邊列舉了一些常見的GAN模型，將透過Tensorflow 2.x來實作：</p>
 <ul>
 <li><input disabled type="checkbox"> <a href="http://papers.nips.cc/paper/5423-generative-adversarial-nets" target="_blank" rel="noopener">Generative Adversarial Network</a></li>
 <li><input disabled type="checkbox"> <a href="https://arxiv.org/abs/1411.1784" target="_blank" rel="noopener">Conditional Generative Adversarial Nets</a></li>
@@ -270,6 +273,13 @@
 
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/06/05/GAN-01/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">GAN系列-01 Generative Adversarial Network</span>
+            </a>
+        </div>
         
         
         <div class="level-end">
@@ -352,7 +362,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            11
+                            12
                         </p>
                     </a>
                 </div>
@@ -364,7 +374,7 @@
                     </p>
                     <a href="/categories">
                         <p class="title has-text-weight-normal">
-                            4
+                            5
                         </p>
                     </a>
                 </div>
@@ -427,9 +437,9 @@
                     文章目錄
                 </h3>
                 <ul class="menu-list"><li>
-        <a class="is-flex" href="#Generative-Adversarial-Network">
+        <a class="is-flex" href="#GAN介紹">
         <span class="has-mr-6">1</span>
-        <span>Generative Adversarial Network</span>
+        <span>GAN介紹</span>
         </a></li><li>
         <a class="is-flex" href="#各種GAN實作">
         <span class="has-mr-6">2</span>
@@ -559,7 +569,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
     
     
-<a id="back-to-top" title="回到頁首" href="javascript:;" target="_blank" rel="noopener">
+<a id="back-to-top" title="回到頁首" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>

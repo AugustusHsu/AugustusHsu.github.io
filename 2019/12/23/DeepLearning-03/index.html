@@ -4,7 +4,7 @@
     <meta name="google-site-verification" content="ejXsm591ahGuBYrDs3_IxpUvKBuHFqTtMiBbhUGDAVw" />
 <meta charset="utf-8" />
 
-<meta name="generator" content="Hexo 4.0.0" />
+<meta name="generator" content="Hexo 4.2.1" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
@@ -12,17 +12,25 @@
 
 
     <meta name="description" content="前言網路上關於Docker的資訊已經有很多了，這邊就不多作介紹了，只針對幾個常用和在我的實作上有用到的指令和套件去做介紹。 用一張圖來簡單的說明Docker的架構：">
-<meta name="keywords" content="xrdp,docker,Dockerfile,portainer,anaconda,cuda,cudnn">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DL Machine系列-03 Docker">
-<meta property="og:url" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;2019&#x2F;12&#x2F;23&#x2F;DeepLearning-03&#x2F;index.html">
+<meta property="og:url" content="https://augustushsu.github.io/2019/12/23/DeepLearning-03/index.html">
 <meta property="og:site_name" content="Augustus">
 <meta property="og:description" content="前言網路上關於Docker的資訊已經有很多了，這邊就不多作介紹了，只針對幾個常用和在我的實作上有用到的指令和套件去做介紹。 用一張圖來簡單的說明Docker的架構：">
-<meta property="og:locale" content="zh-TW">
-<meta property="og:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;docker.jpg">
-<meta property="og:updated_time" content="2019-12-23T09:28:45.691Z">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://augustushsu.github.io/uploads/docker.jpg">
+<meta property="article:published_time" content="2019-12-23T04:03:26.000Z">
+<meta property="article:modified_time" content="2019-12-23T09:28:45.691Z">
+<meta property="article:author" content="Augustus">
+<meta property="article:tag" content="xrdp">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="Dockerfile">
+<meta property="article:tag" content="portainer">
+<meta property="article:tag" content="anaconda">
+<meta property="article:tag" content="cuda">
+<meta property="article:tag" content="cudnn">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;docker.jpg">
+<meta name="twitter:image" content="https://augustushsu.github.io/uploads/docker.jpg">
 
 
 
@@ -36,7 +44,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/zenburn.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/railscasts.css">
 
 
     
@@ -117,7 +125,7 @@
             <div class="navbar-end">
                 
                     
-                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="/https:/augustushsu.github.io/">
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://augustushsu.github.io/">
                         
                         <i class="fab fa-github"></i>
                         
@@ -125,12 +133,12 @@
                     
                 
                 
-                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;" target="_blank" rel="noopener">
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;">
                     <i class="fas fa-list-ul"></i>
                 </a>
                 
                 
-                <a class="navbar-item search" title="搜尋" href="javascript:;" target="_blank" rel="noopener">
+                <a class="navbar-item search" title="搜尋" href="javascript:;">
                     <i class="fas fa-search"></i>
                 </a>
                 
@@ -421,7 +429,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            11
+                            12
                         </p>
                     </a>
                 </div>
@@ -433,7 +441,7 @@
                     </p>
                     <a href="/categories">
                         <p class="title has-text-weight-normal">
-                            4
+                            5
                         </p>
                     </a>
                 </div>
@@ -534,11 +542,11 @@
         </a></li><li>
         <a class="is-flex" href="#cuda-amp-cudnn">
         <span class="has-mr-6">3.5</span>
-        <span>cuda &amp; cudnn</span>
+        <span>cuda & cudnn</span>
         </a></li></ul></li><li>
         <a class="is-flex" href="#Build-amp-Run-amp-Upload">
         <span class="has-mr-6">4</span>
-        <span>Build &amp; Run &amp; Upload</span>
+        <span>Build & Run & Upload</span>
         </a><ul class="menu-list"><li>
         <a class="is-flex" href="#Build-Dockerfile">
         <span class="has-mr-6">4.1</span>
@@ -680,7 +688,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
     
     
-<a id="back-to-top" title="回到頁首" href="javascript:;" target="_blank" rel="noopener">
+<a id="back-to-top" title="回到頁首" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>

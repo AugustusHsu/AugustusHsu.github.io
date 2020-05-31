@@ -4,7 +4,7 @@
     <meta name="google-site-verification" content="ejXsm591ahGuBYrDs3_IxpUvKBuHFqTtMiBbhUGDAVw" />
 <meta charset="utf-8" />
 
-<meta name="generator" content="Hexo 4.0.0" />
+<meta name="generator" content="Hexo 4.2.1" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
@@ -12,17 +12,22 @@
 
 
     <meta name="description" content="Triplet LossTriplet Loss的介紹，相信在網路上已經有許多例子了，用途跟作用這邊就不多作介紹，直接進入正題。Triplet一開始是用來處理相同模態的資料，這邊測試用兩種模態的資料來算Triplet Loss，使用numpy來實現，後面會附上Tensorflow 2.x的代碼。">
-<meta name="keywords" content="triplet loss,different embedding,tensorflow,numpy">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Machine Learning-01 Triplet Loss with Different Embedding">
-<meta property="og:url" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;2020&#x2F;02&#x2F;04&#x2F;MachineLearning-01&#x2F;index.html">
+<meta property="og:url" content="https://augustushsu.github.io/2020/02/04/MachineLearning-01/index.html">
 <meta property="og:site_name" content="Augustus">
 <meta property="og:description" content="Triplet LossTriplet Loss的介紹，相信在網路上已經有許多例子了，用途跟作用這邊就不多作介紹，直接進入正題。Triplet一開始是用來處理相同模態的資料，這邊測試用兩種模態的資料來算Triplet Loss，使用numpy來實現，後面會附上Tensorflow 2.x的代碼。">
-<meta property="og:locale" content="zh-TW">
-<meta property="og:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;Triplet-Loss.png">
-<meta property="og:updated_time" content="2020-02-09T03:21:05.592Z">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://augustushsu.github.io/uploads/Triplet-Loss.png">
+<meta property="article:published_time" content="2020-02-04T11:18:26.000Z">
+<meta property="article:modified_time" content="2020-05-31T16:31:47.917Z">
+<meta property="article:author" content="Augustus">
+<meta property="article:tag" content="triplet loss">
+<meta property="article:tag" content="different embedding">
+<meta property="article:tag" content="tensorflow">
+<meta property="article:tag" content="numpy">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;augustushsu.github.io&#x2F;uploads&#x2F;Triplet-Loss.png">
+<meta name="twitter:image" content="https://augustushsu.github.io/uploads/Triplet-Loss.png">
 
 
 
@@ -36,7 +41,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/zenburn.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/railscasts.css">
 
 
     
@@ -117,7 +122,7 @@
             <div class="navbar-end">
                 
                     
-                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="/https:/augustushsu.github.io/">
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://augustushsu.github.io/">
                         
                         <i class="fab fa-github"></i>
                         
@@ -125,12 +130,12 @@
                     
                 
                 
-                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;" target="_blank" rel="noopener">
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;">
                     <i class="fas fa-list-ul"></i>
                 </a>
                 
                 
-                <a class="navbar-item search" title="搜尋" href="javascript:;" target="_blank" rel="noopener">
+                <a class="navbar-item search" title="搜尋" href="javascript:;">
                     <i class="fas fa-search"></i>
                 </a>
                 
@@ -157,12 +162,12 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2020-02-04T11:18:26.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-02-04</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-02-09T03:21:05.592Z"><i class="far fa-calendar-check">&nbsp;</i>2020-02-09</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-31T16:31:47.917Z"><i class="far fa-calendar-check">&nbsp;</i>2020-06-01</time>
                 
                 
                 <div class="level-item">
                 <i class="far fa-folder-open has-text-grey"></i>&nbsp;
-                <a class="has-link-grey -link" href="/categories/Machin-Learning/">Machin Learning</a>
+                <a class="has-link-grey -link" href="/categories/%E7%AD%86%E8%A8%98/">筆記</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/%E7%AD%86%E8%A8%98/Machin-Learning/">Machin Learning</a>
                 </div>
                 
                 
@@ -170,7 +175,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    8 分鐘 閱讀文 (大約 1246 個字)
+                    11 分鐘 閱讀文 (大約 1594 個字)
                 </span>
                 
                 
@@ -190,10 +195,18 @@
 <figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">batch = <span class="hljs-number">64</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">emb_dim = <span class="hljs-number">1024</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">np.random.seed(<span class="hljs-number">1234</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">emb1 = np.random.rand(batch,emb_dim).astype(np.float32)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">np.random.seed(<span class="hljs-number">2345</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">emb2 = np.random.rand(batch,emb_dim).astype(np.float32)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">margin = <span class="hljs-number">0.3</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">labels = np.arange(batch)</span></pre></td></tr></table></figure>
 
 <h2 id="Batch-All"><a href="#Batch-All" class="headerlink" title="Batch All"></a>Batch All</h2><p>針對一個batch所有的資料計算，anchor到positive跟anchor到negative之間的距離。</p>
-<h3 id="Distance-Metric"><a href="#Distance-Metric" class="headerlink" title="Distance Metric"></a>Distance Metric</h3><p>這裡計算每一筆x對應到每一筆y的距離，回傳的是一個shape=(batch, batch)的metric：</p>
-<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_distance_metric</span><span class="hljs-params">(x, y)</span>:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-string">"""</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    Args:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        x: tensor, with shape [m, d], (batch_size, d)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        y: tensor, with shape [n, d], (batch_size, d)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    Returns:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        dist: tensor, with shape [m, n], (batch_size, batch_size)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    """</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># |x-y|^2 = x^2 - 2xy + y^2</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># xy</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">    xy = np.matmul(x, np.transpose(y))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># x^2</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">    xx = np.matmul(x, np.transpose(x))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">    xx = np.diag(xx)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># y^2</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">    yy = np.matmul(y, np.transpose(y))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">    yy = np.diag(yy)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-string">'''</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    (batch_size,1)-(batch_size,batch_size):</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        Equivalent to each column operation</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    (batch_size,batch_size)+(1,batch_size):</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        Equivalent to each row operation</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    '''</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">    distances = np.expand_dims(xx, <span class="hljs-number">1</span>) - <span class="hljs-number">2.0</span>*xy + np.expand_dims(yy, <span class="hljs-number">0</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-keyword">return</span> distances</span></pre></td></tr></table></figure>
+<h3 id="Distance-Metric"><a href="#Distance-Metric" class="headerlink" title="Distance Metric"></a>Distance Metric</h3><p>從<a href="https://github.com/tensorflow/addons/blob/ad132da23a8162eb97c435676dd7426e622a0074/tensorflow_addons/losses/metric_learning.py" target="_blank" rel="noopener">Tensorflow Addons原始碼</a>中學到的技巧，使用square再加起來等價於原本的計算：</p>
+<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 矩陣相乘再取對角的element</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">xx = np.matmul(x, np.transpose(x))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">xx = np.diag(xx)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 使用square再根據axix=1相加</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">xx = tf.math.reduce_sum(tf.math.square(x), axis=[<span class="hljs-number">1</span>], keepdims=<span class="hljs-literal">True</span>)</span></pre></td></tr></table></figure>
 
-<h3 id="Mask"><a href="#Mask" class="headerlink" title="Mask"></a>Mask</h3><p>這邊要注意Label需要使用shape=(batch_size,)的格式：</p>
+
+
+<p>這裡計算每一筆x對應到每一筆y的距離，回傳的是一個shape=(batch, batch)的metric：</p>
+<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_distance_metric</span><span class="hljs-params">(x, y, squared=True)</span>:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-string">"""</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    Args:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        x: tensor, with shape [m, d], (batch_size, d)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        y: tensor, with shape [n, d], (batch_size, d)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    Returns:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        dist: tensor, with shape [m, n], (batch_size, batch_size)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    """</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># |x-y|^2 = x^2 - 2xy + y^2</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-string">'''xy'''</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">    xy = np.matmul(x, np.transpose(y))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">    square_norm = np.diag(xy)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-string">'''x^2'''</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">    xx = np.expand_dims(square_norm, <span class="hljs-number">0</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-string">'''y^2'''</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">    yy = np.expand_dims(square_norm, <span class="hljs-number">1</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-string">'''</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    (batch_size,1)-(batch_size,batch_size):</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        Equivalent to each column operation</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    (batch_size,batch_size)+(1,batch_size):</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        Equivalent to each row operation</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    '''</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">    distances = np.add(xx, yy) - <span class="hljs-number">2.0</span> * xy</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># Deal with numerical inaccuracies. Set small negatives to zero.</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">    distances = np.maximum(distances, <span class="hljs-number">0.0</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># Get the mask where the zero distances are at.</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">    error_mask = np.less_equal(distances, <span class="hljs-number">0.0</span>).astype(np.float32)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> squared:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line">        <span class="hljs-comment"># Because the gradient of sqrt is infinite when distances == 0.0 (ex: on the diagonal)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line">        <span class="hljs-comment"># we need to add a small epsilon where distances == 0.0</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">33</span></pre></td><td class="code"><pre><span class="line">        distances = np.sqrt(distances + error_mask * <span class="hljs-number">1e-16</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">34</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">35</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># Undo conditionally adding 1e-16.</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">36</span></pre></td><td class="code"><pre><span class="line">    distances = np.multiply(distances, np.logical_not(error_mask),)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">37</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">38</span></pre></td><td class="code"><pre><span class="line">    num_data = np.shape(x)[<span class="hljs-number">0</span>]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">39</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-comment"># Explicitly set diagonals to zero.</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">40</span></pre></td><td class="code"><pre><span class="line">    mask_offdiagonals = np.ones_like(distances) - np.diag(np.ones([num_data]))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">41</span></pre></td><td class="code"><pre><span class="line">    distances = np.multiply(distances, mask_offdiagonals)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">42</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-keyword">return</span> distances</span></pre></td></tr></table></figure>
+
+<h3 id="Mask"><a href="#Mask" class="headerlink" title="Mask"></a>Mask</h3><p>_masked_minimum就是將’乘上mask後的data中根據dim的最小值’，具體大概是：</p>
+<p><code>首先將每筆資料對應的最大值選取出來，命名為：axis_maximums，將Distance Metric減掉這個最大值(axis_maximums)，再乘上mask選取出需要比較的數值，接下來根據dim取出對應行或列中最小值，最後再將axis_maximum加回去就可以得到需要的結果，然後需要注意這邊有keepdims，所以會是(batch, 1)的形式。</code></p>
+<p>_masked_maximum做的事情和上面一樣，不過得到的為最大值。</p>
+<p>這邊要注意Label需要使用shape=(batch_size,)的格式：</p>
 <figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_label_mask</span><span class="hljs-params">(labels)</span>:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-string">'''</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    if label is same, label_mask will return True</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    ------------------------------------</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    Args:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        labels:     Label Data, shape = (batch_size,1)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    Returns:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        label_mask: tensor, with shape [m, n], (batch_size, batch_size)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">        ex.</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">            labels = [1,0,1]</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">            label_mask = [[1, 0, 1],</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">                          [0, 1, 0],</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">                          [1, 0, 1]]</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">    '''</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">    label_mask = np.equal(np.expand_dims(labels, <span class="hljs-number">0</span>), np.expand_dims(labels, <span class="hljs-number">1</span>))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-keyword">return</span> label_mask</span></pre></td></tr></table></figure>
 
 <h3 id="Triplet-Loss-batch-all"><a href="#Triplet-Loss-batch-all" class="headerlink" title="Triplet Loss (batch_all)"></a>Triplet Loss (batch_all)</h3><p>這邊就是全部的流程，首先先算出兩個Embedding的<code>dist_mat</code>，再分別計算屬於<code>anchor到positive的距離</code>的mask和屬於<code>anchor到negative的距離</code>就可以分別得到<code>dist_ap</code>和<code>dist_an</code>，最後再計算<code>dist_ap-dist_an+margin</code>就得出<code>triplet loss</code>，具體計算過程如下：</p>
@@ -364,7 +377,7 @@
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            11
+                            12
                         </p>
                     </a>
                 </div>
@@ -376,7 +389,7 @@
                     </p>
                     <a href="/categories">
                         <p class="title has-text-weight-normal">
-                            4
+                            5
                         </p>
                     </a>
                 </div>
@@ -615,7 +628,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
     
     
-<a id="back-to-top" title="回到頁首" href="javascript:;" target="_blank" rel="noopener">
+<a id="back-to-top" title="回到頁首" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>
