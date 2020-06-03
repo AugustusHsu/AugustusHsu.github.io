@@ -8,24 +8,26 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>GAN系列-01 Generative Adversarial Network - Augustus</title>
+<title>hexo系列-04 目前為止遇到的問題 - Augustus</title>
 
 
-    <meta name="description" content="Generative Adversarial Network">
+    <meta name="description" content="這邊羅列一些在使用Hexo建構自己的Blogger時遇到的一些問題。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="GAN系列-01 Generative Adversarial Network">
-<meta property="og:url" content="https://augustushsu.github.io/2020/06/05/GAN-01/index.html">
+<meta property="og:title" content="hexo系列-04 目前為止遇到的問題">
+<meta property="og:url" content="https://augustushsu.github.io/2020/06/03/hexo-04/index.html">
 <meta property="og:site_name" content="Augustus">
-<meta property="og:description" content="Generative Adversarial Network">
+<meta property="og:description" content="這邊羅列一些在使用Hexo建構自己的Blogger時遇到的一些問題。">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://augustushsu.github.io/uploads/GAN.png">
-<meta property="article:published_time" content="2020-06-05T11:55:26.000Z">
-<meta property="article:modified_time" content="2020-05-30T20:29:41.037Z">
+<meta property="og:image" content="https://augustushsu.github.io/uploads/hexo-cover.png">
+<meta property="article:published_time" content="2020-06-03T04:00:00.000Z">
+<meta property="article:modified_time" content="2020-05-31T20:58:29.704Z">
 <meta property="article:author" content="Augustus">
-<meta property="article:tag" content="GAN">
-<meta property="article:tag" content="Generative Adversarial Network">
+<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="bug">
+<meta property="article:tag" content="categories">
+<meta property="article:tag" content="highlight">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://augustushsu.github.io/uploads/GAN.png">
+<meta name="twitter:image" content="https://augustushsu.github.io/uploads/hexo-cover.png">
 
 
 
@@ -92,7 +94,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.png" alt="GAN系列-01 Generative Adversarial Network" height="28">
+                <img src="/images/logo.png" alt="hexo系列-04 目前為止遇到的問題" height="28">
             
             </a>
         </div>
@@ -150,7 +152,7 @@
     
     <div class="card-image">
         <span  class="image is-7by1">
-            <img class="thumbnail" src="/uploads/GAN.png" alt="GAN系列-01 Generative Adversarial Network">
+            <img class="thumbnail" src="/uploads/hexo-cover.png" alt="hexo系列-04 目前為止遇到的問題">
         </span>
     </div>
     
@@ -158,12 +160,12 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-06-05T11:55:26.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-06-05</time>
+                <time class="level-item has-text-grey" datetime="2020-06-03T04:00:00.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-06-03</time>
                 
                 
                 <div class="level-item">
                 <i class="far fa-folder-open has-text-grey"></i>&nbsp;
-                <a class="has-link-grey -link" href="/categories/GAN/">GAN</a>
+                <a class="has-link-grey -link" href="/categories/hexo/">hexo</a>
                 </div>
                 
                 
@@ -171,7 +173,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    幾秒 閱讀文 (大約 3 個字)
+                    3 分鐘 閱讀文 (大約 495 個字)
                 </span>
                 
                 
@@ -180,18 +182,41 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                GAN系列-01 Generative Adversarial Network
+                hexo系列-04 目前為止遇到的問題
             
         </h1>
         <div class="content">
-            <h2 id="Generative-Adversarial-Network"><a href="#Generative-Adversarial-Network" class="headerlink" title="Generative Adversarial Network"></a>Generative Adversarial Network</h2>
+            <html><head></head><body><p>這邊羅列一些在使用Hexo建構自己的Blogger時遇到的一些問題。</p>
+<a id="more"></a>
+
+<h2 id="Categories跟Sub-Categories"><a href="#Categories跟Sub-Categories" class="headerlink" title="Categories跟Sub-Categories"></a>Categories跟Sub-Categories</h2><p>第一個先記錄一個比較智障的問題：一直以來在其他hexo使用者的網頁中，他們的分類中下方有一個較小的分類，就是在網站中的categories下能有像是樹狀圖的層層結構，我一直以為那是需要額外安裝的，加上我文章量本來就比較少，所以我一直不以為意XD，就像下面那樣：</p>
+<p><img src="Origin_Categories.png" alt="Origin Categories Page"></p>
+<p>經過一番搜尋發現只需要在.md上面的categories改成：</p>
+<figure class="highlight markdown hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">categories: [母類別, 子類別]</span><br></pre></td></tr></tbody></table></figure>
+
+<p>就可以產生如下的成果：</p>
+<p><img src="After_Categories.png" alt="After Changing Categories Page"></p>
+<h2 id="調整圖片的長寬"><a href="#調整圖片的長寬" class="headerlink" title="調整圖片的長寬"></a>調整圖片的長寬</h2><p>這個問題跟上面的問題差不多，算是一個使用hexo的小技巧，基本上就是直接html的語法來調整長跟寬：</p>
+<figure class="highlight markdown hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-xml"><span class="hljs-tag"><<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/image/test.jpg"</span> <span class="hljs-attr">width</span>=<span class="hljs-string">"50%"</span> <span class="hljs-attr">height</span>=<span class="hljs-string">"50%"</span>></span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<img src="Sample.jpg" width="50%" height="50%">
+
+
+
+<h2 id="Highlight中的Clipboard和複製到行號"><a href="#Highlight中的Clipboard和複製到行號" class="headerlink" title="Highlight中的Clipboard和複製到行號"></a>Highlight中的Clipboard和複製到行號</h2><p>如題所述，這也是困擾了我一陣子的問題，每次在寫Blogger，複製程式碼的時候都會一起複製到行號，另外點選右上角clipboard只會複製到第一行的內容：</p>
+<p><img src="Highlight_Problem.png" alt="Highlight_Problem"></p>
+<p>經過<a href="https://github.com/ppoffice/hexo-theme-icarus/issues/563" target="_blank" rel="noopener">搜尋</a>發現是hexo-util這個套件的問題，在某一次更新後highlight的渲染出了問題，我透過更新npm還有hexo來解決：</p>
+<figure class="highlight bash hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">npm update</span><br><span class="line">npm install hexo</span><br><span class="line"><span class="hljs-built_in">cd</span> /your/hexo/folder</span><br><span class="line"><span class="hljs-comment"># 更新完後需要在渲染一次你的頁面</span></span><br><span class="line">hexo g</span><br></pre></td></tr></tbody></table></figure>
+
+<p>理論上這樣操作就可以解決這個問題了，不過我經過重開機後才解決這個問題，猜測也許是npm的一些設定在安裝好新版本的hexo後沒有更新，如果更新完後發現沒有效果，可以先試試看重新開機。</p>
+</body></html>
         </div>
         
             <ul class="post-copyright">
-            <li><strong>文章標題：</strong><a href="https://augustushsu.github.io/2020/06/05/GAN-01/">GAN系列-01 Generative Adversarial Network</a></li>
+            <li><strong>文章標題：</strong><a href="https://augustushsu.github.io/2020/06/03/hexo-04/">hexo系列-04 目前為止遇到的問題</a></li>
             <li><strong>文章作者：</strong><a href="https://augustushsu.github.io">Augustus</a></li>
-            <li><strong>文章連結：</strong><a href="https://augustushsu.github.io/2020/06/05/GAN-01/">https://augustushsu.github.io/2020/06/05/GAN-01/</a></li>
-            <li><strong>發佈時間：</strong>2020-06-05</li>
+            <li><strong>文章連結：</strong><a href="https://augustushsu.github.io/2020/06/03/hexo-04/">https://augustushsu.github.io/2020/06/03/hexo-04/</a></li>
+            <li><strong>發佈時間：</strong>2020-06-03</li>
             <li><strong>版權聲明：</strong>本博客所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 許可協議。引用請註明出處！
             </li>
             </ul>
@@ -202,7 +227,7 @@
             <div class="level-start">
                 <div class="level-item">
                     <i class="fas fa-tags has-text-grey"></i>&nbsp;
-                    <a class="has-link-grey -link" href="/tags/GAN/" rel="tag">GAN</a>,&nbsp;<a class="has-link-grey -link" href="/tags/Generative-Adversarial-Network/" rel="tag">Generative Adversarial Network</a>
+                    <a class="has-link-grey -link" href="/tags/bug/" rel="tag">bug</a>,&nbsp;<a class="has-link-grey -link" href="/tags/categories/" rel="tag">categories</a>,&nbsp;<a class="has-link-grey -link" href="/tags/hexo/" rel="tag">hexo</a>,&nbsp;<a class="has-link-grey -link" href="/tags/highlight/" rel="tag">highlight</a>
                 </div>
             </div>
         </div>
@@ -272,7 +297,7 @@
     var gitalk = new Gitalk({
         clientID: '35f8adf2553a86678cce',
         clientSecret: 'afeffb2652617f0d77d7a18c9f95ee4447baf5e2',
-        id: '2ef0bd6ff4ee512ba4c9eaa50f58f10f',
+        id: '14e418f611a1d0116088621d352835d3',
         repo: 'augustushsu.github.io',
         owner: 'AugustusHsu',
         admin: "AugustusHsu",
@@ -353,7 +378,7 @@
                     </p>
                     <a href="/tags">
                         <p class="title has-text-weight-normal">
-                            31
+                            36
                         </p>
                     </a>
                 </div>
@@ -404,9 +429,17 @@
                     文章目錄
                 </h3>
                 <ul class="menu-list"><li>
-        <a class="is-flex" href="#Generative-Adversarial-Network">
+        <a class="is-flex" href="#Categories跟Sub-Categories">
         <span class="has-mr-6">1</span>
-        <span>Generative Adversarial Network</span>
+        <span>Categories跟Sub-Categories</span>
+        </a></li><li>
+        <a class="is-flex" href="#調整圖片的長寬">
+        <span class="has-mr-6">2</span>
+        <span>調整圖片的長寬</span>
+        </a></li><li>
+        <a class="is-flex" href="#Highlight中的Clipboard和複製到行號">
+        <span class="has-mr-6">3</span>
+        <span>Highlight中的Clipboard和複製到行號</span>
         </a></li></ul>
             </div>
         </div>
@@ -430,7 +463,7 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/logo.png" alt="GAN系列-01 Generative Adversarial Network" height="28">
+                    <img src="/images/logo.png" alt="hexo系列-04 目前為止遇到的問題" height="28">
                 
                 </a>
                 <p class="is-size-7">

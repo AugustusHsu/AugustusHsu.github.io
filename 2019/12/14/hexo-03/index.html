@@ -188,21 +188,21 @@
             
         </h1>
         <div class="content">
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>原本以為要讓自己的網站在網路上可以被搜尋到，只要能用網址打開網站，之後Google搜尋引擎就可以搜尋到相對應的內容，沒有想到事情不是那麼簡單的<del>我還是太年輕了</del>。</p>
+            <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>原本以為要讓自己的網站在網路上可以被搜尋到，只要能用網址打開網站，之後Google搜尋引擎就可以搜尋到相對應的內容，沒有想到事情不是那麼簡單的<del>我還是太年輕了</del>。</p>
 <a id="more"></a>
 
-<p>要讓搜尋引擎能搜到自己的網站，首先要去<a href="ttps://www.google.com/webmasters/" target="_blank" rel="noopener">Google網站管理員</a>的<a href="https://search.google.com/search-console/" target="_blank" rel="noopener">Google Search Console</a>提交網站的一些設定，詳細的會在下面一一列出。</p>
-<h2 id="安裝sitemap套件"><a href="#安裝sitemap套件" class="headerlink" title="安裝sitemap套件"></a>安裝sitemap套件</h2><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-sitemap --save</span></pre></td></tr></table></figure>
+<p>要讓搜尋引擎能搜到自己的網站，首先要去<a href="ttps://www.google.com/webmasters/">Google網站管理員</a>的<a href="https://search.google.com/search-console/" target="_blank" rel="noopener">Google Search Console</a>提交網站的一些設定，詳細的會在下面一一列出。</p>
+<h2 id="安裝sitemap套件"><a href="#安裝sitemap套件" class="headerlink" title="安裝sitemap套件"></a>安裝sitemap套件</h2><figure class="highlight bash hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-sitemap --save</span><br></pre></td></tr></tbody></table></figure>
 
 <p>安裝這個套件會直接幫你生成需要的檔案，接著在<code>theme/_config.yml</code>加上下面這段：</p>
-<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">#Sitemap</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">sitemap:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    <span class="hljs-attr">path:</span> <span class="hljs-string">sitemap.xml</span></span></pre></td></tr></table></figure>
+<figure class="highlight yaml hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">#Sitemap</span></span><br><span class="line"><span class="hljs-attr">sitemap:</span></span><br><span class="line">    <span class="hljs-attr">path:</span> <span class="hljs-string">sitemap.xml</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>接下來用：</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">hexo g</span></pre></td></tr></table></figure>
+<figure class="highlight bash hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></tbody></table></figure>
 
 <p>生成<code>sitemap.xml</code>的檔案，位於<code>XXX.github.io/public/</code>中。</p>
 <h2 id="創建robots-txt"><a href="#創建robots-txt" class="headerlink" title="創建robots.txt"></a>創建<code>robots.txt</code></h2><p>在<code>XXX.github.io/source</code>中創建<code>robots.txt</code>文件：</p>
-<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># hexo robots.txt</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">User-agent:</span> <span class="hljs-string">*</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/archives/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/categories/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/tags/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/about/</span> </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Disallow: /js/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Disallow: /css/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Disallow: /fancybox/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">Sitemap:</span> <span class="hljs-string">https://augustushsu.github.io/sitemap.xml</span></span></pre></td></tr></table></figure>
+<figure class="highlight yaml hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># hexo robots.txt</span></span><br><span class="line"><span class="hljs-attr">User-agent:</span> <span class="hljs-string">*</span></span><br><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/</span></span><br><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/archives/</span></span><br><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/categories/</span></span><br><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/tags/</span></span><br><span class="line"><span class="hljs-attr">Allow:</span> <span class="hljs-string">/about/</span> </span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># Disallow: /js/</span></span><br><span class="line"><span class="hljs-comment"># Disallow: /css/</span></span><br><span class="line"><span class="hljs-comment"># Disallow: /fancybox/</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-attr">Sitemap:</span> <span class="hljs-string">https://augustushsu.github.io/sitemap.xml</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p><code>robots.txt</code>是用來告訴網路搜尋引擎的漫遊器(又稱網路蜘蛛)，此網站中的哪些內容是不應被搜尋引擎的漫遊器取得的，哪些是可以被漫遊器取得的。</p>
 <p>其中<code>Allow</code>後面加的就是你的menu，也就是允許漫遊器搜尋的到網頁，而<code>Disallow</code>則相反。</p>
@@ -214,7 +214,7 @@
 <p>這邊選擇的是用<code>HTML標記</code>，將google提供的html程式碼複製到<code>XXX.github.io/themes/icarus/layout/common/head.ejs</code>，直接加在最上面就可以：</p>
 <p><img src="GSC-03.jpg" alt="Google Search Console Finish"></p>
 <p>接著上傳到GitHub：</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">hexo -g d</span></pre></td></tr></table></figure>
+<figure class="highlight bash hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo -g d</span><br></pre></td></tr></tbody></table></figure>
 
 <p>按下驗證，如果設置的正確，就會跳出以下畫面：</p>
 <p><img src="GSC-finish.png" alt="Google Search Console HTML"></p>
@@ -226,12 +226,12 @@
 <p><img src="GSC-robots.jpg" alt="Google Search Console Robots"></p>
 <h2 id="Google-Analytics"><a href="#Google-Analytics" class="headerlink" title="Google Analytics"></a>Google Analytics</h2><p>打開<a href="https://analytics.google.com" target="_blank" rel="noopener">Google Analytics</a>網站，註冊一個帳號，然後點選追蹤程式碼，複製你的<code>追蹤ID</code>，形式大概是<code>UA-XXXXXXXX-X</code>。</p>
 <p>將上面的ID輸入到<code>Icarus</code>下<code>_config.yml</code>檔案中的：</p>
-<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">google-analytics:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">  <span class="hljs-comment"># Google Analytics tracking id</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">  <span class="hljs-attr">tracking_id:</span> <span class="hljs-string">UA-XXXXXXXX-X</span></span></pre></td></tr></table></figure>
+<figure class="highlight yaml hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">google-analytics:</span></span><br><span class="line">  <span class="hljs-comment"># Google Analytics tracking id</span></span><br><span class="line">  <span class="hljs-attr">tracking_id:</span> <span class="hljs-string">UA-XXXXXXXX-X</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>最後再將你的成品上傳到Github就完成囉～</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">hexo -g d</span></pre></td></tr></table></figure>
+<figure class="highlight bash hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo -g d</span><br></pre></td></tr></tbody></table></figure>
 
-
+</body></html>
         </div>
         
             <ul class="post-copyright">
@@ -407,7 +407,7 @@
                     </p>
                     <a href="/tags">
                         <p class="title has-text-weight-normal">
-                            31
+                            36
                         </p>
                     </a>
                 </div>
