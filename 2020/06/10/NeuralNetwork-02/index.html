@@ -11,16 +11,16 @@
 <title>Neural Network-02 Triplet Loss Example at MNIST - Augustus</title>
 
 
-    <meta name="description" content="前言Triplet Loss在FaceNet那篇論文中，主要是要讓屬於相同一個人的人臉圖片在一個Latent Space中越靠近越好，而讓不屬於這個人的人臉在這個Latent Space中遠離這個人，在這裡我使用MNIST資料集來取代人臉資料，將具有相同類別的手寫圖片彼此聚在一起，讓不同的數字之間有一定的差距。">
+    <meta name="description" content="前言Triplet Loss在FaceNet那篇論文中，主要是要讓屬於相同一個人的人臉圖片在一個Latent Space中越靠近越好，而讓不屬於這個人的人臉在這個Latent Space中遠離這個人，在這裡我使用MNIST資料集來取代人臉資料，將具有相同類別的手寫圖片彼此聚在一起，讓不同的數字之間有一定的差距。 以下的內容為個人理解，如有其他見解歡迎留言討論～">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Neural Network-02 Triplet Loss Example at MNIST">
 <meta property="og:url" content="https://augustushsu.github.io/2020/06/10/NeuralNetwork-02/index.html">
 <meta property="og:site_name" content="Augustus">
-<meta property="og:description" content="前言Triplet Loss在FaceNet那篇論文中，主要是要讓屬於相同一個人的人臉圖片在一個Latent Space中越靠近越好，而讓不屬於這個人的人臉在這個Latent Space中遠離這個人，在這裡我使用MNIST資料集來取代人臉資料，將具有相同類別的手寫圖片彼此聚在一起，讓不同的數字之間有一定的差距。">
+<meta property="og:description" content="前言Triplet Loss在FaceNet那篇論文中，主要是要讓屬於相同一個人的人臉圖片在一個Latent Space中越靠近越好，而讓不屬於這個人的人臉在這個Latent Space中遠離這個人，在這裡我使用MNIST資料集來取代人臉資料，將具有相同類別的手寫圖片彼此聚在一起，讓不同的數字之間有一定的差距。 以下的內容為個人理解，如有其他見解歡迎留言討論～">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://augustushsu.github.io/uploads/Triplet-Loss.png">
 <meta property="article:published_time" content="2020-06-10T05:00:32.000Z">
-<meta property="article:modified_time" content="2020-06-09T19:15:55.153Z">
+<meta property="article:modified_time" content="2020-06-09T20:06:10.352Z">
 <meta property="article:author" content="Augustus">
 <meta property="article:tag" content="triplet loss">
 <meta property="article:tag" content="tensorflow">
@@ -174,7 +174,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    7 分鐘 閱讀文 (大約 1008 個字)
+                    10 分鐘 閱讀文 (大約 1487 個字)
                 </span>
                 
                 
@@ -188,13 +188,14 @@
         </h1>
         <div class="content">
             <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Triplet Loss在FaceNet那篇論文中，主要是要讓屬於相同一個人的人臉圖片在一個Latent Space中越靠近越好，而讓不屬於這個人的人臉在這個Latent Space中遠離這個人，在這裡我使用MNIST資料集來取代人臉資料，將具有相同類別的手寫圖片彼此聚在一起，讓不同的數字之間有一定的差距。</p>
+<p>以下的內容為個人理解，如有其他見解歡迎留言討論～</p>
 <a id="more"></a>
 
 <h2 id="前處理和類神經網路"><a href="#前處理和類神經網路" class="headerlink" title="前處理和類神經網路"></a>前處理和類神經網路</h2><p>首先先定義出MNIST資料要如何使用，再來設計類神經網路，最後將網路和Optimizer使用到實際的訓練過程上。</p>
-<h3 id="資料集"><a href="#資料集" class="headerlink" title="資料集"></a>資料集</h3><p>這邊使用Tensorflow的程式碼直接將MNIST的資料load進來，再將資料normalize到-1到1之間：</p>
+<h3 id="資料集-and-網路架構"><a href="#資料集-and-網路架構" class="headerlink" title="資料集 and 網路架構"></a>資料集 and 網路架構</h3><p>這邊使用Tensorflow的程式碼直接將MNIST的資料load進來，再將資料normalize到-1到1之間：</p>
 <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> tensorflow <span class="hljs-keyword">as</span> tf</span><br><span class="line"><span class="hljs-keyword">from</span> tensorflow.keras.datasets.mnist <span class="hljs-keyword">import</span> load_data</span><br><span class="line"><span class="hljs-keyword">from</span> args <span class="hljs-keyword">import</span> parser</span><br><span class="line"></span><br><span class="line">opts = parser()</span><br><span class="line"></span><br><span class="line">[(train_x, train_y), (test_x, test_y)] = load_data(<span class="hljs-string">'mnist.npz'</span>)</span><br><span class="line">test_x = test_x.reshape(test_x.shape[<span class="hljs-number">0</span>], <span class="hljs-number">28</span>, <span class="hljs-number">28</span>, <span class="hljs-number">1</span>).astype(<span class="hljs-string">'float32'</span>)</span><br><span class="line">test_x = (test_x - <span class="hljs-number">127.5</span>) / <span class="hljs-number">127.5</span></span><br><span class="line"></span><br><span class="line">train_images = train_x.reshape(train_x.shape[<span class="hljs-number">0</span>], <span class="hljs-number">28</span>, <span class="hljs-number">28</span>, <span class="hljs-number">1</span>).astype(<span class="hljs-string">'float32'</span>)</span><br><span class="line">train_images = (train_images - <span class="hljs-number">127.5</span>) / <span class="hljs-number">127.5</span></span><br><span class="line"></span><br><span class="line">train_dataset = tf.data.Dataset.from_tensor_slices((train_images, train_y))</span><br><span class="line">train_dataset = train_dataset.shuffle(opts.BUFFER_SIZE)</span><br><span class="line">train_dataset = train_dataset.batch(opts.BATCH_SIZE).take(<span class="hljs-number">20</span>)</span><br></pre></td></tr></tbody></table></figure>
 
-<h3 id="網路架構"><a href="#網路架構" class="headerlink" title="網路架構"></a>網路架構</h3><p>這邊簡單的用兩層CNN加上一層全連結層，並且在最後做一個l2 normalize，將embedding的範圍限制住，通常在做Triplet的時候，都會做l2 normalize讓經過Triplet Net之後的Vector限制在一個範圍內：</p>
+<p>這邊簡單的用兩層CNN加上一層全連結層，並且在最後做一個l2 normalize，將embedding的範圍限制住，通常在做Triplet的時候，都會做l2 normalize讓經過Triplet Net之後的Vector限制在一個範圍內：</p>
 <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> tensorflow <span class="hljs-keyword">as</span> tf</span><br><span class="line"><span class="hljs-keyword">from</span> tensorflow.keras <span class="hljs-keyword">import</span> Model, layers</span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Triplet_Net</span><span class="hljs-params">(Model)</span>:</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span></span><br><span class="line">        super(Triplet_Net, self).__init__(self)</span><br><span class="line">        self.emb_layer = tf.keras.models.Sequential([</span><br><span class="line">            layers.Conv2D(<span class="hljs-number">64</span>, (<span class="hljs-number">5</span>, <span class="hljs-number">5</span>), strides=(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>), padding=<span class="hljs-string">'same'</span>),</span><br><span class="line">            layers.LeakyReLU(),</span><br><span class="line">            layers.Dropout(<span class="hljs-number">0.3</span>),</span><br><span class="line">            </span><br><span class="line">            layers.Conv2D(<span class="hljs-number">64</span>, (<span class="hljs-number">5</span>, <span class="hljs-number">5</span>), strides=(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>), padding=<span class="hljs-string">'same'</span>),</span><br><span class="line">            layers.LeakyReLU(),</span><br><span class="line">            layers.Dropout(<span class="hljs-number">0.3</span>),</span><br><span class="line">            </span><br><span class="line">            layers.Flatten(),</span><br><span class="line">            tf.keras.layers.Dense(<span class="hljs-number">200</span>)])</span><br><span class="line">        self.l2_norm = layers.Lambda(<span class="hljs-keyword">lambda</span> x: tf.math.l2_normalize(x, axis=<span class="hljs-number">1</span>))</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">call</span><span class="hljs-params">(self, img, training=True)</span>:</span></span><br><span class="line">        vec = self.emb_layer(img)</span><br><span class="line">        vec = self.l2_norm(vec)</span><br><span class="line">        <span class="hljs-keyword">return</span> vec</span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="Triplet-Net-and-Optimizer"><a href="#Triplet-Net-and-Optimizer" class="headerlink" title="Triplet Net and Optimizer"></a>Triplet Net and Optimizer</h3><p>將Triplet Net和Optimizer定義出來：</p>
@@ -207,16 +208,29 @@
 <h3 id="Whole-Training-Process"><a href="#Whole-Training-Process" class="headerlink" title="Whole Training Process"></a>Whole Training Process</h3><p>整體的訓練過程如下：</p>
 <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">train</span><span class="hljs-params">(train_dataset)</span>:</span></span><br><span class="line">    <span class="hljs-comment"># Training</span></span><br><span class="line">    <span class="hljs-keyword">for</span> epoch <span class="hljs-keyword">in</span> range(opts.epochs):</span><br><span class="line">        start = time.time()</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-keyword">for</span> image_batch, label_batch <span class="hljs-keyword">in</span> train_dataset.as_numpy_iterator():</span><br><span class="line">            train_step(image_batch, label_batch)</span><br><span class="line">            </span><br><span class="line">        print(format_str.format(epoch+<span class="hljs-number">1</span>,</span><br><span class="line">                                norm.result().numpy(),</span><br><span class="line">                                loss.result().numpy()))</span><br><span class="line">        norm.reset_states()</span><br><span class="line">        loss.reset_states()</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p>這邊會展示在訓練過程中紀錄的參數和經過Triplet loss訓練後整體Embedding的變化。</p>
-<h3 id="PCA-2d"><a href="#PCA-2d" class="headerlink" title="PCA-2d"></a>PCA-2d</h3><p>使用PCA將各個Epoch中，從Triplet Net出來的200維度的資料降到2維的平面空間上：</p>
+<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p>這邊會展示在訓練過程中紀錄的參數和經過Triplet loss訓練後整體Embedding的變化，分為Batch Hard跟Semi-Hard。</p>
+<h3 id="Batch-Hard"><a href="#Batch-Hard" class="headerlink" title="Batch Hard"></a>Batch Hard</h3><p>只選擇最短的AN距離和最長的AP距離，詳細可以參考前一篇。</p>
+<h4 id="PCA-2d"><a href="#PCA-2d" class="headerlink" title="PCA-2d"></a>PCA-2d</h4><p>使用PCA將各個Epoch中，從Triplet Net出來的200維度的資料降到2維的平面空間上：</p>
+<p><img src="https://drive.google.com/uc?export=view&id=1B1-A3L_7XnumFV59wrp5VpWtHet3hCW9" alt="Batch Hard 2D"></p>
+<h4 id="PCA-3d"><a href="#PCA-3d" class="headerlink" title="PCA-3d"></a>PCA-3d</h4><p>這邊則是在3維立體空間的示意圖：</p>
+<p><img src="https://drive.google.com/uc?export=view&id=1zzxx-lEvOvg8Oj8qlq6SNqyXrZQBKSmI" alt="Batch Hard 3D"></p>
+<h4 id="Triplet-Loss"><a href="#Triplet-Loss" class="headerlink" title="Triplet Loss"></a>Triplet Loss</h4><p>每個Epoch中記錄的Loss的變化：</p>
+<p><img src="batch_hard_triplet_loss.png" alt="Semi-Hard Triplet Loss"></p>
+<p>Loss會降低到margin，之後就不會再下降了，這是因為選擇的triplet例子都是最難的，而最難的則至少會包含margin，除非在整個Embedding中每筆資料都符合Triplet的定義(機率極低)，而此時loss會是0。</p>
+<h4 id="Norm"><a href="#Norm" class="headerlink" title="Norm"></a>Norm</h4><p>算Embedding Vector的各項平方和再開根號，這邊取的值是在經過l2_norm之前的Vector：</p>
+<p><img src="batch_hard_norm.png" alt="Mean Norm of Embedding"></p>
+<p>整個norm會逐步上升，這是因為經過Triplet Net的Vector各維度會逐步變大，好符合Tripelt Loss。</p>
+<h3 id="Semi-Hard"><a href="#Semi-Hard" class="headerlink" title="Semi-Hard"></a>Semi-Hard</h3><p>選擇AP到AP+margin之間的AN距離，來計算loss，詳細可以參考前一篇。</p>
+<h4 id="PCA-2d-1"><a href="#PCA-2d-1" class="headerlink" title="PCA-2d"></a>PCA-2d</h4><p>使用PCA將各個Epoch中，從Triplet Net出來的200維度的資料降到2維的平面空間上：</p>
 <p><img src="https://drive.google.com/uc?export=view&id=1DuQg0TnLRTbe-KO-022KMmEHj7FZc6fO" alt="Semi-Hard 2D"></p>
-<h3 id="PCA-3d"><a href="#PCA-3d" class="headerlink" title="PCA-3d"></a>PCA-3d</h3><p>這邊則是在3維立體空間的示意圖：</p>
+<h4 id="PCA-3d-1"><a href="#PCA-3d-1" class="headerlink" title="PCA-3d"></a>PCA-3d</h4><p>這邊則是在3維立體空間的示意圖：</p>
 <p><img src="https://drive.google.com/uc?export=view&id=1-TvhqS9oFIhO2JyasbpjTIPm1XI5FQV5" alt="Semi-Hard 3D"></p>
-<h3 id="Triplet-Loss"><a href="#Triplet-Loss" class="headerlink" title="Triplet Loss"></a>Triplet Loss</h3><p>每個Epoch中記錄的Loss的變化：</p>
+<h4 id="Triplet-Loss-1"><a href="#Triplet-Loss-1" class="headerlink" title="Triplet Loss"></a>Triplet Loss</h4><p>每個Epoch中記錄的Loss的變化：</p>
 <p><img src="semi_hard_triplet_loss.png" alt="Semi-Hard Triplet Loss"></p>
-<h3 id="Mean-Norm-of-Embedding"><a href="#Mean-Norm-of-Embedding" class="headerlink" title="Mean Norm of Embedding"></a>Mean Norm of Embedding</h3><p>算Embedding Vector的各項平方和再開根號，這邊取的值是在經過l2_norm之前的Vector：</p>
+<h4 id="Norm-1"><a href="#Norm-1" class="headerlink" title="Norm"></a>Norm</h4><p>算Embedding Vector的各項平方和再開根號，這邊取的值是在經過l2_norm之前的Vector：</p>
 <p><img src="semi_hard_norm.png" alt="Mean Norm of Embedding"></p>
-<p>可以看到<code>norm</code>在降低之後逐步變高，這是因為經過Triplet Net的Vector各維度會逐步變大，好符合Tripelt Loss。</p>
+<p>可以看到<code>norm</code>在降低之後逐步變高，這是因為一開始選擇的例子可以透過些微的調整而讓各個資料符合tirplet的定義，而後調道不能再調的時候，只好發散整個Embedding讓norm越來越大，這也是為什麼需要在Triplet Net後面加上l2 norm的原因。</p>
+<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>透過PCA降維到2維或是3維，可以看到Semi-Hard的效果好得多，個人猜測因為Batch Hard只選擇最難的例子導致在訓練過程中所看見的資料太少，也可以說最難的資料無法代表那個Batch中的資料。</p>
 </body></html>
         </div>
         
@@ -445,16 +459,12 @@
         <span class="has-mr-6">2</span>
         <span>前處理和類神經網路</span>
         </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#資料集">
+        <a class="is-flex" href="#資料集-and-網路架構">
         <span class="has-mr-6">2.1</span>
-        <span>資料集</span>
-        </a></li><li>
-        <a class="is-flex" href="#網路架構">
-        <span class="has-mr-6">2.2</span>
-        <span>網路架構</span>
+        <span>資料集 and 網路架構</span>
         </a></li><li>
         <a class="is-flex" href="#Triplet-Net-and-Optimizer">
-        <span class="has-mr-6">2.3</span>
+        <span class="has-mr-6">2.2</span>
         <span>Triplet Net and Optimizer</span>
         </a></li></ul></li><li>
         <a class="is-flex" href="#訓練過程">
@@ -473,22 +483,50 @@
         <span class="has-mr-6">4</span>
         <span>Result</span>
         </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#PCA-2d">
+        <a class="is-flex" href="#Batch-Hard">
         <span class="has-mr-6">4.1</span>
+        <span>Batch Hard</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#PCA-2d">
+        <span class="has-mr-6">4.1.1</span>
         <span>PCA-2d</span>
         </a></li><li>
         <a class="is-flex" href="#PCA-3d">
-        <span class="has-mr-6">4.2</span>
+        <span class="has-mr-6">4.1.2</span>
         <span>PCA-3d</span>
         </a></li><li>
         <a class="is-flex" href="#Triplet-Loss">
-        <span class="has-mr-6">4.3</span>
+        <span class="has-mr-6">4.1.3</span>
         <span>Triplet Loss</span>
         </a></li><li>
-        <a class="is-flex" href="#Mean-Norm-of-Embedding">
-        <span class="has-mr-6">4.4</span>
-        <span>Mean Norm of Embedding</span>
-        </a></li></ul></li></ul>
+        <a class="is-flex" href="#Norm">
+        <span class="has-mr-6">4.1.4</span>
+        <span>Norm</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#Semi-Hard">
+        <span class="has-mr-6">4.2</span>
+        <span>Semi-Hard</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#PCA-2d-1">
+        <span class="has-mr-6">4.2.1</span>
+        <span>PCA-2d</span>
+        </a></li><li>
+        <a class="is-flex" href="#PCA-3d-1">
+        <span class="has-mr-6">4.2.2</span>
+        <span>PCA-3d</span>
+        </a></li><li>
+        <a class="is-flex" href="#Triplet-Loss-1">
+        <span class="has-mr-6">4.2.3</span>
+        <span>Triplet Loss</span>
+        </a></li><li>
+        <a class="is-flex" href="#Norm-1">
+        <span class="has-mr-6">4.2.4</span>
+        <span>Norm</span>
+        </a></li></ul></li></ul></li><li>
+        <a class="is-flex" href="#結論">
+        <span class="has-mr-6">5</span>
+        <span>結論</span>
+        </a></li></ul>
             </div>
         </div>
     </div>
