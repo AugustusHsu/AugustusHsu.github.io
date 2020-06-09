@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta name="google-site-verification" content="ejXsm591ahGuBYrDs3_IxpUvKBuHFqTtMiBbhUGDAVw" />
+<meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.1" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>Neural Network-02 Triplet Loss Example at MNIST - Augustus</title>
+
+
+    <meta name="description" content="前言Triplet Loss在FaceNet那篇論文中，主要是要讓屬於相同一個人的人臉圖片在一個Latent Space中越靠近越好，而讓不屬於這個人的人臉在這個Latent Space中遠離這個人，在這裡我使用MNIST資料集來取代人臉資料，將具有相同類別的手寫圖片彼此聚在一起，讓不同的數字之間有一定的差距。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Neural Network-02 Triplet Loss Example at MNIST">
+<meta property="og:url" content="https://augustushsu.github.io/2020/06/10/NeuralNetwork-02/index.html">
+<meta property="og:site_name" content="Augustus">
+<meta property="og:description" content="前言Triplet Loss在FaceNet那篇論文中，主要是要讓屬於相同一個人的人臉圖片在一個Latent Space中越靠近越好，而讓不屬於這個人的人臉在這個Latent Space中遠離這個人，在這裡我使用MNIST資料集來取代人臉資料，將具有相同類別的手寫圖片彼此聚在一起，讓不同的數字之間有一定的差距。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://augustushsu.github.io/uploads/Triplet-Loss.png">
+<meta property="article:published_time" content="2020-06-10T05:00:32.000Z">
+<meta property="article:modified_time" content="2020-06-09T19:15:55.153Z">
+<meta property="article:author" content="Augustus">
+<meta property="article:tag" content="triplet loss">
+<meta property="article:tag" content="tensorflow">
+<meta property="article:tag" content="batch hard">
+<meta property="article:tag" content="semi-hard">
+<meta property="article:tag" content="MNIST">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://augustushsu.github.io/uploads/Triplet-Loss.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/railscasts.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-154556648-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-154556648-1');
+</script>
+
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<!-- <body class="is-2-column"> -->
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.png" alt="Neural Network-02 Triplet Loss Example at MNIST" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/categories">Categories</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+                <a class="navbar-item"
+                href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://augustushsu.github.io/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目錄" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜尋" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-image">
+        <span  class="image is-7by1">
+            <img class="thumbnail" src="/uploads/Triplet-Loss.png" alt="Neural Network-02 Triplet Loss Example at MNIST">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-06-10T05:00:32.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-06-10</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/%E5%AF%A6%E4%BD%9C/">實作</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/%E5%AF%A6%E4%BD%9C/Neural-Network/">Neural Network</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    7 分鐘 閱讀文 (大約 1008 個字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Neural Network-02 Triplet Loss Example at MNIST
+            
+        </h1>
+        <div class="content">
+            <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Triplet Loss在FaceNet那篇論文中，主要是要讓屬於相同一個人的人臉圖片在一個Latent Space中越靠近越好，而讓不屬於這個人的人臉在這個Latent Space中遠離這個人，在這裡我使用MNIST資料集來取代人臉資料，將具有相同類別的手寫圖片彼此聚在一起，讓不同的數字之間有一定的差距。</p>
+<a id="more"></a>
+
+<h2 id="前處理和類神經網路"><a href="#前處理和類神經網路" class="headerlink" title="前處理和類神經網路"></a>前處理和類神經網路</h2><p>首先先定義出MNIST資料要如何使用，再來設計類神經網路，最後將網路和Optimizer使用到實際的訓練過程上。</p>
+<h3 id="資料集"><a href="#資料集" class="headerlink" title="資料集"></a>資料集</h3><p>這邊使用Tensorflow的程式碼直接將MNIST的資料load進來，再將資料normalize到-1到1之間：</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> tensorflow <span class="hljs-keyword">as</span> tf</span><br><span class="line"><span class="hljs-keyword">from</span> tensorflow.keras.datasets.mnist <span class="hljs-keyword">import</span> load_data</span><br><span class="line"><span class="hljs-keyword">from</span> args <span class="hljs-keyword">import</span> parser</span><br><span class="line"></span><br><span class="line">opts = parser()</span><br><span class="line"></span><br><span class="line">[(train_x, train_y), (test_x, test_y)] = load_data(<span class="hljs-string">'mnist.npz'</span>)</span><br><span class="line">test_x = test_x.reshape(test_x.shape[<span class="hljs-number">0</span>], <span class="hljs-number">28</span>, <span class="hljs-number">28</span>, <span class="hljs-number">1</span>).astype(<span class="hljs-string">'float32'</span>)</span><br><span class="line">test_x = (test_x - <span class="hljs-number">127.5</span>) / <span class="hljs-number">127.5</span></span><br><span class="line"></span><br><span class="line">train_images = train_x.reshape(train_x.shape[<span class="hljs-number">0</span>], <span class="hljs-number">28</span>, <span class="hljs-number">28</span>, <span class="hljs-number">1</span>).astype(<span class="hljs-string">'float32'</span>)</span><br><span class="line">train_images = (train_images - <span class="hljs-number">127.5</span>) / <span class="hljs-number">127.5</span></span><br><span class="line"></span><br><span class="line">train_dataset = tf.data.Dataset.from_tensor_slices((train_images, train_y))</span><br><span class="line">train_dataset = train_dataset.shuffle(opts.BUFFER_SIZE)</span><br><span class="line">train_dataset = train_dataset.batch(opts.BATCH_SIZE).take(<span class="hljs-number">20</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="網路架構"><a href="#網路架構" class="headerlink" title="網路架構"></a>網路架構</h3><p>這邊簡單的用兩層CNN加上一層全連結層，並且在最後做一個l2 normalize，將embedding的範圍限制住，通常在做Triplet的時候，都會做l2 normalize讓經過Triplet Net之後的Vector限制在一個範圍內：</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> tensorflow <span class="hljs-keyword">as</span> tf</span><br><span class="line"><span class="hljs-keyword">from</span> tensorflow.keras <span class="hljs-keyword">import</span> Model, layers</span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Triplet_Net</span><span class="hljs-params">(Model)</span>:</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span></span><br><span class="line">        super(Triplet_Net, self).__init__(self)</span><br><span class="line">        self.emb_layer = tf.keras.models.Sequential([</span><br><span class="line">            layers.Conv2D(<span class="hljs-number">64</span>, (<span class="hljs-number">5</span>, <span class="hljs-number">5</span>), strides=(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>), padding=<span class="hljs-string">'same'</span>),</span><br><span class="line">            layers.LeakyReLU(),</span><br><span class="line">            layers.Dropout(<span class="hljs-number">0.3</span>),</span><br><span class="line">            </span><br><span class="line">            layers.Conv2D(<span class="hljs-number">64</span>, (<span class="hljs-number">5</span>, <span class="hljs-number">5</span>), strides=(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>), padding=<span class="hljs-string">'same'</span>),</span><br><span class="line">            layers.LeakyReLU(),</span><br><span class="line">            layers.Dropout(<span class="hljs-number">0.3</span>),</span><br><span class="line">            </span><br><span class="line">            layers.Flatten(),</span><br><span class="line">            tf.keras.layers.Dense(<span class="hljs-number">200</span>)])</span><br><span class="line">        self.l2_norm = layers.Lambda(<span class="hljs-keyword">lambda</span> x: tf.math.l2_normalize(x, axis=<span class="hljs-number">1</span>))</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">call</span><span class="hljs-params">(self, img, training=True)</span>:</span></span><br><span class="line">        vec = self.emb_layer(img)</span><br><span class="line">        vec = self.l2_norm(vec)</span><br><span class="line">        <span class="hljs-keyword">return</span> vec</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Triplet-Net-and-Optimizer"><a href="#Triplet-Net-and-Optimizer" class="headerlink" title="Triplet Net and Optimizer"></a>Triplet Net and Optimizer</h3><p>將Triplet Net和Optimizer定義出來：</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">method = <span class="hljs-string">'semi_hard'</span></span><br><span class="line"><span class="hljs-comment"># method = 'batch_hard'</span></span><br><span class="line"></span><br><span class="line">triplet_net = Triplet_Net()</span><br><span class="line">TripletLoss = tfa.losses.TripletSemiHardLoss(margin=opts.margin)</span><br><span class="line"><span class="hljs-comment"># TripletLoss = tfa.losses.TripletHardLoss(margin=opts.margin)</span></span><br><span class="line">optimizer = tf.keras.optimizers.Adam(opts.lr, opts.beta)</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="訓練過程"><a href="#訓練過程" class="headerlink" title="訓練過程"></a>訓練過程</h2><p>接下來就是將每個Epoch中如何計算loss和如何更新網路的過程定義出來，將訓練過程中各個參數記錄下來。</p>
+<h3 id="Each-Epoch-Training"><a href="#Each-Epoch-Training" class="headerlink" title="Each Epoch Training"></a>Each Epoch Training</h3><p>定義每個Epoch訓練過程的function，在前面加上<code>@tf.function</code>可以讓原本Tensorflow的Eager mode編譯成Gragh的形式，通常這意味著可以執行的更快，這也是為什麼這邊紀錄loss跟norm需要用到<code>tf.keras.metrics.Mean()</code>來記錄，因為這邊只使用Tensorflow的物件的話，可以讓整體的速度提升：</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">norm = tf.keras.metrics.Mean()</span><br><span class="line">loss = tf.keras.metrics.Mean()</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@tf.function</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">train_step</span><span class="hljs-params">(images, label)</span>:</span></span><br><span class="line">    <span class="hljs-keyword">with</span> tf.GradientTape() <span class="hljs-keyword">as</span> tape:</span><br><span class="line">        trip_emb = triplet_net(images, training=<span class="hljs-literal">True</span>)</span><br><span class="line">        triplet_loss = TripletLoss(label, trip_emb)</span><br><span class="line">        </span><br><span class="line">    loss.update_state(triplet_loss)</span><br><span class="line">    triplet_loss = tape.gradient(triplet_loss, triplet_net.trainable_variables)</span><br><span class="line">    </span><br><span class="line">    optimizer.apply_gradients(zip(triplet_loss, triplet_net.trainable_variables))</span><br><span class="line">    norm.update_state(tf.norm(triplet_net.emb_layer(images, training=<span class="hljs-literal">False</span>), axis=<span class="hljs-number">1</span>))</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Whole-Training-Process"><a href="#Whole-Training-Process" class="headerlink" title="Whole Training Process"></a>Whole Training Process</h3><p>整體的訓練過程如下：</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">train</span><span class="hljs-params">(train_dataset)</span>:</span></span><br><span class="line">    <span class="hljs-comment"># Training</span></span><br><span class="line">    <span class="hljs-keyword">for</span> epoch <span class="hljs-keyword">in</span> range(opts.epochs):</span><br><span class="line">        start = time.time()</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-keyword">for</span> image_batch, label_batch <span class="hljs-keyword">in</span> train_dataset.as_numpy_iterator():</span><br><span class="line">            train_step(image_batch, label_batch)</span><br><span class="line">            </span><br><span class="line">        print(format_str.format(epoch+<span class="hljs-number">1</span>,</span><br><span class="line">                                norm.result().numpy(),</span><br><span class="line">                                loss.result().numpy()))</span><br><span class="line">        norm.reset_states()</span><br><span class="line">        loss.reset_states()</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p>這邊會展示在訓練過程中紀錄的參數和經過Triplet loss訓練後整體Embedding的變化。</p>
+<h3 id="PCA-2d"><a href="#PCA-2d" class="headerlink" title="PCA-2d"></a>PCA-2d</h3><p>使用PCA將各個Epoch中，從Triplet Net出來的200維度的資料降到2維的平面空間上：</p>
+<p><img src="https://drive.google.com/uc?export=view&id=1DuQg0TnLRTbe-KO-022KMmEHj7FZc6fO" alt="Semi-Hard 2D"></p>
+<h3 id="PCA-3d"><a href="#PCA-3d" class="headerlink" title="PCA-3d"></a>PCA-3d</h3><p>這邊則是在3維立體空間的示意圖：</p>
+<p><img src="https://drive.google.com/uc?export=view&id=1-TvhqS9oFIhO2JyasbpjTIPm1XI5FQV5" alt="Semi-Hard 3D"></p>
+<h3 id="Triplet-Loss"><a href="#Triplet-Loss" class="headerlink" title="Triplet Loss"></a>Triplet Loss</h3><p>每個Epoch中記錄的Loss的變化：</p>
+<p><img src="semi_hard_triplet_loss.png" alt="Semi-Hard Triplet Loss"></p>
+<h3 id="Mean-Norm-of-Embedding"><a href="#Mean-Norm-of-Embedding" class="headerlink" title="Mean Norm of Embedding"></a>Mean Norm of Embedding</h3><p>算Embedding Vector的各項平方和再開根號，這邊取的值是在經過l2_norm之前的Vector：</p>
+<p><img src="semi_hard_norm.png" alt="Mean Norm of Embedding"></p>
+<p>可以看到<code>norm</code>在降低之後逐步變高，這是因為經過Triplet Net的Vector各維度會逐步變大，好符合Tripelt Loss。</p>
+</body></html>
+        </div>
+        
+            <ul class="post-copyright">
+            <li><strong>文章標題：</strong><a href="https://augustushsu.github.io/2020/06/10/NeuralNetwork-02/">Neural Network-02 Triplet Loss Example at MNIST</a></li>
+            <li><strong>文章作者：</strong><a href="https://augustushsu.github.io">Augustus</a></li>
+            <li><strong>文章連結：</strong><a href="https://augustushsu.github.io/2020/06/10/NeuralNetwork-02/">https://augustushsu.github.io/2020/06/10/NeuralNetwork-02/</a></li>
+            <li><strong>發佈時間：</strong>2020-06-10</li>
+            <li><strong>版權聲明：</strong>本博客所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 許可協議。引用請註明出處！
+            </li>
+            </ul>
+       
+        
+        <hr style="height:1px;margin:1rem 0"/>
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/MNIST/" rel="tag">MNIST</a>,&nbsp;<a class="has-link-grey -link" href="/tags/batch-hard/" rel="tag">batch hard</a>,&nbsp;<a class="has-link-grey -link" href="/tags/semi-hard/" rel="tag">semi-hard</a>,&nbsp;<a class="has-link-grey -link" href="/tags/tensorflow/" rel="tag">tensorflow</a>,&nbsp;<a class="has-link-grey -link" href="/tags/triplet-loss/" rel="tag">triplet loss</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+<div class="addthis_inline_share_toolbox"></div>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5def9374e9552f2f"></script>
+
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">喜歡這篇文章嗎? 贊助一下作者吧!</h3>
+        <div class="buttons is-centered">
+            
+                <!-- Visit https://www.paypal.com/donate/buttons/ to get your donate button -->
+
+<a class="button is-warning donate" onclick="document.getElementById(&#39;paypal-donate-form&#39;).submit()">
+    <span class="icon is-small">
+        <i class="fab fa-paypal"></i>
+    </span>
+    <span>PayPal</span>
+</a>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" id="paypal-donate-form">
+    <input type="hidden" name="cmd" value="_donations" />
+    <input type="hidden" name="business" value="V6DFAWSEDJJHE" />
+    <input type="hidden" name="currency_code" value="USD" />
+</form>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/06/03/hexo-04/">
+                <span class="level-item">hexo系列-04 目前為止遇到的問題</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">評論</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: '35f8adf2553a86678cce',
+        clientSecret: 'afeffb2652617f0d77d7a18c9f95ee4447baf5e2',
+        id: 'b991454f9a04de731b3fbe7ca05f48dd',
+        repo: 'augustushsu.github.io',
+        owner: 'AugustusHsu',
+        admin: "AugustusHsu",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/uploads/MyPhoto.jpg" alt="Augustus">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        Augustus
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        Strike the iron while it is hot.
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>Chiayi, Taiwan</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            13
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分類
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            5
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        標籤
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            36
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/AugustusHsu" target="_blank">
+                追蹤</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="Github" href="https://github.com/AugustusHsu">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="Facebook" href="https://www.facebook.com/HsuAugustus">
+                
+                <i class="fab fa-facebook"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="Envelope" href="mailto:jimhsu11@gmail.com">
+                
+                <i class="fas fa-envelope"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget column-left is-sticky" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    文章目錄
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#前言">
+        <span class="has-mr-6">1</span>
+        <span>前言</span>
+        </a></li><li>
+        <a class="is-flex" href="#前處理和類神經網路">
+        <span class="has-mr-6">2</span>
+        <span>前處理和類神經網路</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#資料集">
+        <span class="has-mr-6">2.1</span>
+        <span>資料集</span>
+        </a></li><li>
+        <a class="is-flex" href="#網路架構">
+        <span class="has-mr-6">2.2</span>
+        <span>網路架構</span>
+        </a></li><li>
+        <a class="is-flex" href="#Triplet-Net-and-Optimizer">
+        <span class="has-mr-6">2.3</span>
+        <span>Triplet Net and Optimizer</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#訓練過程">
+        <span class="has-mr-6">3</span>
+        <span>訓練過程</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#Each-Epoch-Training">
+        <span class="has-mr-6">3.1</span>
+        <span>Each Epoch Training</span>
+        </a></li><li>
+        <a class="is-flex" href="#Whole-Training-Process">
+        <span class="has-mr-6">3.2</span>
+        <span>Whole Training Process</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#Result">
+        <span class="has-mr-6">4</span>
+        <span>Result</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#PCA-2d">
+        <span class="has-mr-6">4.1</span>
+        <span>PCA-2d</span>
+        </a></li><li>
+        <a class="is-flex" href="#PCA-3d">
+        <span class="has-mr-6">4.2</span>
+        <span>PCA-3d</span>
+        </a></li><li>
+        <a class="is-flex" href="#Triplet-Loss">
+        <span class="has-mr-6">4.3</span>
+        <span>Triplet Loss</span>
+        </a></li><li>
+        <a class="is-flex" href="#Mean-Norm-of-Embedding">
+        <span class="has-mr-6">4.4</span>
+        <span>Mean Norm of Embedding</span>
+        </a></li></ul></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.png" alt="Neural Network-02 Triplet Loss Example at MNIST" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 Augustus&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                        
+                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-TW");</script>
+
+<script>
+var IcarusThemeSettings = {
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+    
+    
+<script src="/js/animation.js"></script>
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+    
+    
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+    
+    
+<a id="back-to-top" title="回到頁首" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="請輸入關鍵字..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '頁面',
+                CATEGORIES: '分類',
+                TAGS: '標籤',
+                UNTITLED: '(無標題)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
