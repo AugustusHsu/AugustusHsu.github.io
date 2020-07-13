@@ -86,6 +86,7 @@
 
 
 <link rel="stylesheet" href="/css/style.css">
+    <script data-ad-client="ca-pub-3024177025172622" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 <!-- <body class="is-2-column"> -->
 <body class="is-3-column">
@@ -186,7 +187,7 @@
             
         </h1>
         <div class="content">
-            <h2 id="Docker-Hub-Automated-Builds"><a href="#Docker-Hub-Automated-Builds" class="headerlink" title="Docker Hub Automated Builds"></a>Docker Hub Automated Builds</h2><p>Automated Builds是Docker Hub上提供的功能，它可以在你Github上有更新的時候，自動地幫你Build你的Dockerfile，產生一個新的Image。</p>
+            <html><head></head><body><h2 id="Docker-Hub-Automated-Builds"><a href="#Docker-Hub-Automated-Builds" class="headerlink" title="Docker Hub Automated Builds"></a>Docker Hub Automated Builds</h2><p>Automated Builds是Docker Hub上提供的功能，它可以在你Github上有更新的時候，自動地幫你Build你的Dockerfile，產生一個新的Image。</p>
 <a id="more"></a>
 
 <h2 id="連結Github"><a href="#連結Github" class="headerlink" title="連結Github"></a>連結Github</h2><p>點選頭像可以看到<code>Account Setting</code>：<br><img src="Account_Setting.png" alt="Avatar"><br>再點選<code>Linked Accounts</code>，跟你的Github做連結：<br><img src="Linked_Accounts1.png" alt="Account Setting"><br>連結完會像這樣：<br><img src="Linked_Accounts2.png" alt="Github"></p>
@@ -195,10 +196,10 @@
 <p>可以看到你帳號的右邊可以選擇你要連結的Github Repository：<br><img src="Github_Repository.png" alt></p>
 <p>在<code>Configure Automated Builds</code>下面有一些設定可以調整，可以設定不同branch有不同的tag可以設定，它有舉一些例子、還有命名規則可以去查看。</p>
 <h2 id="Docker-Hub-Build-Error"><a href="#Docker-Hub-Build-Error" class="headerlink" title="Docker Hub Build Error"></a>Docker Hub Build Error</h2><p>在Docker Hub的時候，會看到下面這個狀況：</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">...returned a non-zero code: 2</span></pre></td></tr></table></figure>
+<figure class="highlight bash hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">...returned a non-zero code: 2</span><br></pre></td></tr></tbody></table></figure>
 
 <p>後來經過測試發現，這是因為我有使用<code>ARG</code>這個參數導致的，因為在Build你的Docker Image的時候會需要加上這些參數：</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo docker build -t image_name:tag \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">--build-arg USERNAME=username \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">--build-arg USERPWD=yourpassword .</span></pre></td></tr></table></figure>
+<figure class="highlight bash hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo docker build -t image_name:tag \</span><br><span class="line">--build-arg USERNAME=username \</span><br><span class="line">--build-arg USERPWD=yourpassword .</span><br></pre></td></tr></tbody></table></figure>
 
 <p>雖然說在Docker Hub上面有：</p>
 <blockquote>
@@ -206,10 +207,10 @@
 </blockquote>
 <p>可以調整，不過我當時怎麼調整都會有問題。</p>
 <p>所以後來我直接將Dockerfile加上預設值：</p>
-<figure class="highlight diff hljs"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-deletion">-ARG USERNAME</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-deletion">-ARG USERPWD</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-addition">+ARG USERNAME=username</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="hljs-addition">+ARG USERPWD=yourpassword</span></span></pre></td></tr></table></figure>
+<figure class="highlight diff hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-deletion">-ARG USERNAME</span></span><br><span class="line"><span class="hljs-deletion">-ARG USERPWD</span></span><br><span class="line"><span class="hljs-addition">+ARG USERNAME=username</span></span><br><span class="line"><span class="hljs-addition">+ARG USERPWD=yourpassword</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>這樣就可以成功Automated Build你的Dockerfile了。</p>
-
+</body></html>
         </div>
         
             <ul class="post-copyright">
